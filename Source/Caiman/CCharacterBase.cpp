@@ -50,7 +50,7 @@ ACCharacterBase::ACCharacterBase()
 		GetMesh()->SetSkeletalMesh(CharacterMeshRef.Object);
 	}
 
-	static ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnimRef(TEXT("/Game/Blueprints/Animation/KwangAnimInstance.KwangAnimInstance_C"));
+	static ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnimRef(TEXT("/Game/Blueprints/Animation/KwangAniminstance.KwangAniminstance_C"));
 	if (CharacterAnimRef.Class)
 	{
 		GetMesh()->SetAnimInstanceClass(CharacterAnimRef.Class);
