@@ -14,7 +14,12 @@ ACCharacterPlayer::ACCharacterPlayer()
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));//엔진에 기본적으로 내장되어있는 카메라 요소를 생성 이름도 설정
 	CameraBoom->SetupAttachment(RootComponent);//루트 오브젝트에 붙여둠
 	CameraBoom->TargetArmLength = 400.0f;//팔길이
-	CameraBoom->bUsePawnControlRotation = false;//폰의 회전을 따라서 갈 것인가
+	CameraBoom->bUsePawnControlRotation = true;//폰의 회전을 따라서 갈 것인가
+	CameraBoom->bInheritPitch = true;
+	CameraBoom->bInheritYaw = true;
+	CameraBoom->bInheritRoll= false;
+
+
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);//붙이고 SocketName는 'springarmendpoint'라고 지정되어 있음
@@ -24,6 +29,12 @@ ACCharacterPlayer::ACCharacterPlayer()
 	if (InputActionJumpRef.Object)
 	{
 		JumpAction = InputActionJumpRef.Object;
+	}
+
+	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionLookRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Look.IA_Look'"));
+	if (InputActionLookRef.Object)
+	{
+		LookAction = InputActionLookRef.Object;
 	}
 
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext> InputMappingRef(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Input/IMC_Kwang.IMC_Kwang'"));
@@ -66,7 +77,7 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 	//AddMovementInput(ForwardDirection, MovementVector.Y);//움직이는 코드
 	//AddMovementInput(ForwardDirection, MovementVector.X);
 
-	FVector2D MovementVector = Value.Get<FVector2D>();
+	/*FVector2D MovementVector = Value.Get<FVector2D>();
 	float MovementVectorSizeSquared = MovementVector.SquaredLength();
 	float MovementVectorSize = 1.0f;
 	if (MovementVectorSizeSquared > 1.0f)
@@ -80,17 +91,27 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 
 	FVector MoveDirection = FVector(MovementVector.X, MovementVector.Y, 0.0f);
 	GetController()->SetControlRotation(FRotationMatrix::MakeFromX(MoveDirection).Rotator());
-	AddMovementInput(MoveDirection, MovementVectorSize);
+	AddMovementInput(MoveDirection, MovementVectorSize);*/
+	FVector2D MovementVector = Value.Get<FVector2D>();
+
+	const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+	AddMovementInput(ForwardDirection, MovementVector.Y);
+	AddMovementInput(RightDirection, MovementVector.X);
 }
 
-//void ACCharacterPlayer::Look(const FInputActionValue& Value)
-//{
-//	FVector2D LookAxisVector = Value.Get<FVector2D>();
-//
-//	AddControllerYawInput(LookAxisVector.X);
-//	AddControllerPitchInput(LookAxisVector.Y);
-//}
-//
+void ACCharacterPlayer::Look(const FInputActionValue& Value)
+{
+	FVector2D LookAxisVector = Value.Get<FVector2D>();
+
+	AddControllerYawInput(LookAxisVector.X);
+	AddControllerPitchInput(LookAxisVector.Y);
+}
+
 void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -101,7 +122,7 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
 	/*EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);*/
 	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
-	/*EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);*/
+	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
 }
 
 

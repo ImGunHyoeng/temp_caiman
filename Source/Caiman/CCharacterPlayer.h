@@ -34,14 +34,14 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<class UInputAction> MovementAction;
-	/*UPROPERTY(EditAnywhere,BluePrintReadOnly, Category = Input)
-	UInputAction* MovementAction;
+	UPROPERTY(EditAnywhere,BluePrintReadOnly, Category = Input)
+	UInputAction* LookAction;
 
-	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
-	UInputAction* JumpAction;*/
+	//UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
+	//UInputAction* JumpAction;*/
 	virtual void BeginPlay() override;
 	void Move(const FInputActionValue& Value);
-	//void Look(const FInputActionValue& Value);
+	void Look(const FInputActionValue& Value);
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	//virtual void SetCharacterControlData(const UABCharacterControlDataAsset* CharacterControlData);
