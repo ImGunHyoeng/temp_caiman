@@ -49,6 +49,12 @@ ACCharacterPlayer::ACCharacterPlayer()
 		MovementAction = InputActionMoveRef.Object;
 	}
 
+	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionDrawRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Draw.IA_Draw'"));
+	if (InputActionDrawRef.Object)
+	{
+		DrawAction = InputActionDrawRef.Object;
+	}
+
 	//inputmapping 과 연결해서 움직이도록 설정 이를 언리얼상에서 매핑으로 해결함
 }
 
@@ -100,8 +106,8 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-	AddMovementInput(ForwardDirection, MovementVector.Y);
-	AddMovementInput(RightDirection, MovementVector.X);
+	AddMovementInput(ForwardDirection, MovementVector.X);
+	AddMovementInput(RightDirection, MovementVector.Y);
 }
 
 void ACCharacterPlayer::Look(const FInputActionValue& Value)
@@ -110,6 +116,12 @@ void ACCharacterPlayer::Look(const FInputActionValue& Value)
 
 	AddControllerYawInput(LookAxisVector.X);
 	AddControllerPitchInput(LookAxisVector.Y);
+}
+
+void ACCharacterPlayer::Draw(const FInputActionValue& Value)
+{
+	bSwordDraw = !bSwordDraw;
+	if(bSwordDraw)
 }
 
 void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -123,6 +135,7 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	/*EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);*/
 	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
+	EnhancedInputComponent->BindAction(DrawAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Draw);
 }
 
 

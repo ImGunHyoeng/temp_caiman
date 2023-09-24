@@ -34,6 +34,10 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<class UInputAction> MovementAction;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+		TObjectPtr<class UInputAction> DrawAction;
+	
 	UPROPERTY(EditAnywhere,BluePrintReadOnly, Category = Input)
 	UInputAction* LookAction;
 
@@ -42,7 +46,10 @@ protected:
 	virtual void BeginPlay() override;
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
+	void Draw(const FInputActionValue& Value);
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	bool bSwordDraw;
 	//virtual void SetCharacterControlData(const UABCharacterControlDataAsset* CharacterControlData);
 };
