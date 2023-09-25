@@ -8,6 +8,16 @@
 #include "InputActionValue.h"
 #include "CCharacterPlayer.generated.h"
 
+UENUM(BlueprintType)
+enum class ECharacterState :uint8
+{
+	IDLE,
+	WALK,
+	RUN,
+	JUMP,
+	DRAW,
+	SHEATH
+};
 /**
  * 
  */
@@ -41,6 +51,11 @@ protected:
 	UPROPERTY(EditAnywhere,BluePrintReadOnly, Category = Input)
 	UInputAction* LookAction;
 
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
+		UAnimMontage* AM_Draw;
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
+		UAnimMontage* AM_Sheath;
+
 	//UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	//UInputAction* JumpAction;*/
 	virtual void BeginPlay() override;
@@ -51,5 +66,7 @@ protected:
 
 private:
 	bool bSwordDraw;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+		ECharacterState currentState;
 	//virtual void SetCharacterControlData(const UABCharacterControlDataAsset* CharacterControlData);
 };

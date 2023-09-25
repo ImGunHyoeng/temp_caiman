@@ -54,7 +54,7 @@ ACCharacterPlayer::ACCharacterPlayer()
 	{
 		DrawAction = InputActionDrawRef.Object;
 	}
-
+	currentState = ECharacterState::IDLE;
 	//inputmapping 과 연결해서 움직이도록 설정 이를 언리얼상에서 매핑으로 해결함
 }
 
@@ -121,7 +121,25 @@ void ACCharacterPlayer::Look(const FInputActionValue& Value)
 void ACCharacterPlayer::Draw(const FInputActionValue& Value)
 {
 	bSwordDraw = !bSwordDraw;
-	
+	if (bSwordDraw)
+	{
+		currentState = ECharacterState::DRAW;
+
+	}
+	else
+	{
+		currentState = ECharacterState::SHEATH;
+	}
+
+	switch (currentState)
+	{
+	case ECharacterState::DRAW:
+		PlayAnimMontage(AM_Draw);
+		break;
+	case ECharacterState::SHEATH:
+		PlayAnimMontage(AM_Sheath);
+		break;
+	}
 }
 
 void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
