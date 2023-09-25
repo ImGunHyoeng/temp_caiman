@@ -64,8 +64,10 @@ protected:
 	void Draw(const FInputActionValue& Value);
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool bSwordDraw;
 private:
-	bool bSwordDraw;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 		ECharacterState currentState;
 	//virtual void SetCharacterControlData(const UABCharacterControlDataAsset* CharacterControlData);
