@@ -121,7 +121,7 @@ void ACCharacterPlayer::Look(const FInputActionValue& Value)
 void ACCharacterPlayer::Draw(const FInputActionValue& Value)
 {
 	bSwordDraw = !bSwordDraw;
-	if(bSwordDraw)
+	
 }
 
 void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
