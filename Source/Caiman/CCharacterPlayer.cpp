@@ -54,7 +54,7 @@ ACCharacterPlayer::ACCharacterPlayer()
 	{
 		DrawAction = InputActionDrawRef.Object;
 	}
-	currentState = ECharacterState::IDLE;
+	currentState = ECharacterState::SHEATH;
 	//inputmapping 과 연결해서 움직이도록 설정 이를 언리얼상에서 매핑으로 해결함
 }
 

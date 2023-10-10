@@ -11,12 +11,21 @@
 UENUM(BlueprintType)
 enum class ECharacterState :uint8
 {
-	IDLE,
+	SHEATH,
+	DRAW,
+	S_ROLL,
+	D_ROLL,
 	WALK,
 	RUN,
 	JUMP,
-	DRAW,
-	SHEATH
+	LANDING,
+	JUMPATTACK,
+	DEFENSELESS,
+	PARRGING,
+	ATTACK
+
+	
+	
 };
 /**
  * 
