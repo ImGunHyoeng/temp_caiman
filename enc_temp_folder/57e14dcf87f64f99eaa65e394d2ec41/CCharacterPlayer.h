@@ -86,7 +86,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bSwordDraw;
-	bool bTrigger;
 	float moveSpeed;
 private:
 	

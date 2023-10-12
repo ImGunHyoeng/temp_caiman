@@ -72,8 +72,6 @@ ACCharacterPlayer::ACCharacterPlayer()
 
 	currentState = ECharacterState::SHEATH;
 	moveSpeed = 1000.0f;
-	bSwordDraw = false;
-	bTrigger = false;
 	//inputmapping 과 연결해서 움직이도록 설정 이를 언리얼상에서 매핑으로 해결함
 }
 
@@ -91,16 +89,12 @@ void ACCharacterPlayer::BeginPlay()
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Display, TEXT("%d"), currentState);
 	switch (currentState)
 	{
 	case ECharacterState::SHEATH:
-		/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
+		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
 			return;
-		if(!bTrigger)
-			return;
-		PlayAnimMontage(AM_Sheath);*/
-		bTrigger = false;
+		PlayAnimMontage(AM_Sheath);
 		break;
 	case ECharacterState::WALK:
 		break;
@@ -113,12 +107,9 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	case ECharacterState::S_ROLL:
 		break;
 	case ECharacterState::DRAW:
-	/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
-			return;
-		if(!bTrigger)
+		if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
 			return;
 		PlayAnimMontage(AM_Draw);
-		bTrigger = false;*/
 		break;
 	case ECharacterState::D_ROLL:
 		break;
@@ -131,6 +122,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	case ECharacterState::ATTACK:
 		break;
 	}
+	//UE_LOG(LogTemp, Display, TEXT("%f"), GetCharacterMovement()->MaxWalkSpeed);
 }
 
 
@@ -197,8 +189,16 @@ void ACCharacterPlayer::Draw(const FInputActionValue& Value)
 	{
 		currentState = ECharacterState::SHEATH;
 	}
-	bTrigger = true;
-	
+
+	switch (currentState)
+	{
+	case ECharacterState::DRAW:
+		PlayAnimMontage(AM_Draw);
+		break;
+	case ECharacterState::SHEATH:
+		PlayAnimMontage(AM_Sheath);
+		break;
+	}
 }
 
 void ACCharacterPlayer::Run(const FInputActionValue& Value)
