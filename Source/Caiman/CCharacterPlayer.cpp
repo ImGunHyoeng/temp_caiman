@@ -70,7 +70,8 @@ ACCharacterPlayer::ACCharacterPlayer()
 	}
 
 
-	currentState = ECharacterState::SHEATH;
+	currentState = ECharacterState::S_IDLE;
+	previousState = ECharacterState::S_IDLE;
 	moveSpeed = 1000.0f;
 	bSwordDraw = false;
 	bTrigger = false;
@@ -94,7 +95,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	UE_LOG(LogTemp, Display, TEXT("%d"), currentState);
 	switch (currentState)
 	{
-	case ECharacterState::SHEATH:
+	case ECharacterState::S_IDLE:
 		/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
 			return;
 		if(!bTrigger)
@@ -102,9 +103,9 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 		PlayAnimMontage(AM_Sheath);*/
 		bTrigger = false;
 		break;
-	case ECharacterState::WALK:
+	case ECharacterState::S_WALK:
 		break;
-	case ECharacterState::RUN:
+	case ECharacterState::S_RUN:
 		break;
 	case ECharacterState::JUMP:
 		break;
@@ -112,14 +113,17 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 		break;
 	case ECharacterState::S_ROLL:
 		break;
-	case ECharacterState::DRAW:
+	case ECharacterState::D_IDLE:
 	/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
 			return;
 		if(!bTrigger)
 			return;
 		PlayAnimMontage(AM_Draw);
 		bTrigger = false;*/
+		bTrigger = false;
 		break;
+	case ECharacterState::D_WALK:
+		break;	
 	case ECharacterState::D_ROLL:
 		break;
 	case ECharacterState::JUMPATTACK:
@@ -136,32 +140,6 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 
 void ACCharacterPlayer::Move(const FInputActionValue& Value)
 {
-	//FVector2D MovementVector = Value.Get<FVector2D>();
-
-	//const FRotator Rotation = Controller->GetControlRotation();
-	//const FRotator YawRotation(0, Rotation.Yaw, 0);
-
-	//const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	//const FVector RightdDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
-
-	//AddMovementInput(ForwardDirection, MovementVector.Y);//움직이는 코드
-	//AddMovementInput(ForwardDirection, MovementVector.X);
-
-	/*FVector2D MovementVector = Value.Get<FVector2D>();
-	float MovementVectorSizeSquared = MovementVector.SquaredLength();
-	float MovementVectorSize = 1.0f;
-	if (MovementVectorSizeSquared > 1.0f)
-	{
-		MovementVector.Normalize();
-	}
-	else
-	{
-		MovementVectorSize = FMath::Sqrt(MovementVectorSizeSquared);
-	}
-
-	FVector MoveDirection = FVector(MovementVector.X, MovementVector.Y, 0.0f);
-	GetController()->SetControlRotation(FRotationMatrix::MakeFromX(MoveDirection).Rotator());
-	AddMovementInput(MoveDirection, MovementVectorSize);*/
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	const FRotator Rotation = Controller->GetControlRotation();
@@ -190,12 +168,14 @@ void ACCharacterPlayer::Draw(const FInputActionValue& Value)
 	bSwordDraw = !bSwordDraw;
 	if (bSwordDraw)
 	{
-		currentState = ECharacterState::DRAW;
+		previousState = currentState;
+		currentState = ECharacterState::D_IDLE;
 
 	}
 	else
 	{
-		currentState = ECharacterState::SHEATH;
+		previousState = currentState;
+		currentState = ECharacterState::S_IDLE;
 	}
 	bTrigger = true;
 	
@@ -203,16 +183,28 @@ void ACCharacterPlayer::Draw(const FInputActionValue& Value)
 
 void ACCharacterPlayer::Run(const FInputActionValue& Value)
 {
-	
-	GetCharacterMovement()->MaxWalkSpeed =moveSpeed;
-	currentState = ECharacterState::RUN;
+	if (previousState == ECharacterState::S_WALK)
+	{
+		previousState = currentState;
+		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
+		currentState = ECharacterState::S_RUN;
+	}
 }
 
 void ACCharacterPlayer::Walk(const FInputActionValue& Value)
 {
-	
-	GetCharacterMovement()->MaxWalkSpeed = moveSpeed/2.0f;
-	currentState = ECharacterState::WALK;
+	if (previousState == ECharacterState::S_IDLE||previousState==ECharacterState::S_RUN)
+	{
+		previousState = currentState;
+		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
+		currentState = ECharacterState::S_WALK;
+	}
+	if (currentState == ECharacterState::D_IDLE)
+	{
+		previousState = currentState;
+		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 3.0f;
+		currentState = ECharacterState::D_WALK;
+	}
 }
 
 void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

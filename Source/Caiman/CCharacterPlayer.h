@@ -11,13 +11,14 @@
 UENUM(BlueprintType)
 enum class ECharacterState :uint8
 {
-	SHEATH,
-	WALK,
-	RUN,
+	S_IDLE,
+	S_WALK,
+	S_RUN,
 	JUMP,
 	LANDING,
 	S_ROLL,
-	DRAW,
+	D_IDLE,
+	D_WALK,
 	D_ROLL,
 	JUMPATTACK,
 	DEFENSELESS,
@@ -92,5 +93,7 @@ private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 		ECharacterState currentState;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+		ECharacterState previousState;
 	//virtual void SetCharacterControlData(const UABCharacterControlDataAsset* CharacterControlData);
 };

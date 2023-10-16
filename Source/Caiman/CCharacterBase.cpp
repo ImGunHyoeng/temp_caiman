@@ -44,17 +44,18 @@ ACCharacterBase::ACCharacterBase()
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.0f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.0f;//걷기 완화 속도
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh> CharacterMeshRef(TEXT("/Script/Engine.SkeletalMesh'/Game/ParagonKwang/Characters/Heroes/Kwang/Meshes/KwangRosewood.KwangRosewood'"));
-	if (CharacterMeshRef.Object)
-	{
-		GetMesh()->SetSkeletalMesh(CharacterMeshRef.Object);
-	}
+	//static ConstructorHelpers::FObjectFinder<USkeletalMesh> CharacterMeshRef(TEXT("/Script/Engine.SkeletalMesh'/Game/ParagonKwang/Characters/Heroes/Kwang/Meshes/KwangRosewood.KwangRosewood'"));
+	//if (CharacterMeshRef.Object)
+	//{
+	//	GetMesh()->SetSkeletalMesh(CharacterMeshRef.Object);
+	//}
 
-	static ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnimRef(TEXT("/Game/Blueprints/Animation/KwangAniminstance.KwangAniminstance_C"));
-	if (CharacterAnimRef.Class)
-	{
-		GetMesh()->SetAnimInstanceClass(CharacterAnimRef.Class);
-	}
+	//static ConstructorHelpers::FClassFinder<UAnimInstance> CharacterAnimRef(TEXT("/Game/Blueprints/Animation/KwangAniminstance.KwangAniminstance_C"));
+	//if (CharacterAnimRef.Class)
+	//{
+	//	GetMesh()->SetAnimInstanceClass(CharacterAnimRef.Class);
+	//}
+	//cpp에서 초기화해서 하는 것이 아니라 블루프린트로 선언해서 사용해야함
 
 }
 
