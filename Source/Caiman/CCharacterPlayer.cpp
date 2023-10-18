@@ -8,6 +8,8 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Math/UnrealMathUtility.h"
+
 
 
 
@@ -27,54 +29,56 @@ ACCharacterPlayer::ACCharacterPlayer()
 	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);//붙이고 SocketName는 'springarmendpoint'라고 지정되어 있음
 	Camera->bUsePawnControlRotation = false;//카메라가 붐에 따라서 간다면 카메라의 회전이 달라짐
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionJumpRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Jump.IA_Jump'"));
-	if (InputActionJumpRef.Object)
-	{
-		JumpAction = InputActionJumpRef.Object;
-	}
+	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionJumpRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Jump.IA_Jump'"));
+	//if (InputActionJumpRef.Object)
+	//{
+	//	JumpAction = InputActionJumpRef.Object;
+	//}
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionLookRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Look.IA_Look'"));
-	if (InputActionLookRef.Object)
-	{
-		LookAction = InputActionLookRef.Object;
-	}
+	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionLookRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Look.IA_Look'"));
+	//if (InputActionLookRef.Object)
+	//{
+	//	LookAction = InputActionLookRef.Object;
+	//}
 
-	static ConstructorHelpers::FObjectFinder<UInputMappingContext> InputMappingRef(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Input/IMC_Kwang.IMC_Kwang'"));
-	if (InputMappingRef.Object)
-	{
-		PlayerContext = InputMappingRef.Object;
-	}
+	//static ConstructorHelpers::FObjectFinder<UInputMappingContext> InputMappingRef(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Input/IMC_Kwang.IMC_Kwang'"));
+	//if (InputMappingRef.Object)
+	//{
+	//	PlayerContext = InputMappingRef.Object;
+	//}
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionMoveRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Move.IA_Move'"));
-	if (InputActionMoveRef.Object)
-	{
-		MovementAction = InputActionMoveRef.Object;
-	}
+	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionMoveRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Move.IA_Move'"));
+	//if (InputActionMoveRef.Object)
+	//{
+	//	MovementAction = InputActionMoveRef.Object;
+	//}
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionDrawRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Draw.IA_Draw'"));
-	if (InputActionDrawRef.Object)
-	{
-		DrawAction = InputActionDrawRef.Object;
-	}
+	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionDrawRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Draw.IA_Draw'"));
+	//if (InputActionDrawRef.Object)
+	//{
+	//	DrawAction = InputActionDrawRef.Object;
+	//}
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionRunRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Run.IA_Run'"));
-	if (InputActionRunRef.Object)
-	{
-		RunAction = InputActionRunRef.Object;
-	}
+	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionRunRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Run.IA_Run'"));
+	//if (InputActionRunRef.Object)
+	//{
+	//	RunAction = InputActionRunRef.Object;
+	//}
 
-	static ConstructorHelpers::FObjectFinder<UInputAction> InputActionRollRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Roll.IA_Roll'"));
-	if (InputActionRollRef.Object)
-	{
-		RollAction = InputActionRollRef.Object;
-	}
+	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionRollRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Roll.IA_Roll'"));
+	//if (InputActionRollRef.Object)
+	//{
+	//	RollAction = InputActionRollRef.Object;
+	//}
 
 
 	currentState = ECharacterState::S_IDLE;
 	previousState = ECharacterState::S_IDLE;
 	moveSpeed = 1000.0f;
 	bSwordDraw = false;
-	bTrigger = false;
+	WaitFrame = 0;
+	//bTrigger = false;
+	PrimaryActorTick.bCanEverTick = true;
 	//inputmapping 과 연결해서 움직이도록 설정 이를 언리얼상에서 매핑으로 해결함
 }
 
@@ -92,7 +96,10 @@ void ACCharacterPlayer::BeginPlay()
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Display, TEXT("%d"), currentState);
+	
+	//UE_LOG(LogTemp, Display, TEXT("%f"), GetVelocity().Length());
+	//UE_LOG(LogTemp, Warning, TEXT("Bool 값: %s"), bValue ? TEXT("True") : TEXT("False"));
+	//UE_LOG(LogTemp, Display, TEXT("Bool 값:%s"), bPressedJump? TEXT("True") : TEXT("False"));
 	switch (currentState)
 	{
 	case ECharacterState::S_IDLE:
@@ -101,18 +108,33 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 		if(!bTrigger)
 			return;
 		PlayAnimMontage(AM_Sheath);*/
-		bTrigger = false;
-		break;
+		//bTrigger = false;
+		return;
 	case ECharacterState::S_WALK:
-		break;
+		return;
 	case ECharacterState::S_RUN:
-		break;
+		return;
 	case ECharacterState::JUMP:
-		break;
+	{
+		if (!(GetCharacterMovement()->IsFalling()))
+		{
+			Landing();
+			WaitFrame = 40;
+		}
+	}
+	return;
 	case ECharacterState::LANDING:
-		break;
+	{
+		WaitFrame--;
+		if (WaitFrame == 0)
+		{
+			SetPrevious();
+			currentState = ECharacterState::S_IDLE;
+		}
+	}
+		return;
 	case ECharacterState::S_ROLL:
-		break;
+		return;
 	case ECharacterState::D_IDLE:
 	/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
 			return;
@@ -120,26 +142,29 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 			return;
 		PlayAnimMontage(AM_Draw);
 		bTrigger = false;*/
-		bTrigger = false;
-		break;
+		//bTrigger = false;
+		return;
 	case ECharacterState::D_WALK:
-		break;	
+		return;
 	case ECharacterState::D_ROLL:
-		break;
+		return;
 	case ECharacterState::JUMPATTACK:
-		break;
+		return;
 	case ECharacterState::DEFENSELESS:
-		break;
+		return;
 	case ECharacterState::PARRGING:
-		break;
+		return;
 	case ECharacterState::ATTACK:
-		break;
+		return;
 	}
 }
 
 
 void ACCharacterPlayer::Move(const FInputActionValue& Value)
 {
+	
+	if (currentState!=ECharacterState::S_IDLE&& currentState != ECharacterState::S_WALK && currentState != ECharacterState::S_RUN&& currentState != ECharacterState::D_IDLE&& currentState != ECharacterState::D_WALK)
+		return;
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	const FRotator Rotation = Controller->GetControlRotation();
@@ -152,6 +177,7 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 	AddMovementInput(ForwardDirection, MovementVector.X*moveSpeed);
 	
 	AddMovementInput(RightDirection, MovementVector.Y * moveSpeed);
+
 	
 }
 
@@ -165,27 +191,32 @@ void ACCharacterPlayer::Look(const FInputActionValue& Value)
 
 void ACCharacterPlayer::Draw(const FInputActionValue& Value)
 {
+	if (currentState == ECharacterState::JUMP || currentState == ECharacterState::LANDING)
+		return;
+
 	bSwordDraw = !bSwordDraw;
 	if (bSwordDraw)
 	{
-		previousState = currentState;
+		SetPrevious();
 		currentState = ECharacterState::D_IDLE;
 
 	}
 	else
 	{
-		previousState = currentState;
+		SetPrevious();
 		currentState = ECharacterState::S_IDLE;
 	}
-	bTrigger = true;
+	//bTrigger = true;
 	
 }
 
 void ACCharacterPlayer::Run(const FInputActionValue& Value)
 {
-	if (previousState == ECharacterState::S_WALK)
+	if (currentState == ECharacterState::JUMP)
+		return;
+	if (currentState == ECharacterState::S_WALK)
 	{
-		previousState = currentState;
+		SetPrevious();
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
 		currentState = ECharacterState::S_RUN;
 	}
@@ -193,18 +224,70 @@ void ACCharacterPlayer::Run(const FInputActionValue& Value)
 
 void ACCharacterPlayer::Walk(const FInputActionValue& Value)
 {
-	if (previousState == ECharacterState::S_IDLE||previousState==ECharacterState::S_RUN)
+	if (currentState == ECharacterState::JUMP|| currentState == ECharacterState::LANDING)
+		return;
+	if (currentState == ECharacterState::S_IDLE)
 	{
-		previousState = currentState;
+		SetPrevious();
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
 		currentState = ECharacterState::S_WALK;
+		return;
 	}
 	if (currentState == ECharacterState::D_IDLE)
 	{
-		previousState = currentState;
-		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 3.0f;
+		SetPrevious();
+		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.5f;
 		currentState = ECharacterState::D_WALK;
 	}
+}
+
+void ACCharacterPlayer::GoPrevious()
+{
+	if (currentState == ECharacterState::JUMP|| currentState == ECharacterState::LANDING)
+		return;
+
+	currentState = previousState;
+	if (currentState != ECharacterState::S_WALK)
+		return;
+	GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
+}
+
+void ACCharacterPlayer::GoIdle(const FInputActionValue& Value)
+{
+	if (currentState == ECharacterState::JUMP || currentState == ECharacterState::LANDING)
+		return;
+	if (currentState <ECharacterState::D_IDLE)
+	{
+		currentState = ECharacterState::S_IDLE;
+		return;
+	}
+	currentState = ECharacterState::D_IDLE;
+
+
+}
+
+void ACCharacterPlayer::Jump()
+{
+	if (currentState != ECharacterState::S_IDLE && currentState != ECharacterState::S_WALK && currentState != ECharacterState::S_RUN)
+		return;
+	Super::Jump();
+	SetPrevious();
+	currentState = ECharacterState::JUMP;
+	if (bPressedJump)
+		bIsJump = true;
+}
+
+
+void ACCharacterPlayer::Landing()
+{
+	SetPrevious();
+	currentState = ECharacterState::LANDING;
+	bIsJump = false;
+}
+
+void ACCharacterPlayer::SetPrevious()
+{
+	previousState = currentState;
 }
 
 void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -214,14 +297,21 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	// InputAction과 InputMappingContext를 연결
 	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACharacter::Jump);
+	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
+	//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::Landing);
 	/*EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);*/
 	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
 	EnhancedInputComponent->BindAction(DrawAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Draw);
-	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
-	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::Walk);
 	EnhancedInputComponent->BindAction(RollAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Draw);
+	
+	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
+	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
+	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);
+	//트리거가 들어갔을때 아닐때를 인식해서 사용함
+
+	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Walk);
+	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoIdle);
 }
 
 

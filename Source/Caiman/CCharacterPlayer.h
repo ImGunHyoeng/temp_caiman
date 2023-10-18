@@ -83,12 +83,20 @@ protected:
 	void Roll(const FInputActionValue& Value);
 	void Run(const FInputActionValue& Value);
 	void Walk(const FInputActionValue& Value);
+	void GoPrevious();
+	void GoIdle(const FInputActionValue& Value);
+	virtual void Jump() override;
+	void Landing(); 
+	void SetPrevious();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool bSwordDraw;
-	bool bTrigger;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		uint32 bIsJump:1;
 	float moveSpeed;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int WaitFrame;
 private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))

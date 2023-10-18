@@ -55,7 +55,7 @@ ACCharacterBase::ACCharacterBase()
 	//{
 	//	GetMesh()->SetAnimInstanceClass(CharacterAnimRef.Class);
 	//}
-	//cpp에서 초기화해서 하는 것이 아니라 블루프린트로 선언해서 사용해야함
+	//cpp에서 초기화해서 하는 것이 아니라 블루프린트로 선언해서 사용해야함 (동기적 로딩,확장성)
 
 }
 
