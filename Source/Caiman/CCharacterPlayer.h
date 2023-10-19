@@ -67,6 +67,9 @@ protected:
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	UInputAction* RollAction;
 
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
+		TObjectPtr<class UInputAction> AttackAction;
+
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_Draw;
@@ -79,7 +82,7 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
-	void Draw(const FInputActionValue& Value);
+	void Draw();
 	void Roll(const FInputActionValue& Value);
 	void Run(const FInputActionValue& Value);
 	void Walk(const FInputActionValue& Value);
@@ -89,14 +92,17 @@ protected:
 	void Landing(); 
 	void SetPrevious();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void DoAttack();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool bSwordDraw;
+		uint32 bSwordDraw:1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bIsJump:1;
 	float moveSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int WaitFrame;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		uint32 bIsAttack:1;
 private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))

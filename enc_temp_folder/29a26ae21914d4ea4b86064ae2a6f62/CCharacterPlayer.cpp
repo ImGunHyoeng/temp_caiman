@@ -97,7 +97,6 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	UE_LOG(LogTemp, Display, TEXT("%d"), currentState);
-	UE_LOG(LogTemp, Display, TEXT("%d"), WaitFrame);
 	//UE_LOG(LogTemp, Display, TEXT("%f"), GetVelocity().Length());
 	//UE_LOG(LogTemp, Warning, TEXT("Bool 값: %s"), bValue ? TEXT("True") : TEXT("False"));
 	//UE_LOG(LogTemp, Display, TEXT("Bool 값:%s"), bPressedJump? TEXT("True") : TEXT("False"));
@@ -124,7 +123,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 			//PlayAnimMontage(AM_Draw);
 			WaitFrame = 40;
 			bIsJump = false;
-
+			bIsAttack = false;
 			return;
 		}
 		if (!(GetCharacterMovement()->IsFalling()))
@@ -164,7 +163,6 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 		WaitFrame--;
 		if (WaitFrame == 0)
 		{
-			bIsAttack = false;
 			SetPrevious();
 			currentState = ECharacterState::S_IDLE;
 		}
@@ -313,8 +311,6 @@ void ACCharacterPlayer::SetPrevious()
 }
 void ACCharacterPlayer::DoAttack()
 {
-	if (currentState != ECharacterState::JUMP)
-		return;
 	bIsAttack = true;
 }
 
