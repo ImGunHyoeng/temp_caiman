@@ -9,6 +9,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Math/UnrealMathUtility.h"
+#include "CMyWeapon.h"
+#include "Components/SceneComponent.h"
 
 
 
@@ -70,7 +72,7 @@ ACCharacterPlayer::ACCharacterPlayer()
 	//{
 	//	RollAction = InputActionRollRef.Object;
 	//}
-
+	
 
 	currentState = ECharacterState::S_IDLE;
 	previousState = ECharacterState::S_IDLE;
@@ -85,6 +87,13 @@ ACCharacterPlayer::ACCharacterPlayer()
 void ACCharacterPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	FName WeaponSocket(TEXT("S_Draw"));
+	auto CurWeapon = GetWorld()->SpawnActor<ACMyWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+	if (nullptr != CurWeapon)
+	{
+		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+	}
 
 	APlayerController* PlayerController = CastChecked<APlayerController>(GetController());
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
@@ -197,8 +206,6 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 	AddMovementInput(ForwardDirection, MovementVector.X*moveSpeed);
 	
 	AddMovementInput(RightDirection, MovementVector.Y * moveSpeed);
-
-	
 }
 
 void ACCharacterPlayer::Look(const FInputActionValue& Value)
@@ -221,7 +228,8 @@ void ACCharacterPlayer::Draw()
 	{
 		SetPrevious();
 		currentState = ECharacterState::D_IDLE;
-
+		auto CurWeapon = GetWorld()->SpawnActor<ACMyWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));
 	}
 	else
 	{
@@ -311,11 +319,13 @@ void ACCharacterPlayer::SetPrevious()
 {
 	previousState = currentState;
 }
+
 void ACCharacterPlayer::DoAttack()
 {
 	if (currentState != ECharacterState::JUMP)
 		return;
 	bIsAttack = true;
+	
 }
 
 
