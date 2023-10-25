@@ -103,6 +103,11 @@ protected:
 		int WaitFrame;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bIsAttack:1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		TObjectPtr<class ACMyWeapon> Weapon;
+
+	TObjectPtr<class UEnhancedInputComponent> EnhancedInputComponent;
 private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))

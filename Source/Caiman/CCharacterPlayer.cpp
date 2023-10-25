@@ -15,6 +15,7 @@
 
 
 
+
 ACCharacterPlayer::ACCharacterPlayer()
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));//엔진에 기본적으로 내장되어있는 카메라 요소를 생성 이름도 설정
@@ -89,10 +90,10 @@ void ACCharacterPlayer::BeginPlay()
 	Super::BeginPlay();
 	
 	FName WeaponSocket(TEXT("S_Draw"));
-	auto CurWeapon = GetWorld()->SpawnActor<ACMyWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
-	if (nullptr != CurWeapon)
+	Weapon = GetWorld()->SpawnActor<ACMyWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+	if (nullptr != Weapon)
 	{
-		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
+		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 	}
 
 	APlayerController* PlayerController = CastChecked<APlayerController>(GetController());
@@ -110,9 +111,31 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	//UE_LOG(LogTemp, Display, TEXT("%f"), GetVelocity().Length());
 	//UE_LOG(LogTemp, Warning, TEXT("Bool 값: %s"), bValue ? TEXT("True") : TEXT("False"));
 	//UE_LOG(LogTemp, Display, TEXT("Bool 값:%s"), bPressedJump? TEXT("True") : TEXT("False"));
+	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();//UGameplayStatics::GetPlayerController(this, 0);
+	/*PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar);
+	UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar));*/
+
+	//PlayerController->GetInputAxisKeyValue(EKeys::SpaceBar);//해당하는 것은 방향성을 가진것만 사용되는 느낌
+	//UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAxisKeyValue(EKeys::SpaceBar));
+	/*PlayerController->GetInputBuffer();
+	EnhancedInputComponent->setaction*/
+	//float KeyDownTime = PlayerController->GetInputKeyTimeDown(EKeys::SpaceBar);
+	//{
+
+	//}
+	EnhancedInputComponent->GetActionEventBindings();
+	//EnhancedInputComponent->GetActionBinding(0);//.bConsumeInput = false;
+	/*EnhancedInputComponent->RemoveActionEventBinding(0);
+	EnhancedInputComponent->RemoveActionEventBinding(0);*/
+	//바인드 된것과 아닌것을 지우기
+	//바인딩된것을 지우는 방식 
+	//계속해서 바인딩되고 하기에 쓸모없는 데이터를 낭비하게 된다.
+	//이렇게 하지 말고 InputAction의 상태를 가지고 하자
+
 	switch (currentState)
 	{
 	case ECharacterState::S_IDLE:
+	
 		/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
 			return;
 		if(!bTrigger)
@@ -121,8 +144,15 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 		//bTrigger = false;
 		return;
 	case ECharacterState::S_WALK:
+	/*	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
+		EnhancedInputComponent->GetActionEventBindings();
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);*/
 		return;
 	case ECharacterState::S_RUN:
+		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
+		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious); 
+		//EnhancedInputComponent->GetActionEventBindings();
 		return;
 	case ECharacterState::JUMP:
 	{
@@ -175,7 +205,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 		{
 			bIsAttack = false;
 			SetPrevious();
-			currentState = ECharacterState::S_IDLE;
+			currentState = ECharacterState::D_IDLE;
 		}
 	}
 		return;
@@ -206,6 +236,14 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 	AddMovementInput(ForwardDirection, MovementVector.X*moveSpeed);
 	
 	AddMovementInput(RightDirection, MovementVector.Y * moveSpeed);
+	//if (currentState == ECharacterState::S_IDLE)
+	//{
+	//	currentState = ECharacterState::S_WALK;
+	//}
+	//if (currentState == ECharacterState::D_IDLE)
+	//{
+	//	currentState = ECharacterState::D_WALK;
+	//}
 }
 
 void ACCharacterPlayer::Look(const FInputActionValue& Value)
@@ -228,13 +266,13 @@ void ACCharacterPlayer::Draw()
 	{
 		SetPrevious();
 		currentState = ECharacterState::D_IDLE;
-		auto CurWeapon = GetWorld()->SpawnActor<ACMyWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
-		CurWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));
+		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));
 	}
 	else
 	{
 		SetPrevious();
 		currentState = ECharacterState::S_IDLE;
+		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Draw"));
 	}
 	//bTrigger = true;
 	
@@ -334,13 +372,69 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	// InputAction과 InputMappingContext를 연결
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	//UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	//기본 움직임 가능
+	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
+	//switch (currentState)
+	//{
+	//case ECharacterState::S_IDLE:
+	//{
+	//	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
+	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
+	//}
+	//	return;
+	//case ECharacterState::S_WALK:
+	//{
+	//	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
+	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
+	//	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
+	//	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
+	//	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);
+	//}
+	//	
+	//	return;
+	//case ECharacterState::S_RUN:
+	//{
+	//	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
+	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
+	//	//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
+	//	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
+	//	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);
+	//}
+	//	
+	//	return;
+	//case ECharacterState::JUMP:
+	//	return;
 
+	//case ECharacterState::LANDING:
+	//	return;
+	//case ECharacterState::S_ROLL:
+	//	return;
+	//case ECharacterState::D_IDLE:
+	//{
+	//	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
+	//}
+	//	return;
+	//case ECharacterState::D_WALK:
+	//	return;
+	//case ECharacterState::D_ROLL:
+	//	return;
+	//case ECharacterState::JUMPATTACK:
+
+	//	return;
+	//case ECharacterState::DEFENSELESS:
+	//	return;
+	//case ECharacterState::PARRGING:
+	//	return;
+	//case ECharacterState::ATTACK:
+	//	return;
+	//}
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
-	//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::Landing);
-	/*EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);*/
+
 	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
+
 	EnhancedInputComponent->BindAction(DrawAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Draw);
 	EnhancedInputComponent->BindAction(RollAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Draw);
 	
