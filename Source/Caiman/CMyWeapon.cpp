@@ -11,14 +11,13 @@ ACMyWeapon::ACMyWeapon()
 
 	//무기 오브젝트 만들고 애셋 적용하기
 	Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WEAPON"));
-	
+	Weapon->SetWorldScale3D(FVector(0.325f, 0.325f, 0.325f));
 	UStaticMesh* SK_WEAPON=LoadObject<UStaticMesh>(nullptr,TEXT("/Script/Engine.StaticMesh'/Game/Mesh/Sketchfab_Sword_forsale.Sketchfab_Sword_forsale'"));
 	if (SK_WEAPON)
 	{
 		Weapon->SetStaticMesh(SK_WEAPON);
 		RootComponent = Weapon;
 	}
-	
 	Weapon->SetCollisionProfileName(TEXT("NoCollision"));
 
 }
@@ -27,7 +26,6 @@ ACMyWeapon::ACMyWeapon()
 void ACMyWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame

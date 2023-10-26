@@ -91,6 +91,7 @@ void ACCharacterPlayer::BeginPlay()
 	
 	FName WeaponSocket(TEXT("S_Draw"));
 	Weapon = GetWorld()->SpawnActor<ACMyWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+	//Weapon->CalculateComponentsBoundingBoxInLocalSpace();
 	if (nullptr != Weapon)
 	{
 		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
@@ -376,60 +377,7 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	//기본 움직임 가능
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
-	//switch (currentState)
-	//{
-	//case ECharacterState::S_IDLE:
-	//{
-	//	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
-	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
-	//}
-	//	return;
-	//case ECharacterState::S_WALK:
-	//{
-	//	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
-	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
-	//	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
-	//	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
-	//	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);
-	//}
-	//	
-	//	return;
-	//case ECharacterState::S_RUN:
-	//{
-	//	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
-	//	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
-	//	//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
-	//	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
-	//	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);
-	//}
-	//	
-	//	return;
-	//case ECharacterState::JUMP:
-	//	return;
 
-	//case ECharacterState::LANDING:
-	//	return;
-	//case ECharacterState::S_ROLL:
-	//	return;
-	//case ECharacterState::D_IDLE:
-	//{
-	//	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
-	//}
-	//	return;
-	//case ECharacterState::D_WALK:
-	//	return;
-	//case ECharacterState::D_ROLL:
-	//	return;
-	//case ECharacterState::JUMPATTACK:
-
-	//	return;
-	//case ECharacterState::DEFENSELESS:
-	//	return;
-	//case ECharacterState::PARRGING:
-	//	return;
-	//case ECharacterState::ATTACK:
-	//	return;
-	//}
 	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
 
 	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
