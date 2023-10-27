@@ -75,7 +75,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar);
 	UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar));
 
-	PlayerController->GetInputAxisKeyValue(EKeys::Up);//해당하는 것은 방향성을 가진것만 사용되는 느낌
+	PlayerController->GetInputAxisKeyValue(MovementAction->getk);//해당하는 것은 방향성을 가진것만 사용되는 느낌
 	UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAxisKeyValue(EKeys::Up));
 	/*PlayerController->GetInputBuffer();
 	EnhancedInputComponent->setaction*/
