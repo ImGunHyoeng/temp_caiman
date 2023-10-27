@@ -31,50 +31,8 @@ ACCharacterPlayer::ACCharacterPlayer()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);//붙이고 SocketName는 'springarmendpoint'라고 지정되어 있음
 	Camera->bUsePawnControlRotation = false;//카메라가 붐에 따라서 간다면 카메라의 회전이 달라짐
-
-	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionJumpRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Jump.IA_Jump'"));
-	//if (InputActionJumpRef.Object)
-	//{
-	//	JumpAction = InputActionJumpRef.Object;
-	//}
-
-	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionLookRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Look.IA_Look'"));
-	//if (InputActionLookRef.Object)
-	//{
-	//	LookAction = InputActionLookRef.Object;
-	//}
-
-	//static ConstructorHelpers::FObjectFinder<UInputMappingContext> InputMappingRef(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Input/IMC_Kwang.IMC_Kwang'"));
-	//if (InputMappingRef.Object)
-	//{
-	//	PlayerContext = InputMappingRef.Object;
-	//}
-
-	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionMoveRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Move.IA_Move'"));
-	//if (InputActionMoveRef.Object)
-	//{
-	//	MovementAction = InputActionMoveRef.Object;
-	//}
-
-	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionDrawRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Draw.IA_Draw'"));
-	//if (InputActionDrawRef.Object)
-	//{
-	//	DrawAction = InputActionDrawRef.Object;
-	//}
-
-	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionRunRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Run.IA_Run'"));
-	//if (InputActionRunRef.Object)
-	//{
-	//	RunAction = InputActionRunRef.Object;
-	//}
-
-	//static ConstructorHelpers::FObjectFinder<UInputAction> InputActionRollRef(TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Action/IA_Roll.IA_Roll'"));
-	//if (InputActionRollRef.Object)
-	//{
-	//	RollAction = InputActionRollRef.Object;
-	//}
 	
-
+	
 	currentState = ECharacterState::S_IDLE;
 	previousState = ECharacterState::S_IDLE;
 	moveSpeed = 1000.0f;
@@ -107,17 +65,18 @@ void ACCharacterPlayer::BeginPlay()
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	//EnhancedInputComponent->set
 	UE_LOG(LogTemp, Display, TEXT("%d"), currentState);
 	UE_LOG(LogTemp, Display, TEXT("%d"), WaitFrame);
 	//UE_LOG(LogTemp, Display, TEXT("%f"), GetVelocity().Length());
 	//UE_LOG(LogTemp, Warning, TEXT("Bool 값: %s"), bValue ? TEXT("True") : TEXT("False"));
 	//UE_LOG(LogTemp, Display, TEXT("Bool 값:%s"), bPressedJump? TEXT("True") : TEXT("False"));
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();//UGameplayStatics::GetPlayerController(this, 0);
-	/*PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar);
-	UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar));*/
+	PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar);
+	UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar));
 
-	//PlayerController->GetInputAxisKeyValue(EKeys::SpaceBar);//해당하는 것은 방향성을 가진것만 사용되는 느낌
-	//UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAxisKeyValue(EKeys::SpaceBar));
+	PlayerController->GetInputAxisKeyValue(EKeys::Up);//해당하는 것은 방향성을 가진것만 사용되는 느낌
+	UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAxisKeyValue(EKeys::Up));
 	/*PlayerController->GetInputBuffer();
 	EnhancedInputComponent->setaction*/
 	//float KeyDownTime = PlayerController->GetInputKeyTimeDown(EKeys::SpaceBar);
@@ -136,7 +95,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	switch (currentState)
 	{
 	case ECharacterState::S_IDLE:
-	
+		//Move(EnhancedInputComponent->execOnInputOwnerEndPlayed());
 		/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
 			return;
 		if(!bTrigger)
