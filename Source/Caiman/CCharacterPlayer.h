@@ -48,6 +48,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 		class UInputMappingContext* PlayerContext;
+	//매핑 텍스트
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 		TObjectPtr<class UInputAction> JumpAction;
@@ -70,6 +71,7 @@ protected:
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 		TObjectPtr<class UInputAction> AttackAction;
 
+	//몽타주
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_Draw;
@@ -80,6 +82,8 @@ protected:
 	//UInputAction* JumpAction;*/
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+
+
 	void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Draw();
@@ -103,6 +107,8 @@ protected:
 		int WaitFrame;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bIsAttack:1;
+
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		TObjectPtr<class ACMyWeapon> Weapon;

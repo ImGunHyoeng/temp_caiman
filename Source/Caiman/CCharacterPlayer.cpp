@@ -11,6 +11,7 @@
 #include "Math/UnrealMathUtility.h"
 #include "CMyWeapon.h"
 #include "Components/SceneComponent.h"
+#include "InputCore.h"
 
 
 
@@ -72,11 +73,11 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	//UE_LOG(LogTemp, Warning, TEXT("Bool 값: %s"), bValue ? TEXT("True") : TEXT("False"));
 	//UE_LOG(LogTemp, Display, TEXT("Bool 값:%s"), bPressedJump? TEXT("True") : TEXT("False"));
 	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();//UGameplayStatics::GetPlayerController(this, 0);
-	PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar);
-	UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar));
+	//PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar);
+	//UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar));
 
-	PlayerController->GetInputAxisKeyValue(MovementAction->getk);//해당하는 것은 방향성을 가진것만 사용되는 느낌
-	UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAxisKeyValue(EKeys::Up));
+	//PlayerController->GetInputAxisKeyValue(MovementAction->getk);//해당하는 것은 방향성을 가진것만 사용되는 느낌
+	//UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAxisKeyValue(EKeys::Up));
 	/*PlayerController->GetInputBuffer();
 	EnhancedInputComponent->setaction*/
 	//float KeyDownTime = PlayerController->GetInputKeyTimeDown(EKeys::SpaceBar);
@@ -92,9 +93,21 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	//계속해서 바인딩되고 하기에 쓸모없는 데이터를 낭비하게 된다.
 	//이렇게 하지 말고 InputAction의 상태를 가지고 하자
 
+	//MovementAction.
+	if(PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
+	{
+		Jump();
+	}
+	//EnhancedInputComponent
+	PlayerContext->get
 	switch (currentState)
 	{
+		
 	case ECharacterState::S_IDLE:
+		if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
+		{
+			//Move();
+		}
 		//Move(EnhancedInputComponent->execOnInputOwnerEndPlayed());
 		/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
 			return;
@@ -337,7 +350,7 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	//기본 움직임 가능
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
 
-	EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
+	//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
 
 	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
@@ -355,6 +368,8 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 
 	EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::DoAttack);
+	//EnhancedInputComponent->bBlockInput = true;
+	//밑에 적의 컨트롤러를 달고 있다면 해당하는 키의 작동이 일어나지 않는다.
 }
 
 
