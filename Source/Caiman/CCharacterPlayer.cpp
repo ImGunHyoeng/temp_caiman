@@ -5,8 +5,6 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "InputMappingContext.h"
-#include "EnhancedInputComponent.h"
-#include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Math/UnrealMathUtility.h"
 #include "CMyWeapon.h"
@@ -47,7 +45,9 @@ ACCharacterPlayer::ACCharacterPlayer()
 void ACCharacterPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+	//player키 입력
 	
+	KeyMappingArray = PlayerContext->GetMappings();
 	FName WeaponSocket(TEXT("S_Draw"));
 	Weapon = GetWorld()->SpawnActor<ACMyWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
 	//Weapon->CalculateComponentsBoundingBoxInLocalSpace();
@@ -56,11 +56,14 @@ void ACCharacterPlayer::BeginPlay()
 		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 	}
 
-	APlayerController* PlayerController = CastChecked<APlayerController>(GetController());
+	PlayerController = CastChecked<APlayerController>(GetController());
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(PlayerContext, 0);
 	}
+
+	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
+	LookActionBinding= &EnhancedInputComponent->BindActionValue(LookAction);
 }
 
 void ACCharacterPlayer::Tick(float DeltaTime)
@@ -72,7 +75,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	//UE_LOG(LogTemp, Display, TEXT("%f"), GetVelocity().Length());
 	//UE_LOG(LogTemp, Warning, TEXT("Bool 값: %s"), bValue ? TEXT("True") : TEXT("False"));
 	//UE_LOG(LogTemp, Display, TEXT("Bool 값:%s"), bPressedJump? TEXT("True") : TEXT("False"));
-	APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();//UGameplayStatics::GetPlayerController(this, 0);
+	 //UGameplayStatics::GetPlayerController(this, 0);
 	//PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar);
 	//UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar));
 
@@ -84,7 +87,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	//{
 
 	//}
-	EnhancedInputComponent->GetActionEventBindings();
+	//EnhancedInputComponent->GetActionEventBindings();
 	//EnhancedInputComponent->GetActionBinding(0);//.bConsumeInput = false;
 	/*EnhancedInputComponent->RemoveActionEventBinding(0);
 	EnhancedInputComponent->RemoveActionEventBinding(0);*/
@@ -94,19 +97,27 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	//이렇게 하지 말고 InputAction의 상태를 가지고 하자
 
 	//MovementAction.
-	if(PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
-	{
-		Jump();
-	}
+	PlayerContext->GetMapping(0);
+	
+	
+	
 	//EnhancedInputComponent
-	PlayerContext->get
+	//PlayerContext->get
+	//FText textname=KeyMappingArray.FindByKey(fkey)
+	//for()
 	switch (currentState)
 	{
 		
 	case ECharacterState::S_IDLE:
-		if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
+		/*if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
 		{
-			//Move();
+			Move(MoveActionBinding->GetValue());
+		}*/
+		Move(MoveActionBinding->GetValue());
+		Look(LookActionBinding->GetValue());
+		if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
+		{
+			Jump();
 		}
 		//Move(EnhancedInputComponent->execOnInputOwnerEndPlayed());
 		/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
@@ -117,12 +128,26 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 		//bTrigger = false;
 		return;
 	case ECharacterState::S_WALK:
+		Move(MoveActionBinding->GetValue());
+		Look(LookActionBinding->GetValue());
+		Walk();
+		if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
+		{
+			Jump();
+		}
 	/*	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
 		EnhancedInputComponent->GetActionEventBindings();
 		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
 		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);*/
 		return;
 	case ECharacterState::S_RUN:
+		Move(MoveActionBinding->GetValue());
+		Look(LookActionBinding->GetValue());
+
+		if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
+		{
+			Jump();
+		}
 		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
 		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious); 
 		//EnhancedInputComponent->GetActionEventBindings();
@@ -159,7 +184,10 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	case ECharacterState::S_ROLL:
 		return;
 	case ECharacterState::D_IDLE:
-	/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
+		Move(MoveActionBinding->GetValue());
+		Look(LookActionBinding->GetValue());
+
+		/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
 			return;
 		if(!bTrigger)
 			return;
@@ -168,6 +196,10 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 		//bTrigger = false;
 		return;
 	case ECharacterState::D_WALK:
+		Walk();
+		Move(MoveActionBinding->GetValue());
+		Look(LookActionBinding->GetValue());
+
 		return;
 	case ECharacterState::D_ROLL:
 		return;
@@ -194,10 +226,13 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 
 void ACCharacterPlayer::Move(const FInputActionValue& Value)
 {
-	
 	if (currentState!=ECharacterState::S_IDLE&& currentState != ECharacterState::S_WALK && currentState != ECharacterState::S_RUN&& currentState != ECharacterState::D_IDLE&& currentState != ECharacterState::D_WALK)
 		return;
 	FVector2D MovementVector = Value.Get<FVector2D>();
+	MovementVector= MoveActionBinding->GetValue().Get<FVector2D>();
+	//두개 다 같은 문구이다
+	
+	//MoveActionBinding->GetValue().Get<FVector2D>();
 
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
@@ -251,7 +286,7 @@ void ACCharacterPlayer::Draw()
 	
 }
 
-void ACCharacterPlayer::Run(const FInputActionValue& Value)
+void ACCharacterPlayer::Run()
 {
 	if (currentState == ECharacterState::JUMP)
 		return;
@@ -263,7 +298,7 @@ void ACCharacterPlayer::Run(const FInputActionValue& Value)
 	}
 }
 
-void ACCharacterPlayer::Walk(const FInputActionValue& Value)
+void ACCharacterPlayer::Walk()
 {
 	if (currentState == ECharacterState::JUMP|| currentState == ECharacterState::LANDING||currentState==ECharacterState::JUMPATTACK)
 		return;
@@ -293,7 +328,7 @@ void ACCharacterPlayer::GoPrevious()
 	GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
 }
 
-void ACCharacterPlayer::GoIdle(const FInputActionValue& Value)
+void ACCharacterPlayer::GoIdle()
 {
 	if (currentState == ECharacterState::JUMP || currentState == ECharacterState::LANDING||currentState == ECharacterState::JUMPATTACK)
 		return;
@@ -348,12 +383,12 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	//UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	//기본 움직임 가능
-	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
+	//EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
 
 	//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
 
-	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
-	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
+	//EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Move);
+	//EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
 
 	EnhancedInputComponent->BindAction(DrawAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Draw);
 	EnhancedInputComponent->BindAction(RollAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Draw);
@@ -363,7 +398,7 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);
 	//트리거가 들어갔을때 아닐때를 인식해서 사용함
 
-	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Walk);
+	//EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Walk);
 	EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoIdle);
 
 

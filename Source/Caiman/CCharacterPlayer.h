@@ -6,6 +6,8 @@
 #include "CCharacterBase.h"
 #include "GameFramework/character.h"
 #include "InputActionValue.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "CCharacterPlayer.generated.h"
 
 UENUM(BlueprintType)
@@ -85,13 +87,14 @@ protected:
 
 
 	void Move(const FInputActionValue& Value);
+	//void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Draw();
 	void Roll(const FInputActionValue& Value);
-	void Run(const FInputActionValue& Value);
-	void Walk(const FInputActionValue& Value);
+	void Run();
+	void Walk();
 	void GoPrevious();
-	void GoIdle(const FInputActionValue& Value);
+	void GoIdle();
 	virtual void Jump() override;
 	void Landing(); 
 	void SetPrevious();
@@ -114,6 +117,10 @@ protected:
 		TObjectPtr<class ACMyWeapon> Weapon;
 
 	TObjectPtr<class UEnhancedInputComponent> EnhancedInputComponent;
+	APlayerController* PlayerController;
+	TArray<FEnhancedActionKeyMapping> KeyMappingArray;
+	struct FEnhancedInputActionValueBinding* MoveActionBinding;
+	struct FEnhancedInputActionValueBinding* LookActionBinding;
 private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
