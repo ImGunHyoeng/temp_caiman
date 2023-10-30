@@ -94,12 +94,13 @@ protected:
 	void Run();
 	void Walk();
 	void GoPrevious();
+	void GoWalk();
 	void GoIdle();
 	virtual void Jump() override;
 	void Landing(); 
 	void SetPrevious();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	void DoAttack();
+	void JumpAttack();
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bSwordDraw:1;
@@ -109,7 +110,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int WaitFrame;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		uint32 bIsAttack:1;
+		uint32 bIsJumpAttack:1;
 
 
 
@@ -121,6 +122,8 @@ protected:
 	TArray<FEnhancedActionKeyMapping> KeyMappingArray;
 	struct FEnhancedInputActionValueBinding* MoveActionBinding;
 	struct FEnhancedInputActionValueBinding* LookActionBinding;
+	//struct FEnhancedInputActionValueBinding* RunActionBinding;
+	//struct FEnhancedInputActionValueBinding* LookActionBinding;
 private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
