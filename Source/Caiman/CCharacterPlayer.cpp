@@ -47,7 +47,7 @@ void ACCharacterPlayer::BeginPlay()
 	Super::BeginPlay();
 	//player키 입력
 	
-	KeyMappingArray = PlayerContext->GetMappings();
+	//KeyMappingArray = PlayerContext->GetMappings();
 	FName WeaponSocket(TEXT("S_Sheath"));
 	Weapon = GetWorld()->SpawnActor<ACMyWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
 	//Weapon->CalculateComponentsBoundingBoxInLocalSpace();
@@ -192,6 +192,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 		Look(LookActionBinding->GetValue());
 		Walk();
 		Draw();
+		Attack();
 		/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
 			return;
 		if(!bTrigger)
@@ -205,6 +206,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 		Move(MoveActionBinding->GetValue());
 		Look(LookActionBinding->GetValue());
 		GoIdle();
+		Attack();
 
 		return;
 	case ECharacterState::D_ROLL:
@@ -226,6 +228,16 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	case ECharacterState::PARRGING:
 		return;
 	case ECharacterState::ATTACK:
+		if (PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+			bWantCombo = true;
+		if (WaitFrame == 0)
+		{
+			SetPrevious();
+			currentState = ECharacterState::D_IDLE;
+			bWantCombo = false;
+		}
+		WaitFrame--;
+			
 		return;
 	}
 }
@@ -284,7 +296,7 @@ void ACCharacterPlayer::Draw()
 		currentState = ECharacterState::D_IDLE;
 		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Draw")); 
 		PlayAnimMontage(AM_Draw);
-		
+		//AM_Draw->Notifies
 	}
 	else
 	{
@@ -407,6 +419,21 @@ void ACCharacterPlayer::JumpAttack()
 		return;
 	bIsJumpAttack = true;
 	
+}
+
+void ACCharacterPlayer::Attack()
+{
+	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+		return;
+	SetPrevious();
+	currentState = ECharacterState::ATTACK;
+	WaitFrame = 20;
+}
+
+void ACCharacterPlayer::AttackCheck()
+{
+	if(bWantCombo)
+		bIsCombo = true;
 }
 
 

@@ -45,7 +45,7 @@ public:
 		TObjectPtr<class UCameraComponent>Camera;//카메라
 
 	ACCharacterPlayer();
-	
+	void AttackCheck();
 protected:
 
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -80,6 +80,9 @@ protected:
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_Sheath;
 
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
+		UAnimMontage* AM_Attack;
+
 	//UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	//UInputAction* JumpAction;*/
 	virtual void BeginPlay() override;
@@ -101,6 +104,8 @@ protected:
 	void SetPrevious();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void JumpAttack();
+	void Attack();
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bSwordDraw:1;
@@ -111,6 +116,10 @@ protected:
 		int WaitFrame;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bIsJumpAttack:1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		uint32 bIsCombo : 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		uint32 bWantCombo : 1;
 
 
 
