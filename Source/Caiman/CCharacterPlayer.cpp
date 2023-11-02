@@ -115,15 +115,15 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	{
 		
 	case ECharacterState::S_IDLE:
-		/*if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
-		{
-			Move(MoveActionBinding->GetValue());
-		}*/
 		Move(MoveActionBinding->GetValue());
 		Look(LookActionBinding->GetValue());
 		Jump();
 		Walk();
 		Draw();
+		/*if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
+		{
+			Move(MoveActionBinding->GetValue());
+		}*/
 		//Move(EnhancedInputComponent->execOnInputOwnerEndPlayed());
 		/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
 			return;
@@ -135,10 +135,10 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	case ECharacterState::S_WALK:
 		Move(MoveActionBinding->GetValue());
 		Look(LookActionBinding->GetValue());
-		//Walk();
 		GoIdle();
 		Jump();
 		Run();
+		//Walk();
 	/*	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
 		EnhancedInputComponent->GetActionEventBindings();
 		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
@@ -147,10 +147,10 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	case ECharacterState::S_RUN:
 		Move(MoveActionBinding->GetValue());
 		Look(LookActionBinding->GetValue());
-		GoWalk();
-		//if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
 		Jump();
+		GoWalk();
 		
+		//if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
 		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
 		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious); 
 		//EnhancedInputComponent->GetActionEventBindings();
@@ -365,7 +365,7 @@ void ACCharacterPlayer::GoWalk()
 	//해당하는 것은 릴리즈와 트리거 cancled와 같은 상태를 처리할때 사용함
 	if (!PlayerController->WasInputKeyJustReleased(EKeys::LeftShift))
 		return;
-	previousState = currentState;
+	SetPrevious();
 	currentState = ECharacterState::S_WALK;
 	GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
 }
