@@ -93,6 +93,7 @@ protected:
 	//void Move(const FInputActionValue& Value);
 	void Look(const FInputActionValue& Value);
 	void Draw();
+	void NoAnimDraw();
 	void Roll(const FInputActionValue& Value);
 	void Run();
 	void Walk();
@@ -105,6 +106,9 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void JumpAttack();
 	void Attack();
+
+	UFUNCTION(BlueprintImplementableEvent,category="Temp")
+	void Attack_BP();
 	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

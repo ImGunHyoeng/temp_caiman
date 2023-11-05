@@ -111,134 +111,153 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	//PlayerContext->get
 	//FText textname=KeyMappingArray.FindByKey(fkey)
 	//for()
+	Look(LookActionBinding->GetValue());
 	switch (currentState)
 	{
 		
-	case ECharacterState::S_IDLE:
-		Move(MoveActionBinding->GetValue());
-		Look(LookActionBinding->GetValue());
-		Jump();
-		Walk();
-		Draw();
-		/*if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
+		case ECharacterState::S_IDLE:
 		{
 			Move(MoveActionBinding->GetValue());
-		}*/
-		//Move(EnhancedInputComponent->execOnInputOwnerEndPlayed());
-		/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
-			return;
-		if(!bTrigger)
-			return;
-		PlayAnimMontage(AM_Sheath);*/
-		//bTrigger = false;
-		return;
-	case ECharacterState::S_WALK:
-		Move(MoveActionBinding->GetValue());
-		Look(LookActionBinding->GetValue());
-		GoIdle();
-		Jump();
-		Run();
-		//Walk();
-	/*	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
-		EnhancedInputComponent->GetActionEventBindings();
-		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
-		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);*/
-		return;
-	case ECharacterState::S_RUN:
-		Move(MoveActionBinding->GetValue());
-		Look(LookActionBinding->GetValue());
-		Jump();
-		GoWalk();
-		
-		//if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
-		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
-		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious); 
-		//EnhancedInputComponent->GetActionEventBindings();
-		return;
-	case ECharacterState::JUMP:
-	{
-		Look(LookActionBinding->GetValue());
-		JumpAttack();
-		if (bIsJumpAttack)
-		{
-			currentState = ECharacterState::JUMPATTACK;
+			//Look(LookActionBinding->GetValue());
+			Jump();
+			Walk();
 			Draw();
-			//PlayAnimMontage(AM_Draw);
-			WaitFrame = 40;
-			bIsJump = false;
+			/*if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
+			{
+				Move(MoveActionBinding->GetValue());
+			}*/
+			//Move(EnhancedInputComponent->execOnInputOwnerEndPlayed());
+			/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
+				return;
+			if(!bTrigger)
+				return;
+			PlayAnimMontage(AM_Sheath);*/
+			//bTrigger = false;
 			return;
 		}
-		if (!(GetCharacterMovement()->IsFalling()))
+		case ECharacterState::S_WALK:
 		{
-			Landing();
-			WaitFrame = 40;
+			Move(MoveActionBinding->GetValue());
+			//Look(LookActionBinding->GetValue());
+			GoIdle();
+			Jump();
+			Run();
+			//Walk();
+		/*	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
+			EnhancedInputComponent->GetActionEventBindings();
+			EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
+			EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);*/
+			return;
 		}
-	}
-	return;
-	case ECharacterState::LANDING:
-	{
-		WaitFrame--;
-		if (WaitFrame == 0)
+		case ECharacterState::S_RUN:
 		{
-			SetPrevious();
-			currentState = ECharacterState::S_IDLE;
-		}
-	}
-		return;
-	case ECharacterState::S_ROLL:
-		return;
-	case ECharacterState::D_IDLE:
-		Move(MoveActionBinding->GetValue());
-		Look(LookActionBinding->GetValue());
-		Walk();
-		Draw();
-		Attack();
-		/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
-			return;
-		if(!bTrigger)
-			return;
-		PlayAnimMontage(AM_Draw);
-		bTrigger = false;*/
-		//bTrigger = false;
-		return;
-	case ECharacterState::D_WALK:
-		//Walk();
-		Move(MoveActionBinding->GetValue());
-		Look(LookActionBinding->GetValue());
-		GoIdle();
-		Attack();
+			Move(MoveActionBinding->GetValue());
+			//Look(LookActionBinding->GetValue());
+			Jump();
+			GoWalk();
 
-		return;
-	case ECharacterState::D_ROLL:
-		return;
-	case ECharacterState::JUMPATTACK:
-	{
-		//점프
-		WaitFrame--;
-		if (WaitFrame == 0)
-		{
-			bIsJumpAttack = false;
-			SetPrevious();
-			currentState = ECharacterState::D_IDLE;
+			//if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
+			//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
+			//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious); 
+			//EnhancedInputComponent->GetActionEventBindings();
+			return;
 		}
-	}
-		return;
-	case ECharacterState::DEFENSELESS:
-		return;
-	case ECharacterState::PARRGING:
-		return;
-	case ECharacterState::ATTACK:
-		if (PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-			bWantCombo = true;
-		if (WaitFrame == 0)
+		case ECharacterState::JUMP:
 		{
-			SetPrevious();
-			currentState = ECharacterState::D_IDLE;
-			bWantCombo = false;
+			//Look(LookActionBinding->GetValue());
+			JumpAttack();
+			if (bIsJumpAttack)
+			{
+				NoAnimDraw();
+				SetPrevious();
+				currentState = ECharacterState::JUMPATTACK;
+				//PlayAnimMontage(AM_Draw);
+				WaitFrame = 50;
+				bIsJump = false;
+				return;
+			}
+			if (!(GetCharacterMovement()->IsFalling()))
+			{
+				Landing();
+				WaitFrame = 40;
+			}
+			return;
 		}
-		WaitFrame--;
-			
-		return;
+		case ECharacterState::LANDING:
+		{
+			WaitFrame--;
+			if (WaitFrame == 0)
+			{
+				SetPrevious();
+				currentState = ECharacterState::S_IDLE;
+			}
+			return;
+		}
+		case ECharacterState::S_ROLL:
+			return;
+		case ECharacterState::D_IDLE:
+		{
+			Move(MoveActionBinding->GetValue());
+			//Look(LookActionBinding->GetValue());
+			Walk();
+			Draw();
+			Attack();
+			/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
+				return;
+			if(!bTrigger)
+				return;
+			PlayAnimMontage(AM_Draw);
+			bTrigger = false;*/
+			//bTrigger = false;
+			return;
+		}
+		case ECharacterState::D_WALK:
+			//Walk();
+		{	
+			Move(MoveActionBinding->GetValue());
+			//Look(LookActionBinding->GetValue());
+			GoIdle();
+			Attack();
+
+			return;
+		}
+		case ECharacterState::D_ROLL:
+			return;
+		case ECharacterState::JUMPATTACK:
+		{
+			//점프
+			WaitFrame--;
+			if (WaitFrame == 0)
+			{
+				bIsJumpAttack = false;
+				SetPrevious();
+				currentState = ECharacterState::D_IDLE;
+			}
+			return;
+		}
+		case ECharacterState::DEFENSELESS:
+			return;
+		case ECharacterState::PARRGING:
+			return;
+		case ECharacterState::ATTACK:
+		{
+			if (PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+				bWantCombo = true;
+			if (bIsCombo)
+			{
+				Attack_BP();
+				bIsCombo = false;
+			}
+			if (WaitFrame == 0)
+			{
+				SetPrevious();
+				currentState = ECharacterState::D_IDLE;
+				bWantCombo = false;
+			}
+			WaitFrame--;
+
+			return;
+		}
 	}
 }
 
@@ -287,26 +306,41 @@ void ACCharacterPlayer::Draw()
 		return;*/
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::R))
 		return;
-	bSwordDraw = !bSwordDraw;
-	if (currentState == ECharacterState::JUMPATTACK)
-		return;
+		//bSwordDraw = !bSwordDraw;
+		NoAnimDraw();
+		SetPrevious();
 	if (bSwordDraw)
 	{
-		SetPrevious();
 		currentState = ECharacterState::D_IDLE;
-		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Draw")); 
+		/*SetPrevious();
+		currentState = ECharacterState::D_IDLE;
+		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Draw")); */
 		PlayAnimMontage(AM_Draw);
 		//AM_Draw->Notifies
 	}
 	else
 	{
-		SetPrevious();
 		currentState = ECharacterState::S_IDLE;
-		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));
+		/*SetPrevious();
+		currentState = ECharacterState::S_IDLE;
+		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));*/
 		PlayAnimMontage(AM_Sheath);
 	}
 	//bTrigger = true;
 	
+}
+
+void ACCharacterPlayer::NoAnimDraw()
+{
+	bSwordDraw = !bSwordDraw;
+	if (bSwordDraw)
+	{
+		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Draw"));
+	}
+	else
+	{
+		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));
+	}
 }
 
 void ACCharacterPlayer::Run()
@@ -351,9 +385,6 @@ void ACCharacterPlayer::Walk()
 
 void ACCharacterPlayer::GoPrevious()
 {
-	if (currentState == ECharacterState::JUMP|| currentState == ECharacterState::LANDING|| currentState == ECharacterState::JUMPATTACK)
-		return;
-
 	currentState = previousState;
 	if (currentState != ECharacterState::S_WALK)
 		return;
@@ -418,6 +449,7 @@ void ACCharacterPlayer::JumpAttack()
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 		return;
 	bIsJumpAttack = true;
+	WaitFrame = 30;
 	
 }
 
@@ -427,13 +459,16 @@ void ACCharacterPlayer::Attack()
 		return;
 	SetPrevious();
 	currentState = ECharacterState::ATTACK;
-	WaitFrame = 20;
+	WaitFrame = 70;
+	Attack_BP();
 }
 
 void ACCharacterPlayer::AttackCheck()
 {
-	if(bWantCombo)
-		bIsCombo = true;
+	if (!bWantCombo)
+		return;
+	bIsCombo = true;
+	WaitFrame = 70;
 }
 
 
