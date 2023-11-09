@@ -122,6 +122,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 			Jump();
 			Walk();
 			Draw();
+			Roll();
 			/*if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
 			{
 				Move(MoveActionBinding->GetValue());
@@ -141,7 +142,9 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 			//Look(LookActionBinding->GetValue());
 			GoIdle();
 			Jump();
+			Roll();
 			Run();
+			
 			//Walk();
 		/*	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
 			EnhancedInputComponent->GetActionEventBindings();
@@ -154,8 +157,9 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 			Move(MoveActionBinding->GetValue());
 			//Look(LookActionBinding->GetValue());
 			Jump();
+			Roll();
 			GoWalk();
-
+			
 			//if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
 			//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
 			//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious); 
@@ -183,7 +187,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 			}
 			return;
 		}
-		case ECharacterState::LANDING:
+		case ECharacterState::GROUNDED:
 		{
 			WaitFrame--;
 			if (WaitFrame == 0)
@@ -194,7 +198,9 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 			return;
 		}
 		case ECharacterState::S_ROLL:
+		{
 			return;
+		}
 		case ECharacterState::D_IDLE:
 		{
 			Move(MoveActionBinding->GetValue());
@@ -222,7 +228,9 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 			return;
 		}
 		case ECharacterState::D_ROLL:
+		{	
 			return;
+		}
 		case ECharacterState::JUMPATTACK:
 		{
 			//점프
@@ -302,7 +310,7 @@ void ACCharacterPlayer::Look(const FInputActionValue& Value)
 
 void ACCharacterPlayer::Draw()
 {
-	/*if (currentState == ECharacterState::JUMP || currentState == ECharacterState::LANDING)
+	/*if (currentState == ECharacterState::JUMP || currentState == ECharacterState::GROUNDED)
 		return;*/
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::R))
 		return;
@@ -359,7 +367,7 @@ void ACCharacterPlayer::Run()
 
 void ACCharacterPlayer::Walk()
 {
-	//if (currentState == ECharacterState::JUMP|| currentState == ECharacterState::LANDING||currentState==ECharacterState::JUMPATTACK)
+	//if (currentState == ECharacterState::JUMP|| currentState == ECharacterState::GROUNDED||currentState==ECharacterState::JUMPATTACK)
 		//return;
 	//해당하는 것의 인풋액션을 가져옴
 	FVector2D moveValue= FMath::Square<FVector2D>(MoveActionBinding->GetValue().Get<FVector2D>());
@@ -435,7 +443,7 @@ void ACCharacterPlayer::Jump()
 void ACCharacterPlayer::Landing()
 {
 	SetPrevious();
-	currentState = ECharacterState::LANDING;
+	currentState = ECharacterState::GROUNDED;
 	bIsJump = false;
 }
 
@@ -461,6 +469,21 @@ void ACCharacterPlayer::Attack()
 	currentState = ECharacterState::ATTACK;
 	WaitFrame = 70;
 	Attack_BP();
+}
+
+void ACCharacterPlayer::Roll()
+{
+	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftControl))
+		return;
+	PlayAnimMontage(AM_Roll);
+	if (currentState < ECharacterState::JUMP)
+	{
+		currentState = ECharacterState::S_ROLL;
+		SetPrevious();
+		return;
+	}
+	currentState = ECharacterState::D_ROLL;
+	SetPrevious();
 }
 
 void ACCharacterPlayer::AttackCheck()

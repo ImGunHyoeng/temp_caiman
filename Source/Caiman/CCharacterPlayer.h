@@ -17,7 +17,7 @@ enum class ECharacterState :uint8
 	S_WALK,
 	S_RUN,
 	JUMP,
-	LANDING,
+	GROUNDED,
 	S_ROLL,
 	D_IDLE,
 	D_WALK,
@@ -82,6 +82,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_Attack;
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
+		UAnimMontage* AM_Roll;
 
 	//UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	//UInputAction* JumpAction;*/
@@ -106,6 +108,7 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void JumpAttack();
 	void Attack();
+	void Roll();
 
 	UFUNCTION(BlueprintImplementableEvent,category="Temp")
 	void Attack_BP();
