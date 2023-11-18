@@ -13,5 +13,8 @@ UCLASS()
 class CAIMAN_API UCBTD_CheckDistance : public UBTDecorator
 {
 	GENERATED_BODY()
-	
+public:
+	UCBTD_CheckDistance();
+protected:
+	virtual bool CalculateRawConditionValue(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) const override;
 };

@@ -10,13 +10,15 @@ ACMyWeapon::ACMyWeapon()
 	PrimaryActorTick.bCanEverTick = false;
 
 	//무기 오브젝트 만들고 애셋 적용하기
-	Weapon = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WEAPON"));
-	Weapon->SetWorldScale3D(FVector(0.325f, 0.325f, 0.325f));
-	UStaticMesh* SK_WEAPON=LoadObject<UStaticMesh>(nullptr,TEXT("/Script/Engine.StaticMesh'/Game/Mesh/Sketchfab_Sword_forsale.Sketchfab_Sword_forsale'"));
+	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WEAPON"));
+
+	RootComponent = Weapon;
+	//Weapon->SetWorldScale3D(FVector(0.325f, 0.325f, 0.325f));
+	USkeletalMesh* SK_WEAPON=LoadObject<USkeletalMesh>(nullptr,TEXT("/Script/Engine.SkeletalMesh'/Game/Mesh/Sketchfab_Sword_forsale_Skeleton.Sketchfab_Sword_forsale_Skeleton'"));
 	if (SK_WEAPON)
 	{
-		Weapon->SetStaticMesh(SK_WEAPON);
-		RootComponent = Weapon;
+		Weapon->SetSkeletalMesh(SK_WEAPON);
+		
 	}
 	Weapon->SetCollisionProfileName(TEXT("NoCollision"));
 

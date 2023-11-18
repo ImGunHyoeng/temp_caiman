@@ -50,6 +50,7 @@ void ACCharacterPlayer::BeginPlay()
 	//KeyMappingArray = PlayerContext->GetMappings();
 	FName WeaponSocket(TEXT("S_Sheath"));
 	Weapon = GetWorld()->SpawnActor<ACMyWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
+	Weapon->SetActorScale3D(FVector{ 0.35f,0.35f,0.35f });
 	//Weapon->CalculateComponentsBoundingBoxInLocalSpace();
 	if (nullptr != Weapon)
 	{
