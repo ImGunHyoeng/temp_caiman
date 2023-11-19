@@ -36,7 +36,7 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	
 	if (IsActive)
 	{
-
+		tracceobject
 	}
 	// ...
 }
