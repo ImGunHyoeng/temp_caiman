@@ -65,6 +65,7 @@ void ACCharacterPlayer::BeginPlay()
 
 	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
 	LookActionBinding= &EnhancedInputComponent->BindActionValue(LookAction);
+	LateBeginPlay();
 }
 
 void ACCharacterPlayer::Tick(float DeltaTime)

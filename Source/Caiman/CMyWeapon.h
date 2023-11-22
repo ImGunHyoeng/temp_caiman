@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "CTraceComponent.h"
 #include "CMyWeapon.generated.h"
 
 UCLASS()
@@ -24,4 +25,6 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* Weapon;
+
+	//UCTraceComponent *trace;
 };

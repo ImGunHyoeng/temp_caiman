@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "CMyWeapon.h"
+//#include "CMyWeapon.h"
 #include "CTraceComponent.generated.h"
 
 
@@ -19,13 +19,14 @@ public:
 
 protected:
 	// Called when the game starts
+	virtual void InitializeComponent() override;
 	virtual void BeginPlay() override;
-
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* WeaponMesh;
 	uint32 IsActive : 1;
-
+	FVector Start;
+	FVector End;
 };

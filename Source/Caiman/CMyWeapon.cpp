@@ -21,7 +21,8 @@ ACMyWeapon::ACMyWeapon()
 		
 	}
 	Weapon->SetCollisionProfileName(TEXT("NoCollision"));
-
+	//trace = NewObject<UCTraceComponent>();
+	//trace = CreateDefaultSubobject<UCTraceComponent>(TEXT("Mytrace"));
 }
 
 // Called when the game starts or when spawned
@@ -34,6 +35,8 @@ void ACMyWeapon::BeginPlay()
 void ACMyWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
+
+
 

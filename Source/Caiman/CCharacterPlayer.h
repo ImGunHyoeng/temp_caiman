@@ -112,6 +112,9 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent,category="Temp")
 	void Attack_BP();
+
+	UFUNCTION(BlueprintImplementableEvent, category = "Temp")
+		void LateBeginPlay();
 	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
