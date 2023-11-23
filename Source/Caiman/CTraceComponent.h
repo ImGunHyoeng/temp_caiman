@@ -27,6 +27,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* WeaponMesh;
 	uint32 IsActive : 1;
-	FVector Start;
-	FVector End;
+
+	FVector start;
+	FVector end;
+	FVector dir;
+	TArray<FHitResult> outResults;
+	FCollisionShape mySphere;
+	FColor color;
+	void TsetActive(bool condition = true) { IsActive = condition; };
 };

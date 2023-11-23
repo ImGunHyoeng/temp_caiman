@@ -2,7 +2,6 @@
 
 
 #include "CTraceComponent.h"
-#include "CMyWeapon.h"
 
 // Sets default values for this component's properties
 UCTraceComponent::UCTraceComponent()
@@ -37,26 +36,28 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (!WeaponMesh)
 		return;
-	
-	Start = WeaponMesh->GetSocketLocation(FName("Start"));
-	End = WeaponMesh->GetSocketLocation(FName("End"));
-	FVector Dir = End - Start;
+	if (!IsActive)
+		return;
+	start = WeaponMesh->GetSocketLocation(FName("Start"));
+	end = WeaponMesh->GetSocketLocation(FName("End"));
+	dir = end - start;
 	//Dir.Size();
 	
-	//UE_LOG(Logtmep,LogTemp,"%s", ECollisionChannel::ECC_GameTraceChannel1)
+	UE_LOG(LogTemp, Warning,TEXT("End:%s"), *end.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Start:%s"), *start.ToString());
 	//if (IsActive)
 	
-	FCollisionShape MySphere = FCollisionShape::MakeSphere(10);
-	TArray<FHitResult> OutResults;
-	GetWorld()->SweepMultiByChannel(OutResults, Start, End, FQuat::Identity, ECollisionChannel::ECC_GameTraceChannel1, MySphere);
+	mySphere = FCollisionShape::MakeSphere(10);
+	GetWorld()->SweepMultiByChannel(outResults, start, end, FQuat::Identity, ECollisionChannel::ECC_GameTraceChannel1, mySphere);
 	//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 5.0f);
-	if(!OutResults.IsEmpty())
-	DrawDebugCapsule(GetWorld(),(Start+End)/2, Dir.Size()*0.5+10,10, FRotationMatrix::MakeFromZ(Dir).ToQuat(),FColor::Green, false, 0.1f);
+	color = outResults.IsEmpty() ? FColor::Red : FColor::Green;
+	//if(!outResults.IsEmpty())
+	DrawDebugCapsule(GetWorld(),(start+end)/2, dir.Size()*0.5+10,10, FRotationMatrix::MakeFromZ(dir).ToQuat(),color, false, 2.0f);
 		////DrawDebugSphere()
-	else
+	/*else
 	{
-			DrawDebugCapsule(GetWorld(), (Start + End) / 2, Dir.Size() * 0.5 + 10, 10, FRotationMatrix::MakeFromZ(Dir).ToQuat(), FColor::Red, false, 0.1f);
-	}
+			DrawDebugCapsule(GetWorld(), (Start + End) / 2, Dir.Size() * 0.5 + 10, 10, FRotationMatrix::MakeFromZ(Dir).ToQuat(), FColor::Red, false, 2.0f);
+	}*/
 	
 	// ...
 }
