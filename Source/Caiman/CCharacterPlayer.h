@@ -113,6 +113,9 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent,category="Temp")
 	void Attack_BP();
 
+	
+	void ComboAttack();
+
 	UFUNCTION(BlueprintImplementableEvent, category = "Temp")
 		void LateBeginPlay();
 	

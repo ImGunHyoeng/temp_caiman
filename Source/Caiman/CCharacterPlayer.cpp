@@ -255,7 +255,8 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 				bWantCombo = true;
 			if (bIsCombo)
 			{
-				Attack_BP();
+				//Attack_BP();
+				ComboAttack();
 				bIsCombo = false;
 			}
 			if (WaitFrame == 0)
@@ -265,7 +266,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 				bWantCombo = false;
 			}
 			WaitFrame--;
-
+			UE_LOG(LogTemp, Warning, TEXT("bWantCombo:%s"), bWantCombo ? TEXT("True") : TEXT("False"));
 			return;
 		}
 	}
@@ -470,7 +471,8 @@ void ACCharacterPlayer::Attack()
 	SetPrevious();
 	currentState = ECharacterState::ATTACK;
 	WaitFrame = 70;
-	Attack_BP();
+	//Attack_BP();
+	ComboAttack();
 }
 
 void ACCharacterPlayer::Roll()
@@ -486,6 +488,12 @@ void ACCharacterPlayer::Roll()
 	}
 	currentState = ECharacterState::D_ROLL;
 	SetPrevious();
+}
+
+void ACCharacterPlayer::ComboAttack()
+{
+	FString a = !bIsCombo ? TEXT("Attack_2_1") : TEXT("Attack_2_2");
+	PlayAnimMontage(AM_Attack, 1.0f,FName(*a));
 }
 
 void ACCharacterPlayer::AttackCheck()
