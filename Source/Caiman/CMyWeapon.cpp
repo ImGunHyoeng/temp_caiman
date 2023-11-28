@@ -21,6 +21,7 @@ ACMyWeapon::ACMyWeapon()
 		
 	}
 	Weapon->SetCollisionProfileName(TEXT("NoCollision"));
+	
 	//trace = NewObject<UCTraceComponent>();
 	//trace = CreateDefaultSubobject<UCTraceComponent>(TEXT("Mytrace"));
 }
@@ -29,6 +30,7 @@ ACMyWeapon::ACMyWeapon()
 void ACMyWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+	damage = 10.0f;
 }
 
 // Called every frame

@@ -2,7 +2,10 @@
 
 
 #include "CTraceComponent.h"
-
+#include "CMonsterBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "CMyWeapon.h"
+#include "EngineUtils.h"
 // Sets default values for this component's properties
 UCTraceComponent::UCTraceComponent()
 {
@@ -53,12 +56,26 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	color = outResults.IsEmpty() ? FColor::Red : FColor::Green;
 	//if(!outResults.IsEmpty())
 	DrawDebugCapsule(GetWorld(),(start+end)/2, dir.Size()*0.5+10,10, FRotationMatrix::MakeFromZ(dir).ToQuat(),color, false, 2.0f);
-		////DrawDebugSphere()
-	/*else
+
+	for (auto& result : outResults)
 	{
-			DrawDebugCapsule(GetWorld(), (Start + End) / 2, Dir.Size() * 0.5 + 10, 10, FRotationMatrix::MakeFromZ(Dir).ToQuat(), FColor::Red, false, 2.0f);
-	}*/
-	
-	// ...
+		//= WeaponMesh->GetOwner();
+		//result.GetActor();
+		static ACMyWeapon* temp=Cast<ACMyWeapon>(WeaponMesh->GetOwner());
+		static ACMonsterBase* monster;
+		monster = Cast<ACMonsterBase>(result.GetActor());
+		if (monster&&temp)
+		{
+			//이것은 몬스터일 경우에 실행하는 것이며
+			// 그리고 데미지가 양수가 아니라면 실행되지 않는다.
+			//FPointDamageEvent DamageEvent(10.f,)
+			/*UGameplayStatics::ApplyDamage(result.GetActor(), temp->getDamage(),GetWorld()->GetFirstPlayerController(),nullptr,NULL);*/
+			//monster->GetOwner();
+			UE_LOG(LogTemp, Warning, TEXT("Enemy location:%s"), *(monster->GetActorLocation()).ToString());
+			UGameplayStatics::ApplyPointDamage(result.GetActor(), temp->getDamage(), result.ImpactNormal, result, GetWorld()->GetFirstPlayerController(), GetOwner(), nullptr);
+		}
+		
+	}
+
 }
 

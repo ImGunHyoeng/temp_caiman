@@ -12,6 +12,7 @@ class CAIMAN_API ACMyWeapon : public AActor
 {
 	GENERATED_BODY()
 	
+	float damage;
 public:	
 	// Sets default values for this actor's properties
 	ACMyWeapon();
@@ -26,5 +27,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* Weapon;
 
-	//UCTraceComponent *trace;
+	UFUNCTION(BlueprintPure)
+	float getDamage() const { return damage; }
+
+	UFUNCTION(BlueprintCallable)
+	void setDamage(float input) { damage=input; }
+
+	
 };
