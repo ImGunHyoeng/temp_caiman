@@ -59,12 +59,14 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 	for (auto& result : outResults)
 	{
-		//= WeaponMesh->GetOwner();
-		//result.GetActor();
-		static ACMyWeapon* temp=Cast<ACMyWeapon>(WeaponMesh->GetOwner());
+		//AActor* tempa;
+		//tempa = WeaponMesh->GetOwner();
+		////result.GetActor();
+		static ACMyWeapon* temp;
+		temp = Cast<ACMyWeapon>(WeaponMesh->GetOwner());
 		static ACMonsterBase* monster;
 		monster = Cast<ACMonsterBase>(result.GetActor());
-		if (monster&&temp)
+		if (monster&&temp->getDamage()!=0)
 		{
 			//이것은 몬스터일 경우에 실행하는 것이며
 			// 그리고 데미지가 양수가 아니라면 실행되지 않는다.
@@ -72,6 +74,7 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 			/*UGameplayStatics::ApplyDamage(result.GetActor(), temp->getDamage(),GetWorld()->GetFirstPlayerController(),nullptr,NULL);*/
 			//monster->GetOwner();
 			UE_LOG(LogTemp, Warning, TEXT("Enemy location:%s"), *(monster->GetActorLocation()).ToString());
+			temp->getDamage();
 			UGameplayStatics::ApplyPointDamage(result.GetActor(), temp->getDamage(), result.ImpactNormal, result, GetWorld()->GetFirstPlayerController(), GetOwner(), nullptr);
 		}
 		

@@ -37,6 +37,7 @@ void ACMyWeapon::BeginPlay()
 void ACMyWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	UE_LOG(LogTemp, Warning, TEXT("Damage %f"),damage);
 	
 }
 

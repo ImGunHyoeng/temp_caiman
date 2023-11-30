@@ -71,13 +71,10 @@ void ACCharacterPlayer::BeginPlay()
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//EnhancedInputComponent->set
-	//FVector2D moveValue = FMath::Square<FVector2D>(MoveActionBinding->GetValue().Get<FVector2D>());
-	UE_LOG(LogTemp, Display, TEXT("%d"), currentState);
-	//UE_LOG(LogTemp, Display, TEXT("X:%f"), moveValue.X);
-	//UE_LOG(LogTemp, Display, TEXT("Y:%f"), moveValue.Y);
-	//UE_LOG(LogTemp, Display, TEXT("X+Y:%f"), moveValue.X+ moveValue.Y);
-	//UE_LOG(LogTemp, Display, TEXT("%s"), moveValue.X + moveValue.Y>=1.0f? "t" :"f");
+
+	//상태확인용
+	//UE_LOG(LogTemp, Display, TEXT("%d"), currentState);
+	
 	
 	//UE_LOG(LogTemp, Display, TEXT("%d"), WaitFrame);
 	//UE_LOG(LogTemp, Display, TEXT("%f"), GetVelocity().Length());
@@ -266,7 +263,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 				bWantCombo = false;
 			}
 			WaitFrame--;
-			UE_LOG(LogTemp, Warning, TEXT("bWantCombo:%s"), bWantCombo ? TEXT("True") : TEXT("False"));
+			//UE_LOG(LogTemp, Warning, TEXT("bWantCombo:%s"), bWantCombo ? TEXT("True") : TEXT("False"));
 			return;
 		}
 	}

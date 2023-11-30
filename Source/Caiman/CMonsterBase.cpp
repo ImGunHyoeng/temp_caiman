@@ -41,6 +41,7 @@ ACMonsterBase::ACMonsterBase()
 void ACMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
+	hp = 20;
 	bIsLive = true;
 }
 
@@ -48,6 +49,7 @@ void ACMonsterBase::BeginPlay()
 void ACMonsterBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	//UE_LOG(LogTemp, Warning, TEXT("Monster HP:%f"),hp);
 }
 
 // Called to bind functionality to input
@@ -60,14 +62,14 @@ void ACMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 float ACMonsterBase::InternalTakePointDamage(float Damage, FPointDamageEvent const& PointDamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	float damage=Super::InternalTakePointDamage(Damage, PointDamageEvent, EventInstigator, DamageCauser);
-	UE_LOG(LogTemp, Warning, TEXT("%s"), TEXT("Damaged_enemy"));
+	UE_LOG(LogTemp, Warning, TEXT("%s and damage %f"), TEXT("Damaged_enemy"),damage);
 	hp-=damage;
 	bIsLive = hp > 0.0f;
 	UAnimMontage* animSelction = bIsLive?AM_Hited : AM_Dead;
 
-	//PlayAnimMontage(animSelction);
+	PlayAnimMontage(animSelction);
 
-	return 0.0f;
+	return damage;
 }
 
 float ACMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -76,6 +78,7 @@ float ACMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 	
 	UE_LOG(LogClass, Warning, TEXT("Damage : %f"), Damage);
 	return Damage;
+	// 여기에서는 데미지가 잘 안들어오는 오류가 있는건지 아닌지 모르겠음
 }
 //
 //void ACMonsterBase::ReceivePointDamage(float Damage, const UDamageType* DamageType, FVector HitLocation, FVector HitNormal, UPrimitiveComponent* HitComponent, FName BoneName, FVector ShotFromDirection, AController* InstigatedBy, AActor* DamageCauser)
