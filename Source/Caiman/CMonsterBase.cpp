@@ -17,12 +17,14 @@ ACMonsterBase::ACMonsterBase()
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
 
+
+	//SkelatalMesh
+	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FRotator(0.0f, -90.0f, 0.0f));//메시가 항상 위쪽에 90정도 띄어있기에  -90으로 위치를 맞추고 캐릭터와 방향이 -90정도로 화살표가 돌아가 있기에 이를 조절함.
+
 	//Capsule
 	GetCapsuleComponent()->InitCapsuleSize(35.0f, 90.0f);
 	GetCapsuleComponent()->SetCollisionProfileName(TEXT("CCapsule"));
 
-	//SkelatalMesh
-	GetMesh()->SetRelativeLocationAndRotation(FVector(0.0f, 0.0f, -90.0f), FRotator(0.0f, -90.0f, 0.0f));//메시가 항상 위쪽에 90정도 띄어있기에  -90으로 위치를 맞추고 캐릭터와 방향이 -90정도로 화살표가 돌아가 있기에 이를 조절함.
 	GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 	GetMesh()->SetCollisionProfileName(TEXT("NoCollision"));//충돌 설정시에 profile의 이름을 설정하는 것.
 
