@@ -38,6 +38,12 @@ public:
 	//	class AController* InstigatedBy,
 	//	AActor* DamageCauser
 	//) ;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	uint32 bIsAttacking: 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	uint32 bIsGoHome : 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	uint32 bIsDetect : 1;
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_Hited;
