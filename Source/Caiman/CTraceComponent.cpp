@@ -62,10 +62,8 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		//AActor* tempa;
 		//tempa = WeaponMesh->GetOwner();
 		////result.GetActor();
-		static ACMyWeapon* temp;
-		temp = Cast<ACMyWeapon>(WeaponMesh->GetOwner());
-		static ACMonsterBase* monster;
-		monster = Cast<ACMonsterBase>(result.GetActor());
+		ACMyWeapon* temp= Cast<ACMyWeapon>(WeaponMesh->GetOwner());
+		ACMonsterBase* monster= Cast<ACMonsterBase>(result.GetActor());
 		if (monster&&temp->getDamage()!=0)
 		{
 			//이것은 몬스터일 경우에 실행하는 것이며
