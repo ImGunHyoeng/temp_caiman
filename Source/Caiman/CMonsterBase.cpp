@@ -43,11 +43,14 @@ ACMonsterBase::ACMonsterBase()
 void ACMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	hp = 20;
+	hp = 100;
 	bIsLive = true;
 	bIsAttacking = false;
 	bIsGoHome = false;
 	bIsDetect = false;
+	bIsAttacked = false;
+	bIsCoolTime = false;
+	attackType = 0;
 }
 
 // Called every frame

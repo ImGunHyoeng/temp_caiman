@@ -44,6 +44,14 @@ public:
 	uint32 bIsGoHome : 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint32 bIsDetect : 1;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	uint32 bIsAttacked : 1;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		uint32 bIsCoolTime: 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int attackType;
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_Hited;
