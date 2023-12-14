@@ -40,7 +40,12 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	if (!WeaponMesh)
 		return;
 	if (!IsActive)
+	{
+		if(attackObj.Num()==0)
+			return;
+		attackObj.Reset();
 		return;
+	}
 	start = WeaponMesh->GetSocketLocation(FName("Start"));
 	end = WeaponMesh->GetSocketLocation(FName("End"));
 	dir = end - start;
@@ -57,26 +62,32 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	//if(!outResults.IsEmpty())
 	DrawDebugCapsule(GetWorld(),(start+end)/2, dir.Size()*0.5+10,10, FRotationMatrix::MakeFromZ(dir).ToQuat(),color, false, 2.0f);
 
-	for (auto& result : outResults)
+	for (const auto & result : outResults)
 	{
+		
 		//AActor* tempa;
 		//tempa = WeaponMesh->GetOwner();
 		////result.GetActor();
+		
 		ACMyWeapon* temp= Cast<ACMyWeapon>(WeaponMesh->GetOwner());
 		ACMonsterBase* monster= Cast<ACMonsterBase>(result.GetActor());
-		if (monster&&temp->getDamage()!=0)
-		{
+		if (!IsValid(monster) || temp->getDamage() == 0)
+			return;
+		if (monster->getHp() <= 0)
+			return;
+		if (attackObj.Contains<AActor*>(result.GetActor()))
+			return;
+		attackObj.Add(result.GetActor());
 			//이것은 몬스터일 경우에 실행하는 것이며
 			// 그리고 데미지가 양수가 아니라면 실행되지 않는다.
 			//FPointDamageEvent DamageEvent(10.f,)
 			/*UGameplayStatics::ApplyDamage(result.GetActor(), temp->getDamage(),GetWorld()->GetFirstPlayerController(),nullptr,NULL);*/
 			//monster->GetOwner();
 		//	UE_LOG(LogTemp, Warning, TEXT("Enemy location:%s"), *(monster->GetActorLocation()).ToString());
-			temp->getDamage();
-			UGameplayStatics::ApplyPointDamage(result.GetActor(), temp->getDamage(), result.ImpactNormal, result, GetWorld()->GetFirstPlayerController(), GetOwner(), nullptr);
-		}
-		
+		//temp->getDamage();
+		UGameplayStatics::ApplyPointDamage(result.GetActor(), temp->getDamage(), result.ImpactNormal, result, GetWorld()->GetFirstPlayerController(), GetOwner(), nullptr);
 	}
+	//
 
 }
 

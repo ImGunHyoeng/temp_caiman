@@ -43,13 +43,15 @@ ACMonsterBase::ACMonsterBase()
 void ACMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	hp = 100;
+	hp = 20;
 	bIsLive = true;
+	bIsAlredyDie = false;
 	bIsAttacking = false;
 	bIsGoHome = false;
 	bIsDetect = false;
 	bIsAttacked = false;
 	bIsCoolTime = false;
+	bIsHeal = false;
 	attackType = 0;
 }
 
@@ -71,11 +73,22 @@ float ACMonsterBase::InternalTakePointDamage(float Damage, FPointDamageEvent con
 {
 	float damage=Super::InternalTakePointDamage(Damage, PointDamageEvent, EventInstigator, DamageCauser);
 	UE_LOG(LogTemp, Warning, TEXT("%s and damage %f"), TEXT("Damaged_enemy"),damage);
+	if (bIsAlredyDie)
+		return damage;
+	UAnimMontage* animSelction=nullptr;
 	hp-=damage;
 	bIsLive = hp > 0.0f;
-	UAnimMontage* animSelction = bIsLive?AM_Hited : AM_Dead;
-
+	animSelction = bIsLive ? AM_Hited : AM_Dead;
 	PlayAnimMontage(animSelction);
+
+	if (!bIsLive)
+	{
+		if (!bIsAlredyDie)
+		{
+			bIsAlredyDie = true;
+		}
+	}
+
 
 	return damage;
 }

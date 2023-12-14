@@ -11,7 +11,8 @@ class CAIMAN_API ACMonsterBase : public ACharacter
 {
 	GENERATED_BODY()
 	
-		uint32 bIsLive : 1;
+		uint32 bIsAlredyDie : 1;
+		float hp;
 public:
 	// Sets default values for this character's properties
 	ACMonsterBase();
@@ -19,15 +20,21 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	UFUNCTION(BlueprintCallable)
+	void setHp(float _hp) { hp = _hp; }
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-
+	UFUNCTION(BlueprintCallable)
+	float getHp() { return hp; }
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	uint32 bIsLive : 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float hp;
+	uint32 bIsHeal : 1;
+	
 	//void ReceivePointDamage(float Damage,
 	//	const class UDamageType* DamageType,
 	//	FVector HitLocation,

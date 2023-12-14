@@ -32,6 +32,7 @@ public:
 	FVector end;
 	FVector dir;
 	TArray<FHitResult> outResults;
+	TArray<AActor*> attackObj;
 	FCollisionShape mySphere;
 	FColor color;
 	void TsetActive(bool condition = true) { IsActive = condition; };
