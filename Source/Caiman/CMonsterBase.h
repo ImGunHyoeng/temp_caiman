@@ -48,6 +48,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int healcount;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	uint32 bIsRunAwayDone : 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint32 bIsAttacking: 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint32 bIsInC_AttackRange: 1;

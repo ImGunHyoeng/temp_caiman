@@ -55,6 +55,7 @@ void ACMonsterBase::BeginPlay()
 	bIsInC_AttackRange = false;
 	bIsInD_Range = false;
 	bIsInL_AttackRange = false;
+	bIsRunAwayDone = false;
 	attackType = 0;
 	healcount = 3;
 }
