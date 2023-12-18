@@ -46,15 +46,21 @@ public:
 	//	AActor* DamageCauser
 	//) ;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int healcount;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint32 bIsAttacking: 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	uint32 bIsInC_AttackRange: 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	uint32 bIsInL_AttackRange : 1;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	uint32 bIsInD_Range : 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint32 bIsGoHome : 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint32 bIsDetect : 1;
-	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint32 bIsAttacked : 1;
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bIsCoolTime: 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

@@ -43,7 +43,7 @@ ACMonsterBase::ACMonsterBase()
 void ACMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
-	hp = 20;
+	hp = 100;
 	bIsLive = true;
 	bIsAlredyDie = false;
 	bIsAttacking = false;
@@ -52,7 +52,11 @@ void ACMonsterBase::BeginPlay()
 	bIsAttacked = false;
 	bIsCoolTime = false;
 	bIsHeal = false;
+	bIsInC_AttackRange = false;
+	bIsInD_Range = false;
+	bIsInL_AttackRange = false;
 	attackType = 0;
+	healcount = 3;
 }
 
 // Called every frame
