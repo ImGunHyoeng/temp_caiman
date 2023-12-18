@@ -57,7 +57,7 @@ void ACMonsterBase::BeginPlay()
 	bIsInL_AttackRange = false;
 	bIsRunAwayDone = false;
 	attackType = 0;
-	healcount = 3;
+	healcount = 0;
 }
 
 // Called every frame
