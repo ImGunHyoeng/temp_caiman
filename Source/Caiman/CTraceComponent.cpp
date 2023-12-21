@@ -78,13 +78,6 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		if (attackObj.Contains<AActor*>(result.GetActor()))
 			return;
 		attackObj.Add(result.GetActor());
-			//이것은 몬스터일 경우에 실행하는 것이며
-			// 그리고 데미지가 양수가 아니라면 실행되지 않는다.
-			//FPointDamageEvent DamageEvent(10.f,)
-			/*UGameplayStatics::ApplyDamage(result.GetActor(), temp->getDamage(),GetWorld()->GetFirstPlayerController(),nullptr,NULL);*/
-			//monster->GetOwner();
-		//	UE_LOG(LogTemp, Warning, TEXT("Enemy location:%s"), *(monster->GetActorLocation()).ToString());
-		//temp->getDamage();
 		UGameplayStatics::ApplyPointDamage(result.GetActor(), temp->getDamage(), result.ImpactNormal, result, GetWorld()->GetFirstPlayerController(), GetOwner(), nullptr);
 	}
 	//
