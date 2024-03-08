@@ -62,12 +62,183 @@ void ACCharacterPlayer::BeginPlay()
 	{
 		Subsystem->AddMappingContext(PlayerContext, 0);
 	}
-
-	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
-	LookActionBinding= &EnhancedInputComponent->BindActionValue(LookAction);
+	if (EnhancedInputComponent != nullptr)
+	{
+		MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
+		LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
+	}
 	LateBeginPlay();
 }
 
+void ACCharacterPlayer::updateInput()
+{
+
+}
+void ACCharacterPlayer::update()
+{
+	if (MoveActionBinding == nullptr||LookActionBinding==nullptr)
+	{
+		MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
+		LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
+	}
+	Look(LookActionBinding->GetValue());
+	switch (currentState)
+	{
+
+	case ECharacterState::S_IDLE:
+	{
+		Move(MoveActionBinding->GetValue());
+		//Look(LookActionBinding->GetValue());
+		Jump();
+		Walk();
+		Draw();
+		Roll();
+		/*if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
+		{
+			Move(MoveActionBinding->GetValue());
+		}*/
+		//Move(EnhancedInputComponent->execOnInputOwnerEndPlayed());
+		/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
+			return;
+		if(!bTrigger)
+			return;
+		PlayAnimMontage(AM_Sheath);*/
+		//bTrigger = false;
+		return;
+	}
+	case ECharacterState::S_WALK:
+	{
+		Move(MoveActionBinding->GetValue());
+		//Look(LookActionBinding->GetValue());
+		GoIdle();
+		Jump();
+		Roll();
+		Run();
+
+		//Walk();
+	/*	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
+		EnhancedInputComponent->GetActionEventBindings();
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
+		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);*/
+		return;
+	}
+	case ECharacterState::S_RUN:
+	{
+		Move(MoveActionBinding->GetValue());
+		//Look(LookActionBinding->GetValue());
+		Jump();
+		Roll();
+		GoWalk();
+
+		//if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
+		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
+		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious); 
+		//EnhancedInputComponent->GetActionEventBindings();
+		return;
+	}
+	case ECharacterState::JUMP:
+	{
+		//Look(LookActionBinding->GetValue());
+		JumpAttack();
+		if (bIsJumpAttack)
+		{
+			NoAnimDraw();
+			SetPrevious();
+			currentState = ECharacterState::JUMPATTACK;
+			//PlayAnimMontage(AM_Draw);
+			WaitFrame = 50;
+			bIsJump = false;
+			return;
+		}
+		if (!(GetCharacterMovement()->IsFalling()))
+		{
+			Landing();
+			WaitFrame = 40;
+		}
+		return;
+	}
+	case ECharacterState::GROUNDED:
+	{
+		WaitFrame--;
+		if (WaitFrame == 0)
+		{
+			SetPrevious();
+			currentState = ECharacterState::S_IDLE;
+		}
+		return;
+	}
+	case ECharacterState::S_ROLL:
+	{
+		return;
+	}
+	case ECharacterState::D_IDLE:
+	{
+		Move(MoveActionBinding->GetValue());
+		//Look(LookActionBinding->GetValue());
+		Walk();
+		Draw();
+		Attack();
+		/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
+			return;
+		if(!bTrigger)
+			return;
+		PlayAnimMontage(AM_Draw);
+		bTrigger = false;*/
+		//bTrigger = false;
+		return;
+	}
+	case ECharacterState::D_WALK:
+		//Walk();
+	{
+		Move(MoveActionBinding->GetValue());
+		//Look(LookActionBinding->GetValue());
+		GoIdle();
+		Attack();
+
+		return;
+	}
+	case ECharacterState::D_ROLL:
+	{
+		return;
+	}
+	case ECharacterState::JUMPATTACK:
+	{
+		//점프
+		WaitFrame--;
+		if (WaitFrame == 0)
+		{
+			bIsJumpAttack = false;
+			SetPrevious();
+			currentState = ECharacterState::D_IDLE;
+		}
+		return;
+	}
+	case ECharacterState::DEFENSELESS:
+		return;
+	case ECharacterState::PARRGING:
+		return;
+	case ECharacterState::ATTACK:
+	{
+		if (PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+			bWantCombo = true;
+		if (bIsCombo)
+		{
+			//Attack_BP();
+			ComboAttack();
+			bIsCombo = false;
+		}
+		if (WaitFrame == 0)
+		{
+			SetPrevious();
+			currentState = ECharacterState::D_IDLE;
+			bWantCombo = false;
+		}
+		WaitFrame--;
+		//UE_LOG(LogTemp, Warning, TEXT("bWantCombo:%s"), bWantCombo ? TEXT("True") : TEXT("False"));
+		return;
+	}
+	}
+}
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -102,7 +273,8 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	//이렇게 하지 말고 InputAction의 상태를 가지고 하자
 
 	//MovementAction.
-	PlayerContext->GetMapping(0);
+	
+	//PlayerContext->GetMapping(0);
 	
 	
 	
@@ -110,163 +282,8 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	//PlayerContext->get
 	//FText textname=KeyMappingArray.FindByKey(fkey)
 	//for()
-	Look(LookActionBinding->GetValue());
-	switch (currentState)
-	{
-		
-		case ECharacterState::S_IDLE:
-		{
-			Move(MoveActionBinding->GetValue());
-			//Look(LookActionBinding->GetValue());
-			Jump();
-			Walk();
-			Draw();
-			Roll();
-			/*if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
-			{
-				Move(MoveActionBinding->GetValue());
-			}*/
-			//Move(EnhancedInputComponent->execOnInputOwnerEndPlayed());
-			/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
-				return;
-			if(!bTrigger)
-				return;
-			PlayAnimMontage(AM_Sheath);*/
-			//bTrigger = false;
-			return;
-		}
-		case ECharacterState::S_WALK:
-		{
-			Move(MoveActionBinding->GetValue());
-			//Look(LookActionBinding->GetValue());
-			GoIdle();
-			Jump();
-			Roll();
-			Run();
-			
-			//Walk();
-		/*	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
-			EnhancedInputComponent->GetActionEventBindings();
-			EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
-			EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);*/
-			return;
-		}
-		case ECharacterState::S_RUN:
-		{
-			Move(MoveActionBinding->GetValue());
-			//Look(LookActionBinding->GetValue());
-			Jump();
-			Roll();
-			GoWalk();
-			
-			//if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
-			//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
-			//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious); 
-			//EnhancedInputComponent->GetActionEventBindings();
-			return;
-		}
-		case ECharacterState::JUMP:
-		{
-			//Look(LookActionBinding->GetValue());
-			JumpAttack();
-			if (bIsJumpAttack)
-			{
-				NoAnimDraw();
-				SetPrevious();
-				currentState = ECharacterState::JUMPATTACK;
-				//PlayAnimMontage(AM_Draw);
-				WaitFrame = 50;
-				bIsJump = false;
-				return;
-			}
-			if (!(GetCharacterMovement()->IsFalling()))
-			{
-				Landing();
-				WaitFrame = 40;
-			}
-			return;
-		}
-		case ECharacterState::GROUNDED:
-		{
-			WaitFrame--;
-			if (WaitFrame == 0)
-			{
-				SetPrevious();
-				currentState = ECharacterState::S_IDLE;
-			}
-			return;
-		}
-		case ECharacterState::S_ROLL:
-		{
-			return;
-		}
-		case ECharacterState::D_IDLE:
-		{
-			Move(MoveActionBinding->GetValue());
-			//Look(LookActionBinding->GetValue());
-			Walk();
-			Draw();
-			Attack();
-			/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
-				return;
-			if(!bTrigger)
-				return;
-			PlayAnimMontage(AM_Draw);
-			bTrigger = false;*/
-			//bTrigger = false;
-			return;
-		}
-		case ECharacterState::D_WALK:
-			//Walk();
-		{	
-			Move(MoveActionBinding->GetValue());
-			//Look(LookActionBinding->GetValue());
-			GoIdle();
-			Attack();
-
-			return;
-		}
-		case ECharacterState::D_ROLL:
-		{	
-			return;
-		}
-		case ECharacterState::JUMPATTACK:
-		{
-			//점프
-			WaitFrame--;
-			if (WaitFrame == 0)
-			{
-				bIsJumpAttack = false;
-				SetPrevious();
-				currentState = ECharacterState::D_IDLE;
-			}
-			return;
-		}
-		case ECharacterState::DEFENSELESS:
-			return;
-		case ECharacterState::PARRGING:
-			return;
-		case ECharacterState::ATTACK:
-		{
-			if (PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-				bWantCombo = true;
-			if (bIsCombo)
-			{
-				//Attack_BP();
-				ComboAttack();
-				bIsCombo = false;
-			}
-			if (WaitFrame == 0)
-			{
-				SetPrevious();
-				currentState = ECharacterState::D_IDLE;
-				bWantCombo = false;
-			}
-			WaitFrame--;
-			//UE_LOG(LogTemp, Warning, TEXT("bWantCombo:%s"), bWantCombo ? TEXT("True") : TEXT("False"));
-			return;
-		}
-	}
+	update();
+	
 }
 
 
@@ -507,7 +524,7 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	// InputAction과 InputMappingContext를 연결
-	//UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	//EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	//기본 움직임 가능
 	//EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);

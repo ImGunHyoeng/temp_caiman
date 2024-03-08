@@ -11,7 +11,7 @@ class CAIMAN_API IPlayerState
 {
 public:
 	IPlayerState();
-	virtual void updateInput();
-	virtual void update();
-	~IPlayerState();
+	virtual void updateInput()=0;
+	virtual void update()=0;
+	virtual ~ IPlayerState();
 };

@@ -8,6 +8,7 @@
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "FSM/IPlayerState.h"
 #include "CCharacterPlayer.generated.h"
 
 UENUM(BlueprintType)
@@ -26,15 +27,12 @@ enum class ECharacterState :uint8
 	DEFENSELESS,
 	PARRGING,
 	ATTACK
-
-	
-	
 };
 /**
  * 
  */
 UCLASS()
-class CAIMAN_API ACCharacterPlayer : public ACCharacterBase
+class CAIMAN_API ACCharacterPlayer : public ACCharacterBase,public IPlayerState
 {
 	GENERATED_BODY()
 public:	
@@ -46,6 +44,8 @@ public:
 
 	ACCharacterPlayer();
 	void AttackCheck();
+	void update();
+	void updateInput();
 protected:
 
 	UPROPERTY(EditAnywhere, Category = Input)
