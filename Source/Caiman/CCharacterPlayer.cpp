@@ -508,7 +508,7 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	// InputAction과 InputMappingContext를 연결
 	//UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
-	EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	//EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	//기본 움직임 가능
 	//EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
 
@@ -519,10 +519,10 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	//EnhancedInputComponent->BindAction(DrawAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Draw);
 	//EnhancedInputComponent->BindAction(RollAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Draw);
-	
+	//
 	//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
-	/*EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoWalk);
-	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoWalk);*/
+	///*EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoWalk);
+	//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoWalk);*/
 	//트리거가 들어갔을때 아닐때를 인식해서 사용함
 
 	//EnhancedInputComponent->BindAction(MovementAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Walk);
