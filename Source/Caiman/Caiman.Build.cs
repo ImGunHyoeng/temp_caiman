@@ -8,7 +8,7 @@ public class Caiman : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		PublicIncludePaths.AddRange(new string[] { "Caiman" });
+		PublicIncludePaths.AddRange(new string[] { "Caiman"});
 
 		PublicDependencyModuleNames.AddRange(new string[] 
 		{ 
