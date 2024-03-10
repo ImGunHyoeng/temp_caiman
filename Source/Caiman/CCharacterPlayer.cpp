@@ -62,11 +62,12 @@ void ACCharacterPlayer::BeginPlay()
 	{
 		Subsystem->AddMappingContext(PlayerContext, 0);
 	}
-	if (EnhancedInputComponent != nullptr)
-	{
-		MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
-		LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
-	}
+	
+	check(EnhancedInputComponent != nullptr&&"you don't allow EnhancedInputComponent");
+	//check(bWasInitialized && "Did you forget to call Init()?");
+	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
+	LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
+	
 	LateBeginPlay();
 }
 
@@ -74,13 +75,16 @@ void ACCharacterPlayer::updateInput()
 {
 
 }
+ECharacterState ACCharacterPlayer::getCurState()
+{
+	return currentState;
+}
+void ACCharacterPlayer::setCurState(ECharacterState state)
+{
+	currentState = state;
+}
 void ACCharacterPlayer::update()
 {
-	if (MoveActionBinding == nullptr||LookActionBinding==nullptr)
-	{
-		MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
-		LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
-	}
 	Look(LookActionBinding->GetValue());
 	switch (currentState)
 	{

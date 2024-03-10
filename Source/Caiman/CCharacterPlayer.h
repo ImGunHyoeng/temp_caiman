@@ -46,6 +46,8 @@ public:
 	void AttackCheck();
 	void update();
 	void updateInput();
+	ECharacterState getCurState();
+	void setCurState(ECharacterState state);
 protected:
 
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -145,7 +147,8 @@ protected:
 	struct FEnhancedInputActionValueBinding* MoveActionBinding;
 	struct FEnhancedInputActionValueBinding* LookActionBinding;
 	//struct FEnhancedInputActionValueBinding* RunActionBinding;
-	//struct FEnhancedInputActionValueBinding* LookActionBinding;
+	//struct FEnhancedInputActionValueBinding* LookActionBinding;\
+
 private:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
