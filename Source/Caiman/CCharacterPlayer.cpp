@@ -39,6 +39,8 @@ ACCharacterPlayer::ACCharacterPlayer()
 	WaitFrame = 0;
 	//bTrigger = false;
 	PrimaryActorTick.bCanEverTick = true;
+
+
 	//inputmapping 과 연결해서 움직이도록 설정 이를 언리얼상에서 매핑으로 해결함
 }
 
@@ -67,7 +69,29 @@ void ACCharacterPlayer::BeginPlay()
 	//check(bWasInitialized && "Did you forget to call Init()?");
 	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
 	LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
-	
+	JumpActionBinding = &EnhancedInputComponent->BindActionValue(JumpAction);
+	// Get the player controller that you care about from wherever you want
+	//APlayerController* PC = <Your Player Controller>;
+	//PlayerController;
+	//{
+	//	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+
+	//	UEnhancedPlayerInput* PlayerInput = Subsystem->GetPlayerInput();
+
+	//	UInputAction* InputAction = JumpAction; /** Get your UInputAction asset from anywhere, likely a UPROPERTY on your blueprint or something */;
+	//	FInputActionValue ActionValue(1.0f); // This can be a bool, float, FVector2D, or FVector
+	//	PlayerInput->InjectInputForAction(InputAction, ActionValue);
+	//}
+
+	//{
+	//	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+
+	//	UEnhancedPlayerInput* PlayerInput = Subsystem->GetPlayerInput();
+
+	//	UInputAction* InputAction = JumpAction; /** Get your UInputAction asset from anywhere, likely a UPROPERTY on your blueprint or something */;
+	//	FInputActionValue ActionValue(1.0f); // This can be a bool, float, FVector2D, or FVector
+	//	PlayerInput->InjectInputForAction(InputAction, ActionValue);
+	//}
 	LateBeginPlay();
 }
 
@@ -83,8 +107,40 @@ void ACCharacterPlayer::setCurState(ECharacterState state)
 {
 	currentState = state;
 }
+APlayerController* ACCharacterPlayer::getPlayerController()
+{
+	return PlayerController;
+}
+UInputAction* ACCharacterPlayer::getInputAction(FString str)
+{
+	if (str.Equals("Jump"))
+		return JumpAction;
+	if (str.Equals("Move"))
+		return MovementAction;
+	/*switch (str)
+	{
+	case "Move":
+		return MovementAction;
+	case "Jump":
+		return JumpAction;
+	default:
+		return nullptr;
+	}*/
+	return nullptr;
+}
 void ACCharacterPlayer::update()
 {
+	//{
+	//	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+
+	//	UEnhancedPlayerInput* PlayerInput = Subsystem->GetPlayerInput();
+
+	//	UInputAction* InputAction = JumpAction; /** Get your UInputAction asset from anywhere, likely a UPROPERTY on your blueprint or something */;
+	//	FInputActionValue ActionValue(1.0f); // This can be a bool, float, FVector2D, or FVector
+	//	/*UInputTrigger* Trigger = NewObject<UInputTrigger>();
+	//	Trigger->key*/
+	//	PlayerInput->InjectInputForAction(InputAction, ActionValue);
+	//}
 	Look(LookActionBinding->GetValue());
 	switch (currentState)
 	{
@@ -451,7 +507,9 @@ void ACCharacterPlayer::Jump()
 {
 	//if (currentState != ECharacterState::S_IDLE && currentState != ECharacterState::S_WALK && currentState != ECharacterState::S_RUN)
 	//	return;
-	if (!PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
+	/*if (!PlayerController->WasInputKeyJustReleased(EKeys::SpaceBar))
+		return;*/
+	if (JumpActionBinding->GetValue().GetMagnitude() <0.1f)
 		return;
 	Super::Jump();
 	SetPrevious();

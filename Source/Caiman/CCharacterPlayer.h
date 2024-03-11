@@ -48,6 +48,8 @@ public:
 	void updateInput();
 	ECharacterState getCurState();
 	void setCurState(ECharacterState state);
+	APlayerController* getPlayerController();
+	UInputAction* getInputAction(FString str);
 protected:
 
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -146,6 +148,7 @@ protected:
 	TArray<FEnhancedActionKeyMapping> KeyMappingArray;
 	struct FEnhancedInputActionValueBinding* MoveActionBinding;
 	struct FEnhancedInputActionValueBinding* LookActionBinding;
+	struct FEnhancedInputActionValueBinding* JumpActionBinding;
 	//struct FEnhancedInputActionValueBinding* RunActionBinding;
 	//struct FEnhancedInputActionValueBinding* LookActionBinding;\
 
