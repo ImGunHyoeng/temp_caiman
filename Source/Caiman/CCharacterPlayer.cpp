@@ -3,6 +3,7 @@
 
 #include "CCharacterPlayer.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameFramework/PlayerInput.h"
 #include "Camera/CameraComponent.h"
 #include "InputMappingContext.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -67,34 +68,50 @@ void ACCharacterPlayer::BeginPlay()
 	
 	check(EnhancedInputComponent != nullptr&&"you don't allow EnhancedInputComponent");
 	//check(bWasInitialized && "Did you forget to call Init()?");
+	LateBeginPlay();
+	//SimulateSpaceKeyPress(FName("Jump"),EKeys::SpaceBar);
 	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
 	LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
-	JumpActionBinding = &EnhancedInputComponent->BindActionValue(JumpAction);
-	// Get the player controller that you care about from wherever you want
-	//APlayerController* PC = <Your Player Controller>;
-	//PlayerController;
-	//{
-	//	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
+	//JumpActionBinding = &EnhancedInputComponent->BindActionValue(JumpAction);
+	
+	//DrawActionBinding = &EnhancedInputComponent->BindActionValue(DrawAction);
 
-	//	UEnhancedPlayerInput* PlayerInput = Subsystem->GetPlayerInput();
-
-	//	UInputAction* InputAction = JumpAction; /** Get your UInputAction asset from anywhere, likely a UPROPERTY on your blueprint or something */;
-	//	FInputActionValue ActionValue(1.0f); // This can be a bool, float, FVector2D, or FVector
-	//	PlayerInput->InjectInputForAction(InputAction, ActionValue);
-	//}
-
-	//{
-	//	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-
-	//	UEnhancedPlayerInput* PlayerInput = Subsystem->GetPlayerInput();
-
-	//	UInputAction* InputAction = JumpAction; /** Get your UInputAction asset from anywhere, likely a UPROPERTY on your blueprint or something */;
-	//	FInputActionValue ActionValue(1.0f); // This can be a bool, float, FVector2D, or FVector
-	//	PlayerInput->InjectInputForAction(InputAction, ActionValue);
-	//}
-	LateBeginPlay();
+	//RunActionBinding = &EnhancedInputComponent->BindActionValue(RunAction);
+	//AttackActionBinding = &EnhancedInputComponent->BindActionValue(AttackAction);
 }
+//void ACCharacterPlayer::SimulateSpaceKeyPress()
+//{
+//	 Get the PlayerInput object from the PlayerController
+//	UPlayerInput* PlayerInput = PlayerController->PlayerInput;
+//
+//	 Set the "Space" key axis value to 1.0f (pressed)
+//	PlayerController->InputKey(EKeys::SpaceBar, EInputEvent::IE_Pressed, 1.0f, false);
+//
+//	 After a short delay, simulate releasing the key
+//	FTimerHandle DelayHandle;
+//	GetWorld()->GetTimerManager().SetTimer(DelayHandle, [PlayerInput]()
+//		{
+//			PlayerInput->SetAxisValue(FName("SpaceBar"), 0.0f);  // Release the key
+//		}, 0.1f, false);  // Delay 0.1 seconds
+//}
+void ACCharacterPlayer::SimulateSpaceKeyPress(const FName name,const FKey key)
+{
+	// Get the current value of the "Jump" axis (assuming Space key is mapped to Jump)
+	//float CurrentJumpAxisValue = PlayerController->GetInputAxisValue(name);
 
+	// If the axis value is currently not pressed (0.0f), simulate a press
+	//if (CurrentJumpAxisValue == 0.0f)
+	{
+		PlayerController->InputKey(key, EInputEvent::IE_Pressed, 1.0f, false);
+
+		// Simulate releasing the key after a short delay for a more natural effect
+		//FTimerHandle DelayHandle;
+		//GetWorld()->GetTimerManager().SetTimer(DelayHandle, [PlayerController]()
+		//	{
+		//		PlayerController->InputKey(EKeys::SpaceBar, EInputEvent::IE_Released, 1.0f, false);
+		//	}, 0.1f, false); // Delay 0.1 seconds
+	}
+}
 void ACCharacterPlayer::updateInput()
 {
 
@@ -117,6 +134,13 @@ UInputAction* ACCharacterPlayer::getInputAction(FString str)
 		return JumpAction;
 	if (str.Equals("Move"))
 		return MovementAction;
+	if (str.Equals("Draw"))
+		return DrawAction;
+	if (str.Equals("Attack"))
+		return AttackAction;
+	if (str.Equals("Run"))
+		return RunAction;
+	
 	/*switch (str)
 	{
 	case "Move":
@@ -141,6 +165,8 @@ void ACCharacterPlayer::update()
 	//	Trigger->key*/
 	//	PlayerInput->InjectInputForAction(InputAction, ActionValue);
 	//}
+	//UE_LOG(LogTemp, Warning, TEXT("bWantCombo:%s"), bWantCombo ? TEXT("True") : TEXT("False"));
+	//UE_LOG(LogTemp,Warning,TEXT("%d"), JumpActionBinding->GetValue().GetValueType());
 	Look(LookActionBinding->GetValue());
 	switch (currentState)
 	{
@@ -149,10 +175,11 @@ void ACCharacterPlayer::update()
 	{
 		Move(MoveActionBinding->GetValue());
 		//Look(LookActionBinding->GetValue());
+
 		Jump();
 		Walk();
 		Draw();
-		Roll();
+		//Roll();
 		/*if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
 		{
 			Move(MoveActionBinding->GetValue());
@@ -171,8 +198,8 @@ void ACCharacterPlayer::update()
 		Move(MoveActionBinding->GetValue());
 		//Look(LookActionBinding->GetValue());
 		GoIdle();
-		Jump();
-		Roll();
+		//Jump();
+		//Roll();
 		Run();
 
 		//Walk();
@@ -234,7 +261,7 @@ void ACCharacterPlayer::update()
 	case ECharacterState::D_IDLE:
 	{
 		Move(MoveActionBinding->GetValue());
-		//Look(LookActionBinding->GetValue());
+		Look(LookActionBinding->GetValue());
 		Walk();
 		Draw();
 		Attack();
@@ -380,7 +407,6 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 void ACCharacterPlayer::Look(const FInputActionValue& Value)
 {
 	FVector2D LookAxisVector = Value.Get<FVector2D>();
-
 	AddControllerYawInput(LookAxisVector.X);
 	AddControllerPitchInput(LookAxisVector.Y);
 }
@@ -389,6 +415,12 @@ void ACCharacterPlayer::Draw()
 {
 	/*if (currentState == ECharacterState::JUMP || currentState == ECharacterState::GROUNDED)
 		return;*/
+	//if (!DrawActionBinding->GetValue().GetValueType())
+	//	return;
+	
+	/*if (!DrawActionBinding->GetValue().IsNonZero())
+		return;*/
+
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::R))
 		return;
 		//bSwordDraw = !bSwordDraw;
@@ -433,8 +465,13 @@ void ACCharacterPlayer::Run()
 	/*if (currentState == ECharacterState::JUMP)
 		return;*/
 	//if (currentState == ECharacterState::S_WALK)
-	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftShift))
-		return;
+	//if (!RunActionBinding->GetValue().GetValueType())
+	//	return;
+	// 
+	//if (!RunActionBinding->GetValue().IsNonZero())
+	//	return;
+	//if (RunActionBinding->GetValue().GetMagnitude() < 0.1f)
+	//	return;
 	{
 		SetPrevious();
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
@@ -448,11 +485,19 @@ void ACCharacterPlayer::Walk()
 		//return;
 	//해당하는 것의 인풋액션을 가져옴
 	FVector2D moveValue= FMath::Square<FVector2D>(MoveActionBinding->GetValue().Get<FVector2D>());
+	//if (!MoveActionBinding->GetValue().GetValueType())
+	//	return;
 	//MoveActionBinding->GetValue().GetMagnitude();//해당하는 값을 제곱해주는 것
-	if (MoveActionBinding->GetValue().GetMagnitude()<0.1f)
-		return;
-	
 
+	//if (!MoveActionBinding->GetValue().IsNonZero(0.1f))
+	//	return;
+	/*if (MoveActionBinding->GetValue().GetMagnitude()<0.1f)
+		return;*/
+	//change condition
+	{
+		if (!(PlayerController->WasInputKeyJustPressed(EKeys::W) || PlayerController->WasInputKeyJustPressed(EKeys::A) || PlayerController->WasInputKeyJustPressed(EKeys::S) || PlayerController->WasInputKeyJustPressed(EKeys::D)))
+			return;
+	}
 	if (currentState == ECharacterState::S_IDLE)
 	{
 		SetPrevious();
@@ -490,6 +535,7 @@ void ACCharacterPlayer::GoIdle()
 {
 	FVector2D moveValue = FMath::Square<FVector2D>(MoveActionBinding->GetValue().Get<FVector2D>());
 	//MoveActionBinding->GetValue().GetMagnitude();//해당하는 값을 제곱해주는 것
+
 	if (MoveActionBinding->GetValue().GetMagnitude() > 0.1f)
 		return;
 
@@ -509,8 +555,14 @@ void ACCharacterPlayer::Jump()
 	//	return;
 	/*if (!PlayerController->WasInputKeyJustReleased(EKeys::SpaceBar))
 		return;*/
-	if (JumpActionBinding->GetValue().GetMagnitude() <0.1f)
+	//if (!JumpActionBinding->GetValue().GetValueType())
+	//	return;
+	if (!PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
 		return;
+	//if (!JumpActionBinding->GetValue().IsNonZero())
+	//	return;
+	//if (JumpActionBinding->GetValue().GetMagnitude() <0.1f)
+	//	return;
 	Super::Jump();
 	SetPrevious();
 	currentState = ECharacterState::JUMP;
@@ -533,8 +585,10 @@ void ACCharacterPlayer::SetPrevious()
 
 void ACCharacterPlayer::JumpAttack()
 {
-	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-		return;
+	//if (!AttackActionBinding->GetValue().GetValueType())
+	//	return;
+	//if (AttackActionBinding->GetValue().GetMagnitude() < 0.1f)
+	//	return;
 	bIsJumpAttack = true;
 	WaitFrame = 30;
 	
@@ -542,8 +596,10 @@ void ACCharacterPlayer::JumpAttack()
 
 void ACCharacterPlayer::Attack()
 {
-	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-		return;
+	//if (!AttackActionBinding->GetValue().GetValueType())
+	//	return;
+	//if (AttackActionBinding->GetValue().GetMagnitude() < 0.1f)
+	//	return;
 	SetPrevious();
 	currentState = ECharacterState::ATTACK;
 	WaitFrame = 70;
@@ -587,6 +643,7 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	// InputAction과 InputMappingContext를 연결
 	EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+
 	//EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	//기본 움직임 가능
 	//EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);

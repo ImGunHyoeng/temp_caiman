@@ -50,6 +50,7 @@ public:
 	void setCurState(ECharacterState state);
 	APlayerController* getPlayerController();
 	UInputAction* getInputAction(FString str);
+	void SimulateSpaceKeyPress(const FName name, const FKey key);
 protected:
 
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -93,7 +94,7 @@ protected:
 	//UInputAction* JumpAction;*/
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-
+	
 
 	void Move(const FInputActionValue& Value);
 	//void Move(const FInputActionValue& Value);
@@ -146,11 +147,16 @@ protected:
 	TObjectPtr<class UEnhancedInputComponent> EnhancedInputComponent;
 	APlayerController* PlayerController;
 	TArray<FEnhancedActionKeyMapping> KeyMappingArray;
-	struct FEnhancedInputActionValueBinding* MoveActionBinding;
-	struct FEnhancedInputActionValueBinding* LookActionBinding;
-	struct FEnhancedInputActionValueBinding* JumpActionBinding;
-	//struct FEnhancedInputActionValueBinding* RunActionBinding;
-	//struct FEnhancedInputActionValueBinding* LookActionBinding;\
+
+	
+	
+	struct FEnhancedInputActionValueBinding const*  MoveActionBinding;
+	struct FEnhancedInputActionValueBinding const* LookActionBinding;
+	
+	//struct FEnhancedInputActionValueBinding const* JumpActionBinding;
+	//struct FEnhancedInputActionValueBinding const*  DrawActionBinding;
+	//struct FEnhancedInputActionValueBinding const* RunActionBinding;
+	//struct FEnhancedInputActionValueBinding const* AttackActionBinding;
 
 private:
 	

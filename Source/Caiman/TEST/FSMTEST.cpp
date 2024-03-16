@@ -23,17 +23,6 @@ bool FFsmTest::RunTest(const FString& Parameters)
 	//playerController.PlayerInput
 	
 	TestEqual(TEXT("Player init stat idle"), Player->getCurState(), ECharacterState::S_IDLE);
-	{
-		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(playerController->GetLocalPlayer());
-
-		UEnhancedPlayerInput* PlayerInput = Subsystem->GetPlayerInput();
-
-		UInputAction* InputAction =Player->getInputAction(TEXT("Jump")); 
-		/** Get your UInputAction asset from anywhere, likely a UPROPERTY on your blueprint or something */;
-		FInputActionValue ActionValue(1.0f); // This can be a bool, float, FVector2D, or FVector
-		PlayerInput->InjectInputForAction(InputAction, ActionValue);
-		TestEqual(TEXT("Player jump"), Player->getCurState(), ECharacterState::JUMP);
-	}
 	Player->Destroy();
 	world->DestroyWorld(false);
 	return true;

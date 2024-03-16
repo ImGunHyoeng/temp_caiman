@@ -21,11 +21,10 @@ protected:
 	APlayerController* controller;
 	virtual void BeginPlay()override;
 	virtual void Tick(float DeltaTime) override;
-	bool one = false;
-	//UEnhancedInputLocalPlayerSubsystem* Subsystem;
+	bool bactivateFireInputAction = false;
+	
 
-	//UEnhancedPlayerInput* PlayerInput;
-
-	//UInputAction* InputAction;
-
+	TObjectPtr<class UEnhancedInputLocalPlayerSubsystem> Subsystem;
+	TObjectPtr<class UEnhancedPlayerInput> PlayerInput;
+	TObjectPtr<class UInputAction> InputAction;
 };
