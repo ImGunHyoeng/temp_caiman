@@ -41,9 +41,6 @@ ACCharacterPlayer::ACCharacterPlayer()
 	WaitFrame = 0;
 	//bTrigger = false;
 	PrimaryActorTick.bCanEverTick = true;
-
-
-	//inputmapping 과 연결해서 움직이도록 설정 이를 언리얼상에서 매핑으로 해결함
 }
 
 void ACCharacterPlayer::BeginPlay()
@@ -92,7 +89,8 @@ void ACCharacterPlayer::SimulateSpaceKeyPress(const FName name)
 	}
 }
 
-void ACCharacterPlayer::OnReleaseKey() {
+void ACCharacterPlayer::OnReleaseKey() 
+{
 	PlayerController->InputKey(key, EInputEvent::IE_Released, 1.0f, false);
 }
 void ACCharacterPlayer::setKey(FKey _key)
@@ -115,85 +113,25 @@ APlayerController* ACCharacterPlayer::getPlayerController()
 {
 	return PlayerController;
 }
-UInputAction* ACCharacterPlayer::getInputAction(FString str)
-{
-	if (str.Equals("Jump"))
-		return JumpAction;
-	if (str.Equals("Move"))
-		return MovementAction;
-	if (str.Equals("Draw"))
-		return DrawAction;
-	if (str.Equals("Attack"))
-		return AttackAction;
-	if (str.Equals("Run"))
-		return RunAction;
-	
-	/*switch (str)
-	{
-	case "Move":
-		return MovementAction;
-	case "Jump":
-		return JumpAction;
-	default:
-		return nullptr;
-	}*/
-	return nullptr;
-}
+
 void ACCharacterPlayer::update()
 {
-	//{
-	//	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
-
-	//	UEnhancedPlayerInput* PlayerInput = Subsystem->GetPlayerInput();
-
-	//	UInputAction* InputAction = JumpAction; /** Get your UInputAction asset from anywhere, likely a UPROPERTY on your blueprint or something */;
-	//	FInputActionValue ActionValue(1.0f); // This can be a bool, float, FVector2D, or FVector
-	//	/*UInputTrigger* Trigger = NewObject<UInputTrigger>();
-	//	Trigger->key*/
-	//	PlayerInput->InjectInputForAction(InputAction, ActionValue);
-	//}
-	//UE_LOG(LogTemp, Warning, TEXT("bWantCombo:%s"), bWantCombo ? TEXT("True") : TEXT("False"));
-	//UE_LOG(LogTemp,Warning,TEXT("%d"), JumpActionBinding->GetValue().GetValueType());
 	Look(LookActionBinding->GetValue());
 	switch (currentState)
 	{
-
 	case ECharacterState::S_IDLE:
 	{
 		Move(MoveActionBinding->GetValue());
-		//Look(LookActionBinding->GetValue());
-
 		Jump();
 		Walk();
 		Draw();
-		//Roll();
-		/*if(GetWorld()->GetFirstPlayerController()->WasInputKeyJustPressed(EKeys::A))
-		{
-			Move(MoveActionBinding->GetValue());
-		}*/
-		//Move(EnhancedInputComponent->execOnInputOwnerEndPlayed());
-		/*if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Sheath))
-			return;
-		if(!bTrigger)
-			return;
-		PlayAnimMontage(AM_Sheath);*/
-		//bTrigger = false;
 		return;
 	}
 	case ECharacterState::S_WALK:
 	{
 		Move(MoveActionBinding->GetValue());
-		//Look(LookActionBinding->GetValue());
-		GoIdle();
-		//Jump();
-		//Roll();
 		Run();
-
-		//Walk();
-	/*	EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Run);
-		EnhancedInputComponent->GetActionEventBindings();
-		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
-		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious);*/
+		GoIdle();
 		return;
 	}
 	case ECharacterState::S_RUN:
@@ -204,10 +142,6 @@ void ACCharacterPlayer::update()
 		Roll();
 		GoWalk();
 		Draw();
-		//if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
-		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
-		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious); 
-		//EnhancedInputComponent->GetActionEventBindings();
 		return;
 	}
 	case ECharacterState::JUMP:
@@ -252,23 +186,14 @@ void ACCharacterPlayer::update()
 		Walk();
 		Draw();
 		Attack();
-		/*	if (GetMesh()->GetAnimInstance()->Montage_IsPlaying(AM_Draw))
-			return;
-		if(!bTrigger)
-			return;
-		PlayAnimMontage(AM_Draw);
-		bTrigger = false;*/
-		//bTrigger = false;
 		return;
 	}
 	case ECharacterState::D_WALK:
 		//Walk();
 	{
 		Move(MoveActionBinding->GetValue());
-		//Look(LookActionBinding->GetValue());
 		GoIdle();
 		Attack();
-
 		return;
 	}
 	case ECharacterState::D_ROLL:
@@ -316,46 +241,6 @@ void ACCharacterPlayer::update()
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	//상태확인용
-	//UE_LOG(LogTemp, Display, TEXT("%d"), currentState);
-	
-	
-	//UE_LOG(LogTemp, Display, TEXT("%d"), WaitFrame);
-	//UE_LOG(LogTemp, Display, TEXT("%f"), GetVelocity().Length());
-	//UE_LOG(LogTemp, Warning, TEXT("Bool 값: %s"), bValue ? TEXT("True") : TEXT("False"));
-	//UE_LOG(LogTemp, Display, TEXT("Bool 값:%s"), bPressedJump? TEXT("True") : TEXT("False"));
-	 //UGameplayStatics::GetPlayerController(this, 0);
-	//PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar);
-	//UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAnalogKeyState(EKeys::SpaceBar));
-
-	//PlayerController->GetInputAxisKeyValue(MovementAction->getk);//해당하는 것은 방향성을 가진것만 사용되는 느낌
-	//UE_LOG(LogTemp, Display, TEXT("%f"), PlayerController->GetInputAxisKeyValue(EKeys::Up));
-	/*PlayerController->GetInputBuffer();
-	EnhancedInputComponent->setaction*/
-	//float KeyDownTime = PlayerController->GetInputKeyTimeDown(EKeys::SpaceBar);
-	//{
-
-	//}
-	//EnhancedInputComponent->GetActionEventBindings();
-	//EnhancedInputComponent->GetActionBinding(0);//.bConsumeInput = false;
-	/*EnhancedInputComponent->RemoveActionEventBinding(0);
-	EnhancedInputComponent->RemoveActionEventBinding(0);*/
-	//바인드 된것과 아닌것을 지우기
-	//바인딩된것을 지우는 방식 
-	//계속해서 바인딩되고 하기에 쓸모없는 데이터를 낭비하게 된다.
-	//이렇게 하지 말고 InputAction의 상태를 가지고 하자
-
-	//MovementAction.
-	
-	//PlayerContext->GetMapping(0);
-	
-	
-	
-	//EnhancedInputComponent
-	//PlayerContext->get
-	//FText textname=KeyMappingArray.FindByKey(fkey)
-	//for()
 	update();
 	
 }
@@ -363,13 +248,9 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 
 void ACCharacterPlayer::Move(const FInputActionValue& Value)
 {
-	//if (currentState!=ECharacterState::S_IDLE&& currentState != ECharacterState::S_WALK && currentState != ECharacterState::S_RUN&& currentState != ECharacterState::D_IDLE&& currentState != ECharacterState::D_WALK)
-	//	return;
+
 	FVector2D MovementVector = Value.Get<FVector2D>();
-	//MovementVector= MoveActionBinding->GetValue().Get<FVector2D>();
-	//두개 다 같은 문구이다
-	
-	//MoveActionBinding->GetValue().Get<FVector2D>();
+
 
 	const FRotator Rotation = Controller->GetControlRotation();
 	const FRotator YawRotation(0, Rotation.Yaw, 0);
@@ -381,14 +262,6 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 	AddMovementInput(ForwardDirection, MovementVector.X*moveSpeed);
 	
 	AddMovementInput(RightDirection, MovementVector.Y * moveSpeed);
-	//if (currentState == ECharacterState::S_IDLE)
-	//{
-	//	currentState = ECharacterState::S_WALK;
-	//}
-	//if (currentState == ECharacterState::D_IDLE)
-	//{
-	//	currentState = ECharacterState::D_WALK;
-	//}
 }
 
 void ACCharacterPlayer::Look(const FInputActionValue& Value)
@@ -400,13 +273,7 @@ void ACCharacterPlayer::Look(const FInputActionValue& Value)
 
 void ACCharacterPlayer::Draw()
 {
-	/*if (currentState == ECharacterState::JUMP || currentState == ECharacterState::GROUNDED)
-		return;*/
-	//if (!DrawActionBinding->GetValue().GetValueType())
-	//	return;
 	
-	/*if (!DrawActionBinding->GetValue().IsNonZero())
-		return;*/
 
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::R))
 		return;
@@ -449,16 +316,7 @@ void ACCharacterPlayer::NoAnimDraw()
 
 void ACCharacterPlayer::Run()
 {
-	/*if (currentState == ECharacterState::JUMP)
-		return;*/
-	//if (currentState == ECharacterState::S_WALK)
-	//if (!RunActionBinding->GetValue().GetValueType())
-	//	return;
-	// 
-	//if (!RunActionBinding->GetValue().IsNonZero())
-	//	return;
-	//if (RunActionBinding->GetValue().GetMagnitude() < 0.1f)
-	//	return;
+
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftShift))
 		return;
 	{
@@ -470,25 +328,8 @@ void ACCharacterPlayer::Run()
 
 void ACCharacterPlayer::Walk()
 {
-	//if (currentState == ECharacterState::JUMP|| currentState == ECharacterState::GROUNDED||currentState==ECharacterState::JUMPATTACK)
-		//return;
-	//해당하는 것의 인풋액션을 가져옴
-	FVector2D moveValue= FMath::Square<FVector2D>(MoveActionBinding->GetValue().Get<FVector2D>());
-	//if (!MoveActionBinding->GetValue().GetValueType())
-	//	return;
-	//MoveActionBinding->GetValue().GetMagnitude();//해당하는 값을 제곱해주는 것
-
-	//if (!MoveActionBinding->GetValue().IsNonZero(0.1f))
-	//	return;
-	/*if (MoveActionBinding->GetValue().GetMagnitude()<0.1f)
-		return;*/
-	//change condition
 	if (MoveActionBinding->GetValue().GetMagnitude() < 0.1f)
 		return;
-	//{
-	//	if (!(PlayerController->WasInputKeyJustPressed(EKeys::W) || PlayerController->WasInputKeyJustPressed(EKeys::A) || PlayerController->WasInputKeyJustPressed(EKeys::S) || PlayerController->WasInputKeyJustPressed(EKeys::D)))
-	//		return;
-	//}
 	if (currentState == ECharacterState::S_IDLE)
 	{
 		SetPrevious();
@@ -542,18 +383,9 @@ void ACCharacterPlayer::GoIdle()
 
 void ACCharacterPlayer::Jump()
 {
-	//if (currentState != ECharacterState::S_IDLE && currentState != ECharacterState::S_WALK && currentState != ECharacterState::S_RUN)
-	//	return;
-	/*if (!PlayerController->WasInputKeyJustReleased(EKeys::SpaceBar))
-		return;*/
-	//if (!JumpActionBinding->GetValue().GetValueType())
-	//	return;
+
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
 		return;
-	//if (!JumpActionBinding->GetValue().IsNonZero())
-	//	return;
-	//if (JumpActionBinding->GetValue().GetMagnitude() <0.1f)
-	//	return;
 	Super::Jump();
 	SetPrevious();
 	currentState = ECharacterState::JUMP;
@@ -576,10 +408,6 @@ void ACCharacterPlayer::SetPrevious()
 
 void ACCharacterPlayer::JumpAttack()
 {
-	//if (!AttackActionBinding->GetValue().GetValueType())
-	//	return;
-	//if (AttackActionBinding->GetValue().GetMagnitude() < 0.1f)
-	//	return;
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 		return;
 	bIsJumpAttack = true;
@@ -589,10 +417,7 @@ void ACCharacterPlayer::JumpAttack()
 
 void ACCharacterPlayer::Attack()
 {
-	//if (!AttackActionBinding->GetValue().GetValueType())
-	//	return;
-	//if (AttackActionBinding->GetValue().GetMagnitude() < 0.1f)
-	//	return;
+
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 		return;
 	SetPrevious();

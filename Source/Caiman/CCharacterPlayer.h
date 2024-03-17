@@ -46,16 +46,17 @@ public:
 	void AttackCheck();
 	void update();
 	void updateInput();
+	
+	
 	ECharacterState getCurState();
 	void setCurState(ECharacterState state);
 	APlayerController* getPlayerController();
-	UInputAction* getInputAction(FString str);
 	void SimulateSpaceKeyPress(const FName name);
 	void OnReleaseKey();
-	FKey key;
+	
 	void setKey(FKey _key);
 protected:
-
+	FKey key;
 	UPROPERTY(EditAnywhere, Category = Input)
 		class UInputMappingContext* PlayerContext;
 	//매핑 텍스트
