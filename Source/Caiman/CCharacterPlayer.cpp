@@ -11,6 +11,7 @@
 #include "CMyWeapon.h"
 #include "Components/SceneComponent.h"
 #include "InputCore.h"
+#include "TimerManager.h"
 
 
 
@@ -72,45 +73,31 @@ void ACCharacterPlayer::BeginPlay()
 	//SimulateSpaceKeyPress(FName("Jump"),EKeys::SpaceBar);
 	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
 	LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
-	//JumpActionBinding = &EnhancedInputComponent->BindActionValue(JumpAction);
-	
-	//DrawActionBinding = &EnhancedInputComponent->BindActionValue(DrawAction);
 
-	//RunActionBinding = &EnhancedInputComponent->BindActionValue(RunAction);
-	//AttackActionBinding = &EnhancedInputComponent->BindActionValue(AttackAction);
 }
-//void ACCharacterPlayer::SimulateSpaceKeyPress()
-//{
-//	 Get the PlayerInput object from the PlayerController
-//	UPlayerInput* PlayerInput = PlayerController->PlayerInput;
-//
-//	 Set the "Space" key axis value to 1.0f (pressed)
-//	PlayerController->InputKey(EKeys::SpaceBar, EInputEvent::IE_Pressed, 1.0f, false);
-//
-//	 After a short delay, simulate releasing the key
-//	FTimerHandle DelayHandle;
-//	GetWorld()->GetTimerManager().SetTimer(DelayHandle, [PlayerInput]()
-//		{
-//			PlayerInput->SetAxisValue(FName("SpaceBar"), 0.0f);  // Release the key
-//		}, 0.1f, false);  // Delay 0.1 seconds
-//}
-void ACCharacterPlayer::SimulateSpaceKeyPress(const FName name,const FKey key)
-{
-	// Get the current value of the "Jump" axis (assuming Space key is mapped to Jump)
-	//float CurrentJumpAxisValue = PlayerController->GetInputAxisValue(name);
 
-	// If the axis value is currently not pressed (0.0f), simulate a press
-	//if (CurrentJumpAxisValue == 0.0f)
+
+void ACCharacterPlayer::SimulateSpaceKeyPress(const FName name)
+{
+	if (!PlayerController->IsInputKeyDown(key))
 	{
 		PlayerController->InputKey(key, EInputEvent::IE_Pressed, 1.0f, false);
 
-		// Simulate releasing the key after a short delay for a more natural effect
-		//FTimerHandle DelayHandle;
-		//GetWorld()->GetTimerManager().SetTimer(DelayHandle, [PlayerController]()
-		//	{
-		//		PlayerController->InputKey(EKeys::SpaceBar, EInputEvent::IE_Released, 1.0f, false);
-		//	}, 0.1f, false); // Delay 0.1 seconds
+		FTimerHandle ReleaseHandle;
+		FTimerDelegate ReleaseDelegate;
+
+		ReleaseDelegate.BindUObject(this, &ACCharacterPlayer::OnReleaseKey); 
+		PlayerController->GetWorldTimerManager().SetTimer(ReleaseHandle, ReleaseDelegate, 2.0f, false);
+
 	}
+}
+
+void ACCharacterPlayer::OnReleaseKey() {
+	PlayerController->InputKey(key, EInputEvent::IE_Released, 1.0f, false);
+}
+void ACCharacterPlayer::setKey(FKey _key)
+{
+	key = _key;
 }
 void ACCharacterPlayer::updateInput()
 {
@@ -216,7 +203,7 @@ void ACCharacterPlayer::update()
 		Jump();
 		Roll();
 		GoWalk();
-
+		Draw();
 		//if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
 		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Completed, this, &ACCharacterPlayer::GoPrevious);
 		//EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Canceled, this, &ACCharacterPlayer::GoPrevious); 
@@ -472,6 +459,8 @@ void ACCharacterPlayer::Run()
 	//	return;
 	//if (RunActionBinding->GetValue().GetMagnitude() < 0.1f)
 	//	return;
+	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftShift))
+		return;
 	{
 		SetPrevious();
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
@@ -494,10 +483,12 @@ void ACCharacterPlayer::Walk()
 	/*if (MoveActionBinding->GetValue().GetMagnitude()<0.1f)
 		return;*/
 	//change condition
-	{
-		if (!(PlayerController->WasInputKeyJustPressed(EKeys::W) || PlayerController->WasInputKeyJustPressed(EKeys::A) || PlayerController->WasInputKeyJustPressed(EKeys::S) || PlayerController->WasInputKeyJustPressed(EKeys::D)))
-			return;
-	}
+	if (MoveActionBinding->GetValue().GetMagnitude() < 0.1f)
+		return;
+	//{
+	//	if (!(PlayerController->WasInputKeyJustPressed(EKeys::W) || PlayerController->WasInputKeyJustPressed(EKeys::A) || PlayerController->WasInputKeyJustPressed(EKeys::S) || PlayerController->WasInputKeyJustPressed(EKeys::D)))
+	//		return;
+	//}
 	if (currentState == ECharacterState::S_IDLE)
 	{
 		SetPrevious();
@@ -589,6 +580,8 @@ void ACCharacterPlayer::JumpAttack()
 	//	return;
 	//if (AttackActionBinding->GetValue().GetMagnitude() < 0.1f)
 	//	return;
+	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+		return;
 	bIsJumpAttack = true;
 	WaitFrame = 30;
 	
@@ -600,6 +593,8 @@ void ACCharacterPlayer::Attack()
 	//	return;
 	//if (AttackActionBinding->GetValue().GetMagnitude() < 0.1f)
 	//	return;
+	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+		return;
 	SetPrevious();
 	currentState = ECharacterState::ATTACK;
 	WaitFrame = 70;

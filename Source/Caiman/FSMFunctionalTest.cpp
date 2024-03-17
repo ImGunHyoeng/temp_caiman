@@ -46,43 +46,45 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (bactivateFireInputAction)
 	{
-		Player->SimulateSpaceKeyPress(FName("Jump"), EKeys::SpaceBar);
-		//FInputActionValue ActionValue(1.0f); // This can be a bool, float, FVector2D, or FVector
-		//PlayerInput->InjectInputForAction(InputAction, ActionValue);
+		Player->setKey(EKeys::SpaceBar);
+		Player->SimulateSpaceKeyPress(FName("Jump"));
 		bactivateFireInputAction = false;
 	}
 	
 	if (Player->getCurState() == ECharacterState::JUMP)
 	{
-		bactivateFireInputAction = true;
-		//LogMessage(FString("Jump is well"));
-		FinishTest(EFunctionalTestResult::Succeeded, FString("FSM work well"));
-		UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
-		//InputAction = Player->getInputAction(TEXT("Move"));
+		//bactivateFireInputAction = true;
+		LogMessage(FString("Jump is well"));
+		Player->setKey(EKeys::W);
+		Player->SimulateSpaceKeyPress(FName("Move"));
 	}
 
 	if (Player->getCurState() == ECharacterState::S_WALK)
 	{
-		bactivateFireInputAction = true;
+		//bactivateFireInputAction = true;
 		LogMessage(FString("Walk is well"));
 	//	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
-		InputAction = Player->getInputAction(TEXT("Run"));
+		Player->setKey(EKeys::W);
+		Player->SimulateSpaceKeyPress(FName("Move"));
+		Player->setKey(EKeys::LeftShift);
+		Player->SimulateSpaceKeyPress(FName("Run"));
 	}
 
 	if (Player->getCurState() == ECharacterState::S_RUN)
 	{
-		bactivateFireInputAction = true;
+		//bactivateFireInputAction = true;
 		LogMessage(FString("Run is well"));
 	//	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
-		InputAction = Player->getInputAction(TEXT("Draw"));
+		Player->setKey(EKeys::R);
+		Player->SimulateSpaceKeyPress(FName("Draw"));
 	}
 
 	if (Player->getCurState() == ECharacterState::D_IDLE)
 	{
-		bactivateFireInputAction = true;
+		//bactivateFireInputAction = true;
 		LogMessage(FString("Draw is well"));
-	//	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
-		InputAction = Player->getInputAction(TEXT("Attack"));
+		Player->setKey(EKeys::LeftMouseButton);
+		Player->SimulateSpaceKeyPress(FName("Attack"));
 	}
 
 	if (Player->getCurState() == ECharacterState::ATTACK)

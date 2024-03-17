@@ -50,7 +50,10 @@ public:
 	void setCurState(ECharacterState state);
 	APlayerController* getPlayerController();
 	UInputAction* getInputAction(FString str);
-	void SimulateSpaceKeyPress(const FName name, const FKey key);
+	void SimulateSpaceKeyPress(const FName name);
+	void OnReleaseKey();
+	FKey key;
+	void setKey(FKey _key);
 protected:
 
 	UPROPERTY(EditAnywhere, Category = Input)
