@@ -99,7 +99,173 @@ void ACCharacterPlayer::setKey(FKey _key)
 }
 void ACCharacterPlayer::updateInput()
 {
-
+	switch (currentState)
+	{
+		case ECharacterState::S_IDLE:
+		{
+			if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
+			{
+				changeState(ECharacterState::JUMP);
+				return;
+			}
+			if (PlayerController->WasInputKeyJustPressed(EKeys::R))
+			{
+				NoAnimDraw();
+				PlayAnimMontage(AM_Draw);
+				changeState(ECharacterState::D_IDLE);
+				return;
+			}
+			if (MoveActionBinding->GetValue().GetMagnitude() > 0.1f)
+			{
+				changeState(ECharacterState::S_WALK);
+				return;
+			}
+			return;
+		}
+		case ECharacterState::S_WALK:
+		{
+			if (PlayerController->WasInputKeyJustPressed(EKeys::LeftShift))
+			{
+				changeState(ECharacterState::S_RUN);
+				return;
+			}
+			if (MoveActionBinding->GetValue().GetMagnitude() < 0.1f)
+			{
+				changeState(ECharacterState::S_IDLE);
+				return;
+			}
+			if (PlayerController->WasInputKeyJustPressed(EKeys::R))
+			{
+				NoAnimDraw();
+				PlayAnimMontage(AM_Draw);
+				changeState(ECharacterState::D_IDLE);
+				return;
+			}
+			return;
+		}
+		case ECharacterState::S_RUN:
+		{
+			if (PlayerController->WasInputKeyJustReleased(EKeys::LeftShift))
+			{
+				changeState(ECharacterState::S_WALK);
+				return;
+			}
+			if (PlayerController->WasInputKeyJustReleased(EKeys::SpaceBar))
+			{
+				changeState(ECharacterState::JUMP);
+				return;
+			}
+			if (PlayerController->WasInputKeyJustPressed(EKeys::R))
+			{
+				NoAnimDraw();
+				PlayAnimMontage(AM_Draw);
+				changeState(ECharacterState::D_IDLE);
+				return;
+			}
+			return;
+		}
+		case ECharacterState::JUMP:
+		{
+			if (PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+			{
+				bIsJumpAttack = true;
+				WaitFrame = 30;
+				return;
+			}
+			if (bIsJumpAttack)
+			{
+				NoAnimDraw();
+				setPreviousState();
+				changeState(ECharacterState::JUMPATTACK);
+				WaitFrame = 50;
+				bIsJump = false;
+				return;
+			}
+			if (!(GetCharacterMovement()->IsFalling()))
+			{
+				Landing();
+				WaitFrame = 40;
+			}
+			return;
+		}
+		case ECharacterState::GROUNDED:
+		{
+			WaitFrame--;
+			if (WaitFrame == 0)
+			{
+				setPreviousState();
+				currentState = ECharacterState::S_IDLE;
+			}
+			return;
+		}
+		case ECharacterState::D_IDLE:
+		{
+			if (PlayerController->WasInputKeyJustPressed(EKeys::R))
+			{
+				NoAnimDraw();
+				PlayAnimMontage(AM_Sheath);
+				changeState(ECharacterState::S_IDLE);
+				return;
+			}
+			if (MoveActionBinding->GetValue().GetMagnitude() > 0.1f)
+			{
+				changeState(ECharacterState::D_WALK);
+				return;
+			}
+			if (PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+			{
+				setPreviousState();
+				currentState = ECharacterState::ATTACK;
+				WaitFrame = 70;
+				ComboAttack();
+				return;
+			}
+			return;
+		}
+		case ECharacterState::D_WALK:
+		{
+			if (MoveActionBinding->GetValue().GetMagnitude() < 0.1f)
+			{
+				changeState(ECharacterState::D_IDLE);
+				return;
+			}
+			if (PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+			{
+				setPreviousState();
+				currentState = ECharacterState::ATTACK;
+				WaitFrame = 70;
+				ComboAttack();
+				return;
+			}
+			if (PlayerController->WasInputKeyJustPressed(EKeys::R))
+			{
+				NoAnimDraw();
+				PlayAnimMontage(AM_Draw);
+				changeState(ECharacterState::S_IDLE);
+				return;
+			}
+			return;
+		}
+		case ECharacterState::ATTACK:
+		{
+			return;
+		}
+		case ECharacterState::JUMPATTACK:
+		{
+			WaitFrame--;
+			if (WaitFrame == 0)
+			{
+				bIsJumpAttack = false;
+				changeState(ECharacterState::D_IDLE);
+			}
+			return;
+		}
+	}
+}
+void ACCharacterPlayer::changeState(ECharacterState inState)
+{
+	setPreviousState();
+	currentState = inState;
 }
 ECharacterState ACCharacterPlayer::getCurState()
 {
@@ -121,58 +287,31 @@ void ACCharacterPlayer::update()
 	{
 	case ECharacterState::S_IDLE:
 	{
-		Move(MoveActionBinding->GetValue());
-		Jump();
-		Walk();
-		Draw();
 		return;
 	}
 	case ECharacterState::S_WALK:
 	{
+		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
 		Move(MoveActionBinding->GetValue());
-		Run();
-		GoIdle();
 		return;
 	}
 	case ECharacterState::S_RUN:
 	{
+		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
 		Move(MoveActionBinding->GetValue());
-		//Look(LookActionBinding->GetValue());
-		Jump();
-		Roll();
-		GoWalk();
-		Draw();
 		return;
 	}
 	case ECharacterState::JUMP:
 	{
-		//Look(LookActionBinding->GetValue());
-		JumpAttack();
-		if (bIsJumpAttack)
-		{
-			NoAnimDraw();
-			SetPrevious();
-			currentState = ECharacterState::JUMPATTACK;
-			//PlayAnimMontage(AM_Draw);
-			WaitFrame = 50;
-			bIsJump = false;
-			return;
-		}
-		if (!(GetCharacterMovement()->IsFalling()))
-		{
-			Landing();
-			WaitFrame = 40;
-		}
+		if(!bPressedJump)
+			Super::Jump();
+		if (bPressedJump)
+			bIsJump = true;
 		return;
 	}
 	case ECharacterState::GROUNDED:
 	{
-		WaitFrame--;
-		if (WaitFrame == 0)
-		{
-			SetPrevious();
-			currentState = ECharacterState::S_IDLE;
-		}
+
 		return;
 	}
 	case ECharacterState::S_ROLL:
@@ -182,18 +321,13 @@ void ACCharacterPlayer::update()
 	case ECharacterState::D_IDLE:
 	{
 		Move(MoveActionBinding->GetValue());
-		Look(LookActionBinding->GetValue());
-		Walk();
-		Draw();
-		Attack();
 		return;
 	}
 	case ECharacterState::D_WALK:
-		//Walk();
+		
 	{
+		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.5f;
 		Move(MoveActionBinding->GetValue());
-		GoIdle();
-		Attack();
 		return;
 	}
 	case ECharacterState::D_ROLL:
@@ -202,14 +336,8 @@ void ACCharacterPlayer::update()
 	}
 	case ECharacterState::JUMPATTACK:
 	{
-		//점프
-		WaitFrame--;
-		if (WaitFrame == 0)
-		{
-			bIsJumpAttack = false;
-			SetPrevious();
-			currentState = ECharacterState::D_IDLE;
-		}
+
+
 		return;
 	}
 	case ECharacterState::DEFENSELESS:
@@ -222,18 +350,16 @@ void ACCharacterPlayer::update()
 			bWantCombo = true;
 		if (bIsCombo)
 		{
-			//Attack_BP();
 			ComboAttack();
 			bIsCombo = false;
 		}
 		if (WaitFrame == 0)
 		{
-			SetPrevious();
+			setPreviousState();
 			currentState = ECharacterState::D_IDLE;
 			bWantCombo = false;
 		}
 		WaitFrame--;
-		//UE_LOG(LogTemp, Warning, TEXT("bWantCombo:%s"), bWantCombo ? TEXT("True") : TEXT("False"));
 		return;
 	}
 	}
@@ -241,6 +367,7 @@ void ACCharacterPlayer::update()
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	updateInput();
 	update();
 	
 }
@@ -260,7 +387,6 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 
 
 	AddMovementInput(ForwardDirection, MovementVector.X*moveSpeed);
-	
 	AddMovementInput(RightDirection, MovementVector.Y * moveSpeed);
 }
 
@@ -279,11 +405,11 @@ void ACCharacterPlayer::Draw()
 		return;
 		//bSwordDraw = !bSwordDraw;
 		NoAnimDraw();
-		SetPrevious();
+		setPreviousState();
 	if (bSwordDraw)
 	{
 		currentState = ECharacterState::D_IDLE;
-		/*SetPrevious();
+		/*setPreviousState();
 		currentState = ECharacterState::D_IDLE;
 		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Draw")); */
 		PlayAnimMontage(AM_Draw);
@@ -292,7 +418,7 @@ void ACCharacterPlayer::Draw()
 	else
 	{
 		currentState = ECharacterState::S_IDLE;
-		/*SetPrevious();
+		/*setPreviousState();
 		currentState = ECharacterState::S_IDLE;
 		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));*/
 		PlayAnimMontage(AM_Sheath);
@@ -320,7 +446,7 @@ void ACCharacterPlayer::Run()
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftShift))
 		return;
 	{
-		SetPrevious();
+		setPreviousState();
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
 		currentState = ECharacterState::S_RUN;
 	}
@@ -332,14 +458,14 @@ void ACCharacterPlayer::Walk()
 		return;
 	if (currentState == ECharacterState::S_IDLE)
 	{
-		SetPrevious();
+		setPreviousState();
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
 		currentState = ECharacterState::S_WALK;
 		return;
 	}
 	if (currentState == ECharacterState::D_IDLE)
 	{
-		SetPrevious();
+		setPreviousState();
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.5f;
 		currentState = ECharacterState::D_WALK;
 	}
@@ -353,41 +479,13 @@ void ACCharacterPlayer::GoPrevious()
 	GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
 }
 
-void ACCharacterPlayer::GoWalk()
-{
-	//해당하는 것은 릴리즈와 트리거 cancled와 같은 상태를 처리할때 사용함
-	if (!PlayerController->WasInputKeyJustReleased(EKeys::LeftShift))
-		return;
-	SetPrevious();
-	currentState = ECharacterState::S_WALK;
-	GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
-}
-
-void ACCharacterPlayer::GoIdle()
-{
-	FVector2D moveValue = FMath::Square<FVector2D>(MoveActionBinding->GetValue().Get<FVector2D>());
-	//MoveActionBinding->GetValue().GetMagnitude();//해당하는 값을 제곱해주는 것
-
-	if (MoveActionBinding->GetValue().GetMagnitude() > 0.1f)
-		return;
-
-	if (currentState <ECharacterState::D_IDLE)
-	{
-		currentState = ECharacterState::S_IDLE;
-		return;
-	}
-	currentState = ECharacterState::D_IDLE;
-
-
-}
-
 void ACCharacterPlayer::Jump()
 {
 
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
 		return;
 	Super::Jump();
-	SetPrevious();
+	setPreviousState();
 	currentState = ECharacterState::JUMP;
 	if (bPressedJump)
 		bIsJump = true;
@@ -396,12 +494,12 @@ void ACCharacterPlayer::Jump()
 
 void ACCharacterPlayer::Landing()
 {
-	SetPrevious();
+	setPreviousState();
 	currentState = ECharacterState::GROUNDED;
 	bIsJump = false;
 }
 
-void ACCharacterPlayer::SetPrevious()
+void ACCharacterPlayer::setPreviousState()
 {
 	previousState = currentState;
 }
@@ -420,10 +518,9 @@ void ACCharacterPlayer::Attack()
 
 	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 		return;
-	SetPrevious();
+	setPreviousState();
 	currentState = ECharacterState::ATTACK;
 	WaitFrame = 70;
-	//Attack_BP();
 	ComboAttack();
 }
 
@@ -435,11 +532,11 @@ void ACCharacterPlayer::Roll()
 	if (currentState < ECharacterState::JUMP)
 	{
 		currentState = ECharacterState::S_ROLL;
-		SetPrevious();
+		setPreviousState();
 		return;
 	}
 	currentState = ECharacterState::D_ROLL;
-	SetPrevious();
+	setPreviousState();
 }
 
 void ACCharacterPlayer::ComboAttack()

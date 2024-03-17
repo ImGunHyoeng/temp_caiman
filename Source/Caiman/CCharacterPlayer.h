@@ -46,6 +46,7 @@ public:
 	void AttackCheck();
 	void update();
 	void updateInput();
+	void changeState(ECharacterState inState);
 	
 	
 	ECharacterState getCurState();
@@ -113,7 +114,7 @@ protected:
 	void GoIdle();
 	virtual void Jump() override;
 	void Landing(); 
-	void SetPrevious();
+	void setPreviousState();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	void JumpAttack();
 	void Attack();
