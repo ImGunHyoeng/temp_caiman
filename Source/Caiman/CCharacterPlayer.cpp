@@ -109,6 +109,8 @@ void ACCharacterPlayer::setKey(FKey _key)
 }
 void ACCharacterPlayer::updateInput()
 {
+	//playerState->updateInput(*this);
+	
 	switch (currentState)
 	{
 		case ECharacterState::S_IDLE:
@@ -134,7 +136,7 @@ void ACCharacterPlayer::updateInput()
 		}
 		case ECharacterState::S_WALK:
 		{
-			if (PlayerController->WasInputKeyJustPressed(EKeys::LeftShift))
+			if (PlayerController->IsInputKeyDown(EKeys::LeftShift))
 			{
 				changeState(ECharacterState::S_RUN);
 				return;
@@ -155,12 +157,12 @@ void ACCharacterPlayer::updateInput()
 		}
 		case ECharacterState::S_RUN:
 		{
-			if (PlayerController->WasInputKeyJustReleased(EKeys::LeftShift))
+			if (PlayerController->IsInputKeyDown(EKeys::LeftShift))
 			{
 				changeState(ECharacterState::S_WALK);
 				return;
 			}
-			if (PlayerController->WasInputKeyJustReleased(EKeys::SpaceBar))
+			if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
 			{
 				changeState(ECharacterState::JUMP);
 				return;
@@ -193,19 +195,21 @@ void ACCharacterPlayer::updateInput()
 			}
 			if (!(GetCharacterMovement()->IsFalling()))
 			{
-				Landing();
+				changeState(ECharacterState::GROUNDED);
+				bIsJump = false;
 				WaitFrame = 40;
 			}
 			return;
 		}
 		case ECharacterState::GROUNDED:
 		{
-			WaitFrame--;
+			
 			if (WaitFrame == 0)
 			{
-				setPreviousState();
-				currentState = ECharacterState::S_IDLE;
+				changeState(ECharacterState::S_IDLE);
+				return;
 			}
+			WaitFrame--;
 			return;
 		}
 		case ECharacterState::D_IDLE:
@@ -292,7 +296,7 @@ APlayerController* ACCharacterPlayer::getPlayerController()
 
 void ACCharacterPlayer::update()
 {
-	
+	//playerState->update(*this);
 	switch (currentState)
 	{
 	case ECharacterState::S_IDLE:

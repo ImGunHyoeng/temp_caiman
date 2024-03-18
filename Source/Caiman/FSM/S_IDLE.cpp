@@ -2,7 +2,7 @@
 
 
 #include "FSM/S_IDLE.h"
-
+#include "CCharacterPlayer.h"
 
 
 void S_IDLE::updateInput(const ACCharacterPlayer& player)
@@ -11,4 +11,5 @@ void S_IDLE::updateInput(const ACCharacterPlayer& player)
 
 void S_IDLE::update(const ACCharacterPlayer& player)
 {
+
 }

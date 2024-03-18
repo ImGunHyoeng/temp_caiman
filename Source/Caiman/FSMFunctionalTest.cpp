@@ -8,7 +8,7 @@
 
 AFSMFunctionalTest::AFSMFunctionalTest()
 {
-	TimeLimit = 5.f;
+	TimeLimit = 8.f;
 	//DistanceThresh 거리 계산 액터가 움직일 수 있는 거리 제한
 }
 
@@ -53,38 +53,42 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 	
 	if (Player->getCurState() == ECharacterState::JUMP)
 	{
-		//bactivateFireInputAction = true;
 		LogMessage(FString("Jump is well"));
+		return;
+	}
+	if (Player->getCurState() == ECharacterState::GROUNDED)
+	{
 		Player->setKey(EKeys::W);
 		Player->SimulateSpaceKeyPress(FName("Move"));
+		return;
 	}
+	
 
 	if (Player->getCurState() == ECharacterState::S_WALK)
 	{
-		//bactivateFireInputAction = true;
 		LogMessage(FString("Walk is well"));
-	//	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
 		Player->setKey(EKeys::W);
 		Player->SimulateSpaceKeyPress(FName("Move"));
 		Player->setKey(EKeys::LeftShift);
 		Player->SimulateSpaceKeyPress(FName("Run"));
+		return;
 	}
 
 	if (Player->getCurState() == ECharacterState::S_RUN)
 	{
-		//bactivateFireInputAction = true;
 		LogMessage(FString("Run is well"));
-	//	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
 		Player->setKey(EKeys::R);
 		Player->SimulateSpaceKeyPress(FName("Draw"));
+		return;
 	}
 
 	if (Player->getCurState() == ECharacterState::D_IDLE)
 	{
-		//bactivateFireInputAction = true;
+	
 		LogMessage(FString("Draw is well"));
 		Player->setKey(EKeys::LeftMouseButton);
 		Player->SimulateSpaceKeyPress(FName("Attack"));
+		return;
 	}
 
 	if (Player->getCurState() == ECharacterState::ATTACK)
@@ -92,6 +96,7 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 		LogMessage(FString("Attack is well"));
 		FinishTest(EFunctionalTestResult::Succeeded, FString("FSM work well"));
 		UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
+		return;
 	}
 
 
