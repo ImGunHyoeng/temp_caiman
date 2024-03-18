@@ -3,10 +3,4 @@
 
 #include "FSM/IPlayerState.h"
 
-IPlayerState::IPlayerState()
-{
-}
-
-IPlayerState::~IPlayerState()
-{
-}
+// Add default functionality here for any IIPlayerState functions that are not pure virtual.

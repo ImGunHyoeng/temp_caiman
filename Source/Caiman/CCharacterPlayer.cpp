@@ -107,7 +107,7 @@ void ACCharacterPlayer::setKey(FKey _key)
 {
 	key = _key;
 }
-void ACCharacterPlayer::updateInput(const ACCharacterPlayer& player)
+void ACCharacterPlayer::updateInput()
 {
 	switch (currentState)
 	{
@@ -290,7 +290,7 @@ APlayerController* ACCharacterPlayer::getPlayerController()
 	return PlayerController;
 }
 
-void ACCharacterPlayer::update(const ACCharacterPlayer& player)
+void ACCharacterPlayer::update()
 {
 	
 	switch (currentState)
@@ -390,11 +390,8 @@ void ACCharacterPlayer::update(const ACCharacterPlayer& player)
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	updateInput(*this);
-	{
-		playerState->updateInput();
-	};
-	update(*this);
+	updateInput();
+	update();
 
 }
 

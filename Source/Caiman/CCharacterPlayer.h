@@ -8,7 +8,7 @@
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "FSM/IPlayerState.h"
+
 #include "CCharacterPlayer.generated.h"
 
 UENUM(BlueprintType)
@@ -44,8 +44,8 @@ public:
 
 	ACCharacterPlayer();
 	void AttackCheck();
-	virtual void update(const ACCharacterPlayer& player);
-	virtual void updateInput(const ACCharacterPlayer& player);
+	virtual void update();
+	virtual void updateInput();
 	void changeState(ECharacterState inState);
 	
 	
@@ -167,7 +167,7 @@ protected:
 	//struct FEnhancedInputActionValueBinding const* AttackActionBinding;
 
 private:
-	TObjectPtr<class IPlayerState> playerState;
+	TObjectPtr<class IIPlayerState> playerState;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 		ECharacterState currentState;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))

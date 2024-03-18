@@ -3,15 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UObject/Interface.h"
+#include "IPlayerState.generated.h"
+
+// This class does not need to be modified.
+UINTERFACE(MinimalAPI)
+class UIPlayerState : public UInterface
+{
+	GENERATED_BODY()
+};
 
 /**
  * 
  */
-class CAIMAN_API IPlayerState
+class CAIMAN_API IIPlayerState
 {
+	GENERATED_BODY()
 public:
-	IPlayerState();
-	virtual void updateInput()=0;
-	virtual void update()=0;
-	virtual ~ IPlayerState();
+	virtual void updateInput(const class ACCharacterPlayer& player) = 0;
+	virtual void update(const class ACCharacterPlayer& player) = 0;
 };
