@@ -32,7 +32,7 @@ enum class ECharacterState :uint8
  * 
  */
 UCLASS()
-class CAIMAN_API ACCharacterPlayer : public ACCharacterBase,public IPlayerState
+class CAIMAN_API ACCharacterPlayer : public ACCharacterBase/*,public IPlayerState*/
 {
 	GENERATED_BODY()
 public:	
@@ -44,8 +44,8 @@ public:
 
 	ACCharacterPlayer();
 	void AttackCheck();
-	void update();
-	void updateInput();
+	virtual void update(const ACCharacterPlayer& player);
+	virtual void updateInput(const ACCharacterPlayer& player);
 	void changeState(ECharacterState inState);
 	
 	
@@ -167,7 +167,7 @@ protected:
 	//struct FEnhancedInputActionValueBinding const* AttackActionBinding;
 
 private:
-	
+	TObjectPtr<class IPlayerState> playerState;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 		ECharacterState currentState;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))

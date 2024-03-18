@@ -12,6 +12,8 @@
 #include "Components/SceneComponent.h"
 #include "InputCore.h"
 #include "TimerManager.h"
+#include "FSM/IPlayerState.h"
+
 
 
 
@@ -26,7 +28,7 @@ ACCharacterPlayer::ACCharacterPlayer()
 	CameraBoom->bInheritPitch = true;
 	CameraBoom->bInheritYaw = true;
 	CameraBoom->bInheritRoll= false;
-
+	
 
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
@@ -105,7 +107,7 @@ void ACCharacterPlayer::setKey(FKey _key)
 {
 	key = _key;
 }
-void ACCharacterPlayer::updateInput()
+void ACCharacterPlayer::updateInput(const ACCharacterPlayer& player)
 {
 	switch (currentState)
 	{
@@ -288,7 +290,7 @@ APlayerController* ACCharacterPlayer::getPlayerController()
 	return PlayerController;
 }
 
-void ACCharacterPlayer::update()
+void ACCharacterPlayer::update(const ACCharacterPlayer& player)
 {
 	
 	switch (currentState)
@@ -388,9 +390,12 @@ void ACCharacterPlayer::update()
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	updateInput();
-	update();
-	
+	updateInput(*this);
+	{
+		playerState->updateInput();
+	};
+	update(*this);
+
 }
 
 
