@@ -93,6 +93,14 @@ void ACCharacterPlayer::OnReleaseKey()
 {
 	PlayerController->InputKey(key, EInputEvent::IE_Released, 1.0f, false);
 }
+const FInputActionValue ACCharacterPlayer::getMoveInputActionValue()
+{
+	return MoveActionBinding->GetValue();
+}
+const FInputActionValue ACCharacterPlayer::getLookInputActionValue()
+{
+	return LookActionBinding->GetValue();
+}
 void ACCharacterPlayer::setKey(FKey _key)
 {
 	key = _key;
@@ -115,7 +123,7 @@ void ACCharacterPlayer::updateInput()
 				changeState(ECharacterState::D_IDLE);
 				return;
 			}
-			if (MoveActionBinding->GetValue().GetMagnitude() > 0.1f)
+			if (getMoveInputActionValue().GetMagnitude() > 0.1f)
 			{
 				changeState(ECharacterState::S_WALK);
 				return;
@@ -129,7 +137,7 @@ void ACCharacterPlayer::updateInput()
 				changeState(ECharacterState::S_RUN);
 				return;
 			}
-			if (MoveActionBinding->GetValue().GetMagnitude() < 0.1f)
+			if (getMoveInputActionValue().GetMagnitude() < 0.1f)
 			{
 				changeState(ECharacterState::S_IDLE);
 				return;
@@ -207,7 +215,7 @@ void ACCharacterPlayer::updateInput()
 				changeState(ECharacterState::S_IDLE);
 				return;
 			}
-			if (MoveActionBinding->GetValue().GetMagnitude() > 0.1f)
+			if (getMoveInputActionValue().GetMagnitude() > 0.1f)
 			{
 				changeState(ECharacterState::D_WALK);
 				return;
@@ -224,7 +232,7 @@ void ACCharacterPlayer::updateInput()
 		}
 		case ECharacterState::D_WALK:
 		{
-			if (MoveActionBinding->GetValue().GetMagnitude() < 0.1f)
+			if (getMoveInputActionValue().GetMagnitude() < 0.1f)
 			{
 				changeState(ECharacterState::D_IDLE);
 				return;
@@ -282,27 +290,31 @@ APlayerController* ACCharacterPlayer::getPlayerController()
 
 void ACCharacterPlayer::update()
 {
-	Look(LookActionBinding->GetValue());
+	
 	switch (currentState)
 	{
 	case ECharacterState::S_IDLE:
 	{
+		Look(getLookInputActionValue());
 		return;
 	}
 	case ECharacterState::S_WALK:
 	{
+		Look(getLookInputActionValue());
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
-		Move(MoveActionBinding->GetValue());
+		Move(getMoveInputActionValue());
 		return;
 	}
 	case ECharacterState::S_RUN:
 	{
+		Look(getLookInputActionValue());
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
-		Move(MoveActionBinding->GetValue());
+		Move(getMoveInputActionValue());
 		return;
 	}
 	case ECharacterState::JUMP:
 	{
+		Look(getLookInputActionValue());
 		if(!bPressedJump)
 			Super::Jump();
 		if (bPressedJump)
@@ -311,41 +323,50 @@ void ACCharacterPlayer::update()
 	}
 	case ECharacterState::GROUNDED:
 	{
-
+		Look(getLookInputActionValue());
 		return;
 	}
 	case ECharacterState::S_ROLL:
 	{
+		Look(getLookInputActionValue());
 		return;
 	}
 	case ECharacterState::D_IDLE:
 	{
-		Move(MoveActionBinding->GetValue());
+		Look(getLookInputActionValue());
+		Move(getMoveInputActionValue());
 		return;
 	}
 	case ECharacterState::D_WALK:
-		
 	{
+		Look(getLookInputActionValue());
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.5f;
-		Move(MoveActionBinding->GetValue());
+		Move(getMoveInputActionValue());
 		return;
 	}
 	case ECharacterState::D_ROLL:
 	{
+		Look(getLookInputActionValue());
 		return;
 	}
 	case ECharacterState::JUMPATTACK:
 	{
-
-
+		Look(getLookInputActionValue());
 		return;
 	}
 	case ECharacterState::DEFENSELESS:
+	{
+		Look(getLookInputActionValue());
 		return;
+	}
 	case ECharacterState::PARRGING:
+	{
+		Look(getLookInputActionValue());
 		return;
+	}
 	case ECharacterState::ATTACK:
 	{
+		Look(getLookInputActionValue());
 		if (PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 			bWantCombo = true;
 		if (bIsCombo)

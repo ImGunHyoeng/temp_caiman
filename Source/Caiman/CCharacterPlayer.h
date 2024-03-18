@@ -55,6 +55,9 @@ public:
 	void SimulateSpaceKeyPress(const FName name);
 	void OnReleaseKey();
 	
+	const FInputActionValue getMoveInputActionValue();
+	const FInputActionValue getLookInputActionValue();
+
 	void setKey(FKey _key);
 protected:
 	FKey key;
@@ -155,7 +158,7 @@ protected:
 
 	
 	
-	struct FEnhancedInputActionValueBinding const*  MoveActionBinding;
+	struct FEnhancedInputActionValueBinding const* MoveActionBinding;
 	struct FEnhancedInputActionValueBinding const* LookActionBinding;
 	
 	//struct FEnhancedInputActionValueBinding const* JumpActionBinding;
