@@ -5,10 +5,10 @@
 
 
 
-void PARRGING::updateInput(const ACCharacterPlayer& player)
+void PARRGING::updateInput(ACCharacterPlayer& player)
 {
 }
 
-void PARRGING::update(const ACCharacterPlayer& player)
+void PARRGING::update(ACCharacterPlayer& player)
 {
 }

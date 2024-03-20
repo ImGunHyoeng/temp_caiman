@@ -20,6 +20,6 @@ class CAIMAN_API IIPlayerState
 {
 	GENERATED_BODY()
 public:
-	virtual void updateInput(const class ACCharacterPlayer& player) = 0;
-	virtual void update(const class ACCharacterPlayer& player) = 0;
+	virtual void updateInput(class ACCharacterPlayer& player) = 0;
+	virtual void update(class ACCharacterPlayer& player) = 0;
 };

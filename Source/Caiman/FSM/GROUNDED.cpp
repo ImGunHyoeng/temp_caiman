@@ -4,10 +4,10 @@
 #include "FSM/GROUNDED.h"
 
 
-void GROUNDED::updateInput(const ACCharacterPlayer& player)
+void GROUNDED::updateInput(ACCharacterPlayer& player)
 {
 }
 
-void GROUNDED::update(const ACCharacterPlayer& player)
+void GROUNDED::update(ACCharacterPlayer& player)
 {
 }

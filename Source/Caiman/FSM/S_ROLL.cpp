@@ -5,10 +5,10 @@
 
 
 
-void S_ROLL::updateInput(const ACCharacterPlayer& player)
+void S_ROLL::updateInput( ACCharacterPlayer& player)
 {
 }
 
-void S_ROLL::update(const ACCharacterPlayer& player)
+void S_ROLL::update( ACCharacterPlayer& player)
 {
 }

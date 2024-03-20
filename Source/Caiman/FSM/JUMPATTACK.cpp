@@ -4,10 +4,10 @@
 #include "FSM/JUMPATTACK.h"
 
 
-void JUMPATTACK::updateInput(const ACCharacterPlayer& player)
+void JUMPATTACK::updateInput(ACCharacterPlayer& player)
 {
 }
 
-void JUMPATTACK::update(const ACCharacterPlayer& player)
+void JUMPATTACK::update(ACCharacterPlayer& player)
 {
 }

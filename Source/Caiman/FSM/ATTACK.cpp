@@ -5,10 +5,10 @@
 
 
 
-void ATTACK::updateInput(const ACCharacterPlayer& player)
+void ATTACK::updateInput(ACCharacterPlayer& player)
 {
 }
 
-void ATTACK::update(const ACCharacterPlayer& player)
+void ATTACK::update(ACCharacterPlayer& player)
 {
 }

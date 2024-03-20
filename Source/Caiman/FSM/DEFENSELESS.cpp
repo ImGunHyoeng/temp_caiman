@@ -4,10 +4,10 @@
 #include "FSM/DEFENSELESS.h"
 
 
-void DEFENSELESS::updateInput(const ACCharacterPlayer& player)
+void DEFENSELESS::updateInput(ACCharacterPlayer& player)
 {
 }
 
-void DEFENSELESS::update(const ACCharacterPlayer& player)
+void DEFENSELESS::update(ACCharacterPlayer& player)
 {
 }

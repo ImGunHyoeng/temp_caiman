@@ -5,10 +5,10 @@
 
 
 
-void S_RUN::updateInput(const ACCharacterPlayer& player)
+void S_RUN::updateInput(ACCharacterPlayer& player)
 {
 }
 
-void S_RUN::update(const ACCharacterPlayer& player)
+void S_RUN::update(ACCharacterPlayer& player)
 {
 }

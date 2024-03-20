@@ -11,7 +11,7 @@
 class CAIMAN_API JUMP :public IIPlayerState
 {
 public:
-	virtual void updateInput(const class ACCharacterPlayer& player);
-	virtual void update(const class ACCharacterPlayer& player);
+	virtual void updateInput(class ACCharacterPlayer& player);
+	virtual void update(class ACCharacterPlayer& player);
 };
 

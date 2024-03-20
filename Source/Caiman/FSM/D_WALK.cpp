@@ -5,10 +5,10 @@
 
 
 
-void D_WALK::updateInput(const ACCharacterPlayer& player)
+void D_WALK::updateInput(ACCharacterPlayer& player)
 {
 }
 
-void D_WALK::update(const ACCharacterPlayer& player)
+void D_WALK::update(ACCharacterPlayer& player)
 {
 }

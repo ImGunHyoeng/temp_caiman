@@ -19,6 +19,7 @@
 
 
 
+
 ACCharacterPlayer::ACCharacterPlayer()
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));//엔진에 기본적으로 내장되어있는 카메라 요소를 생성 이름도 설정
@@ -72,6 +73,7 @@ void ACCharacterPlayer::BeginPlay()
 	//SimulateSpaceKeyPress(FName("Jump"),EKeys::SpaceBar);
 	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
 	LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
+	playerState = new S_IDLE();
 
 }
 
@@ -95,27 +97,32 @@ void ACCharacterPlayer::OnReleaseKey()
 {
 	PlayerController->InputKey(key, EInputEvent::IE_Released, 1.0f, false);
 }
-const FInputActionValue ACCharacterPlayer::getMoveInputActionValue()
+const FInputActionValue ACCharacterPlayer::GetMoveInputActionValue()
 {
 	return MoveActionBinding->GetValue();
 }
-const FInputActionValue ACCharacterPlayer::getLookInputActionValue()
+const FInputActionValue ACCharacterPlayer::GetLookInputActionValue()
 {
 	return LookActionBinding->GetValue();
 }
-void ACCharacterPlayer::setKey(FKey _key)
+
+const TObjectPtr<class ACMyWeapon> ACCharacterPlayer::GetWeapon()
+{
+	return Weapon;
+}
+void ACCharacterPlayer::SetKey(FKey _key)
 {
 	key = _key;
 }
 void ACCharacterPlayer::updateInput()
 {
-	//playerState->updateInput(*this);
+	playerState->updateInput(*this);
 	
-	switch (currentState)
+	/*switch (currentState)
 	{
 		case ECharacterState::S_IDLE:
 		{
-			if (PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
+			if (getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 			{
 				changeState(ECharacterState::JUMP);
 				return;
@@ -127,7 +134,7 @@ void ACCharacterPlayer::updateInput()
 				changeState(ECharacterState::D_IDLE);
 				return;
 			}
-			if (getMoveInputActionValue().GetMagnitude() > 0.1f)
+			if (GetMoveInputActionValue().GetMagnitude() > 0.1f)
 			{
 				changeState(ECharacterState::S_WALK);
 				return;
@@ -141,7 +148,7 @@ void ACCharacterPlayer::updateInput()
 				changeState(ECharacterState::S_RUN);
 				return;
 			}
-			if (getMoveInputActionValue().GetMagnitude() < 0.1f)
+			if (GetMoveInputActionValue().GetMagnitude() < 0.1f)
 			{
 				changeState(ECharacterState::S_IDLE);
 				return;
@@ -221,7 +228,7 @@ void ACCharacterPlayer::updateInput()
 				changeState(ECharacterState::S_IDLE);
 				return;
 			}
-			if (getMoveInputActionValue().GetMagnitude() > 0.1f)
+			if (GetMoveInputActionValue().GetMagnitude() > 0.1f)
 			{
 				changeState(ECharacterState::D_WALK);
 				return;
@@ -238,7 +245,7 @@ void ACCharacterPlayer::updateInput()
 		}
 		case ECharacterState::D_WALK:
 		{
-			if (getMoveInputActionValue().GetMagnitude() < 0.1f)
+			if (GetMoveInputActionValue().GetMagnitude() < 0.1f)
 			{
 				changeState(ECharacterState::D_IDLE);
 				return;
@@ -274,7 +281,7 @@ void ACCharacterPlayer::updateInput()
 			}
 			return;
 		}
-	}
+	}*/
 }
 void ACCharacterPlayer::changeState(ECharacterState inState)
 {
@@ -296,31 +303,31 @@ APlayerController* ACCharacterPlayer::getPlayerController()
 
 void ACCharacterPlayer::update()
 {
-	//playerState->update(*this);
-	switch (currentState)
+	playerState->update(*this);
+	/*switch (currentState)
 	{
 	case ECharacterState::S_IDLE:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		return;
 	}
 	case ECharacterState::S_WALK:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
-		Move(getMoveInputActionValue());
+		Move(GetMoveInputActionValue());
 		return;
 	}
 	case ECharacterState::S_RUN:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
-		Move(getMoveInputActionValue());
+		Move(GetMoveInputActionValue());
 		return;
 	}
 	case ECharacterState::JUMP:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		if(!bPressedJump)
 			Super::Jump();
 		if (bPressedJump)
@@ -329,50 +336,50 @@ void ACCharacterPlayer::update()
 	}
 	case ECharacterState::GROUNDED:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		return;
 	}
 	case ECharacterState::S_ROLL:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		return;
 	}
 	case ECharacterState::D_IDLE:
 	{
-		Look(getLookInputActionValue());
-		Move(getMoveInputActionValue());
+		Look(GetLookInputActionValue());
+		Move(GetMoveInputActionValue());
 		return;
 	}
 	case ECharacterState::D_WALK:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.5f;
-		Move(getMoveInputActionValue());
+		Move(GetMoveInputActionValue());
 		return;
 	}
 	case ECharacterState::D_ROLL:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		return;
 	}
 	case ECharacterState::JUMPATTACK:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		return;
 	}
 	case ECharacterState::DEFENSELESS:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		return;
 	}
 	case ECharacterState::PARRGING:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		return;
 	}
 	case ECharacterState::ATTACK:
 	{
-		Look(getLookInputActionValue());
+		Look(GetLookInputActionValue());
 		if (PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 			bWantCombo = true;
 		if (bIsCombo)
@@ -389,14 +396,13 @@ void ACCharacterPlayer::update()
 		WaitFrame--;
 		return;
 	}
-	}
+	}*/
 }
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	updateInput();
 	update();
-
 }
 
 

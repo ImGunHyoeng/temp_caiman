@@ -46,7 +46,7 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (bactivateFireInputAction)
 	{
-		Player->setKey(EKeys::SpaceBar);
+		Player->SetKey(EKeys::SpaceBar);
 		Player->SimulateSpaceKeyPress(FName("Jump"));
 		bactivateFireInputAction = false;
 	}
@@ -58,7 +58,7 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 	}
 	if (Player->getCurState() == ECharacterState::GROUNDED)
 	{
-		Player->setKey(EKeys::W);
+		Player->SetKey(EKeys::W);
 		Player->SimulateSpaceKeyPress(FName("Move"));
 		return;
 	}
@@ -67,9 +67,9 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 	if (Player->getCurState() == ECharacterState::S_WALK)
 	{
 		LogMessage(FString("Walk is well"));
-		Player->setKey(EKeys::W);
+		Player->SetKey(EKeys::W);
 		Player->SimulateSpaceKeyPress(FName("Move"));
-		Player->setKey(EKeys::LeftShift);
+		Player->SetKey(EKeys::LeftShift);
 		Player->SimulateSpaceKeyPress(FName("Run"));
 		return;
 	}
@@ -77,7 +77,7 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 	if (Player->getCurState() == ECharacterState::S_RUN)
 	{
 		LogMessage(FString("Run is well"));
-		Player->setKey(EKeys::R);
+		Player->SetKey(EKeys::R);
 		Player->SimulateSpaceKeyPress(FName("Draw"));
 		return;
 	}
@@ -86,7 +86,7 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 	{
 	
 		LogMessage(FString("Draw is well"));
-		Player->setKey(EKeys::LeftMouseButton);
+		Player->SetKey(EKeys::LeftMouseButton);
 		Player->SimulateSpaceKeyPress(FName("Attack"));
 		return;
 	}

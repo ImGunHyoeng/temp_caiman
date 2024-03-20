@@ -11,6 +11,7 @@
 class CAIMAN_API S_IDLE :public IIPlayerState
 {
 public:
-	virtual void updateInput(const class ACCharacterPlayer& player);
-	virtual void update(const class ACCharacterPlayer& player);
+	S_IDLE(){}
+	virtual void updateInput(class ACCharacterPlayer& player);
+	virtual void update(class ACCharacterPlayer& player);
 };

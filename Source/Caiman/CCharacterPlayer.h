@@ -8,6 +8,7 @@
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "FSM/FSM_Collection.h"
 #include "CCharacterPlayer.generated.h"
 
 UENUM(BlueprintType)
@@ -31,7 +32,7 @@ enum class ECharacterState :uint8
  * 
  */
 UCLASS()
-class CAIMAN_API ACCharacterPlayer : public ACCharacterBase/*,public IPlayerState*/
+class CAIMAN_API ACCharacterPlayer : public ACCharacterBase
 {
 	GENERATED_BODY()
 public:	
@@ -54,10 +55,13 @@ public:
 	void SimulateSpaceKeyPress(const FName name);
 	void OnReleaseKey();
 	
-	const FInputActionValue getMoveInputActionValue();
-	const FInputActionValue getLookInputActionValue();
-
-	void setKey(FKey _key);
+	const FInputActionValue GetMoveInputActionValue();
+	const FInputActionValue GetLookInputActionValue();
+	UAnimMontage* GetDrawMontage() { return AM_Draw; }
+	UAnimMontage* GetSheathMontage() { return AM_Sheath; }
+	const TObjectPtr<class ACMyWeapon> GetWeapon();
+	void SetKey(FKey _key);
+	void Look(const FInputActionValue& Value);
 protected:
 	FKey key;
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -105,7 +109,7 @@ protected:
 
 	void Move(const FInputActionValue& Value);
 	//void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
+
 	void Draw();
 	void NoAnimDraw();
 	void Roll(const FInputActionValue& Value);

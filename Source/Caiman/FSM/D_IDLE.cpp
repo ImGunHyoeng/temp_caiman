@@ -5,10 +5,10 @@
 
 
 
-void D_IDLE::updateInput(const ACCharacterPlayer& player)
+void D_IDLE::updateInput(ACCharacterPlayer& player)
 {
 }
 
-void D_IDLE::update(const ACCharacterPlayer& player)
+void D_IDLE::update(ACCharacterPlayer& player)
 {
 }

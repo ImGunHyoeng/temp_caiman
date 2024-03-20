@@ -5,10 +5,10 @@
 
 
 
-void JUMP::updateInput(const ACCharacterPlayer& player)
+void JUMP::updateInput(ACCharacterPlayer& player)
 {
 }
 
-void JUMP::update(const ACCharacterPlayer& player)
+void JUMP::update(ACCharacterPlayer& player)
 {
 }
