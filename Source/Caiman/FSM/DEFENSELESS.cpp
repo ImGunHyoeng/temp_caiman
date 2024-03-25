@@ -20,3 +20,7 @@ void DEFENSELESS::enter(ACCharacterPlayer& player)
 void DEFENSELESS::exit(ACCharacterPlayer& player)
 {
 }
+
+void DEFENSELESS::Destroy()
+{
+}

@@ -15,6 +15,7 @@ public:
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);
+	virtual void Destroy();
 	
 };
 

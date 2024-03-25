@@ -21,3 +21,7 @@ void D_WALK::enter(ACCharacterPlayer& player)
 void D_WALK::exit(ACCharacterPlayer& player)
 {
 }
+
+void D_WALK::Destroy()
+{
+}

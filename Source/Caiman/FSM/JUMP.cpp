@@ -22,3 +22,7 @@ void JUMP::enter(ACCharacterPlayer& player)
 void JUMP::exit(ACCharacterPlayer& player)
 {
 }
+
+void JUMP::Destroy()
+{
+}

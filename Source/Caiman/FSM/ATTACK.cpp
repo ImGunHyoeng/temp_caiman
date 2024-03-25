@@ -21,3 +21,7 @@ void ATTACK::enter(ACCharacterPlayer& player)
 void ATTACK::exit(ACCharacterPlayer& player)
 {
 }
+
+void ATTACK::Destroy()
+{
+}

@@ -171,7 +171,8 @@ protected:
 	//struct FEnhancedInputActionValueBinding const* AttackActionBinding;
 
 private:
-	TObjectPtr<class IIPlayerState> playerState;
+	//TObjectPtr<class IIPlayerState> playerState;
+	class IIPlayerState *playerState;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 		ECharacterState currentState;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))

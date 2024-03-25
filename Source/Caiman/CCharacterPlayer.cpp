@@ -116,11 +116,23 @@ void ACCharacterPlayer::SetKey(FKey _key)
 }
 void ACCharacterPlayer::updateInput()
 {
-	IIPlayerState* state=playerState->updateInput(*this);
+	IIPlayerState* state = playerState->updateInput(*this);
+	//if (playerState)
+	//{
+	//	if (UObject* Obj = playerState->_getUObject())
+	//	{
+	//		return;
+	//	}
+	//}
+	//if (S_IDLE* temp = Cast<S_IDLE,IIPlayerState>(playerState))
+	//{
+	//	delete temp;
+	//}
 	if (state != NULL)
 	{
 		playerState->exit(*this);
 		//Destroy(playerState);
+		playerState->Destroy();
 		playerState = state;
 		playerState->enter(*this);
 	}

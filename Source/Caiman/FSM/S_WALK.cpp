@@ -50,3 +50,8 @@ void S_WALK::enter(ACCharacterPlayer& player)
 void S_WALK::exit(ACCharacterPlayer& player)
 {
 }
+
+void S_WALK::Destroy()
+{
+	delete this;
+}

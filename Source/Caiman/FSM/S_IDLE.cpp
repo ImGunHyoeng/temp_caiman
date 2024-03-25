@@ -46,3 +46,8 @@ void S_IDLE::enter(ACCharacterPlayer& player)
 void S_IDLE::exit(ACCharacterPlayer& player)
 {
 }
+
+void S_IDLE::Destroy()
+{
+	delete this;
+}

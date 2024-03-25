@@ -21,3 +21,7 @@ void S_ROLL::enter(ACCharacterPlayer& player)
 void S_ROLL::exit(ACCharacterPlayer& player)
 {
 }
+
+void S_ROLL::Destroy()
+{
+}

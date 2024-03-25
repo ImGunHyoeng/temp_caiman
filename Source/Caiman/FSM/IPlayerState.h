@@ -24,5 +24,5 @@ public:
 	virtual void update(class ACCharacterPlayer& player) = 0;
 	virtual void enter(class ACCharacterPlayer& player) = 0;
 	virtual void exit(class ACCharacterPlayer& player) = 0;
-	//virtual ~IIPlayerState();
+	virtual void Destroy() = 0;
 };

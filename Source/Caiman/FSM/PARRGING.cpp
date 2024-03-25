@@ -21,3 +21,7 @@ void PARRGING::enter(ACCharacterPlayer& player)
 void PARRGING::exit(ACCharacterPlayer& player)
 {
 }
+
+void PARRGING::Destroy()
+{
+}

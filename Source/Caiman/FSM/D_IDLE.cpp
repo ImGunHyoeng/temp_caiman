@@ -21,3 +21,7 @@ void D_IDLE::enter(ACCharacterPlayer& player)
 void D_IDLE::exit(ACCharacterPlayer& player)
 {
 }
+
+void D_IDLE::Destroy()
+{
+}

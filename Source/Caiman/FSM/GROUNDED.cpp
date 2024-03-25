@@ -20,3 +20,7 @@ void GROUNDED::enter(ACCharacterPlayer& player)
 void GROUNDED::exit(ACCharacterPlayer& player)
 {
 }
+
+void GROUNDED::Destroy()
+{
+}

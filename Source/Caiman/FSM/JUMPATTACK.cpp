@@ -20,3 +20,7 @@ void JUMPATTACK::enter(ACCharacterPlayer& player)
 void JUMPATTACK::exit(ACCharacterPlayer& player)
 {
 }
+
+void JUMPATTACK::Destroy()
+{
+}

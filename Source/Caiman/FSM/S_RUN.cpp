@@ -21,3 +21,7 @@ void S_RUN::enter(ACCharacterPlayer& player)
 void S_RUN::exit(ACCharacterPlayer& player)
 {
 }
+
+void S_RUN::Destroy()
+{
+}
