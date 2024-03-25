@@ -5,10 +5,19 @@
 
 
 
-void S_ROLL::updateInput( ACCharacterPlayer& player)
+IIPlayerState* S_ROLL::updateInput( ACCharacterPlayer& player)
 {
+	return NULL;
 }
 
 void S_ROLL::update( ACCharacterPlayer& player)
+{
+}
+
+void S_ROLL::enter(ACCharacterPlayer& player)
+{
+}
+
+void S_ROLL::exit(ACCharacterPlayer& player)
 {
 }

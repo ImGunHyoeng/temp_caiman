@@ -4,10 +4,19 @@
 #include "FSM/DEFENSELESS.h"
 
 
-void DEFENSELESS::updateInput(ACCharacterPlayer& player)
+IIPlayerState* DEFENSELESS::updateInput(ACCharacterPlayer& player)
 {
+	return NULL;
 }
 
 void DEFENSELESS::update(ACCharacterPlayer& player)
+{
+}
+
+void DEFENSELESS::enter(ACCharacterPlayer& player)
+{
+}
+
+void DEFENSELESS::exit(ACCharacterPlayer& player)
 {
 }

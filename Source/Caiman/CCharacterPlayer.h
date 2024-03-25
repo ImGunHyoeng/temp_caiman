@@ -62,6 +62,7 @@ public:
 	const TObjectPtr<class ACMyWeapon> GetWeapon();
 	void SetKey(FKey _key);
 	void Look(const FInputActionValue& Value);
+	void Move(const FInputActionValue& Value);
 protected:
 	FKey key;
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -107,7 +108,7 @@ protected:
 	virtual void Tick(float DeltaTime) override;
 	
 
-	void Move(const FInputActionValue& Value);
+
 	//void Move(const FInputActionValue& Value);
 
 	void Draw();

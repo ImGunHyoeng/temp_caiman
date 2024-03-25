@@ -4,10 +4,19 @@
 #include "FSM/GROUNDED.h"
 
 
-void GROUNDED::updateInput(ACCharacterPlayer& player)
+IIPlayerState* GROUNDED::updateInput(ACCharacterPlayer& player)
 {
+	return NULL;
 }
 
 void GROUNDED::update(ACCharacterPlayer& player)
+{
+}
+
+void GROUNDED::enter(ACCharacterPlayer& player)
+{
+}
+
+void GROUNDED::exit(ACCharacterPlayer& player)
 {
 }

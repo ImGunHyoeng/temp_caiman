@@ -11,7 +11,8 @@
 class CAIMAN_API D_WALK :public IIPlayerState
 {
 public:
-	virtual void updateInput(class ACCharacterPlayer& player);
+	virtual IIPlayerState* updateInput(class ACCharacterPlayer& player);
 	virtual void update(class ACCharacterPlayer& player);
-	
+	virtual void enter(class ACCharacterPlayer& player);
+	virtual void exit(class ACCharacterPlayer& player);
 };

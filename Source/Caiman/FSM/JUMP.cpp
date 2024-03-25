@@ -5,10 +5,20 @@
 
 
 
-void JUMP::updateInput(ACCharacterPlayer& player)
+IIPlayerState* JUMP::updateInput(ACCharacterPlayer& player)
+{
+	return NULL;
+}
+
+
+void JUMP::update(ACCharacterPlayer& player)
 {
 }
 
-void JUMP::update(ACCharacterPlayer& player)
+void JUMP::enter(ACCharacterPlayer& player)
+{
+}
+
+void JUMP::exit(ACCharacterPlayer& player)
 {
 }

@@ -5,10 +5,19 @@
 
 
 
-void ATTACK::updateInput(ACCharacterPlayer& player)
+IIPlayerState* ATTACK::updateInput(ACCharacterPlayer& player)
 {
+	return NULL;
 }
 
 void ATTACK::update(ACCharacterPlayer& player)
+{
+}
+
+void ATTACK::enter(ACCharacterPlayer& player)
+{
+}
+
+void ATTACK::exit(ACCharacterPlayer& player)
 {
 }

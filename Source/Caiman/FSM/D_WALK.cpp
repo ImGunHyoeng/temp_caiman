@@ -5,10 +5,19 @@
 
 
 
-void D_WALK::updateInput(ACCharacterPlayer& player)
+IIPlayerState* D_WALK::updateInput(ACCharacterPlayer& player)
 {
+	return NULL;
 }
 
 void D_WALK::update(ACCharacterPlayer& player)
+{
+}
+
+void D_WALK::enter(ACCharacterPlayer& player)
+{
+}
+
+void D_WALK::exit(ACCharacterPlayer& player)
 {
 }

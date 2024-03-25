@@ -5,10 +5,19 @@
 
 
 
-void D_IDLE::updateInput(ACCharacterPlayer& player)
+IIPlayerState* D_IDLE::updateInput(ACCharacterPlayer& player)
 {
+	return NULL;
 }
 
 void D_IDLE::update(ACCharacterPlayer& player)
+{
+}
+
+void D_IDLE::enter(ACCharacterPlayer& player)
+{
+}
+
+void D_IDLE::exit(ACCharacterPlayer& player)
 {
 }

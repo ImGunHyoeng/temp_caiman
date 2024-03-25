@@ -116,8 +116,14 @@ void ACCharacterPlayer::SetKey(FKey _key)
 }
 void ACCharacterPlayer::updateInput()
 {
-	playerState->updateInput(*this);
-	
+	IIPlayerState* state=playerState->updateInput(*this);
+	if (state != NULL)
+	{
+		playerState->exit(*this);
+		//Destroy(playerState);
+		playerState = state;
+		playerState->enter(*this);
+	}
 	/*switch (currentState)
 	{
 		case ECharacterState::S_IDLE:
@@ -285,7 +291,12 @@ void ACCharacterPlayer::updateInput()
 }
 void ACCharacterPlayer::changeState(ECharacterState inState)
 {
+	
 	setPreviousState();
+	//Destroy(playerState);
+
+	playerState->exit(*this);
+	playerState->enter(*this);
 	currentState = inState;
 }
 ECharacterState ACCharacterPlayer::getCurState()

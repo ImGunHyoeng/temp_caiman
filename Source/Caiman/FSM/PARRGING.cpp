@@ -5,10 +5,19 @@
 
 
 
-void PARRGING::updateInput(ACCharacterPlayer& player)
+IIPlayerState* PARRGING::updateInput(ACCharacterPlayer& player)
 {
+	return NULL;
 }
 
 void PARRGING::update(ACCharacterPlayer& player)
+{
+}
+
+void PARRGING::enter(ACCharacterPlayer& player)
+{
+}
+
+void PARRGING::exit(ACCharacterPlayer& player)
 {
 }

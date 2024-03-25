@@ -11,6 +11,8 @@
 class CAIMAN_API DEFENSELESS :public IIPlayerState
 {
 public:
-	virtual void updateInput(class ACCharacterPlayer& player);
+	virtual IIPlayerState* updateInput(class ACCharacterPlayer& player);
 	virtual void update(class ACCharacterPlayer& player);
+	virtual void enter(class ACCharacterPlayer& player);
+	virtual void exit(class ACCharacterPlayer& player);
 };

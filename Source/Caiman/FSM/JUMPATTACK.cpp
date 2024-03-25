@@ -4,10 +4,19 @@
 #include "FSM/JUMPATTACK.h"
 
 
-void JUMPATTACK::updateInput(ACCharacterPlayer& player)
+IIPlayerState* JUMPATTACK::updateInput(ACCharacterPlayer& player)
 {
+	return NULL;
 }
 
 void JUMPATTACK::update(ACCharacterPlayer& player)
+{
+}
+
+void JUMPATTACK::enter(ACCharacterPlayer& player)
+{
+}
+
+void JUMPATTACK::exit(ACCharacterPlayer& player)
 {
 }
