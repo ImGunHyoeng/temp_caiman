@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Hit\HitInterface.h"
 #include "CMonsterBase.generated.h"
 
 UCLASS()
-class CAIMAN_API ACMonsterBase : public ACharacter
+class CAIMAN_API ACMonsterBase : public ACharacter,public IHitInterface
 {
 	GENERATED_BODY()
 	
@@ -34,7 +35,11 @@ public:
 	uint32 bIsLive : 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint32 bIsHeal : 1;
+	virtual void GetHit(FVector ImpactPoint) override;
 	
+	UParticleSystem* GetParticle() { return HittedParticle; }
+	UPROPERTY(EditAnywhere, Category = VisualEffect)
+	UParticleSystem* HittedParticle;
 	//void ReceivePointDamage(float Damage,
 	//	const class UDamageType* DamageType,
 	//	FVector HitLocation,

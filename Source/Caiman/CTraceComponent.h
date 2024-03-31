@@ -36,4 +36,6 @@ public:
 	FCollisionShape mySphere;
 	FColor color;
 	void TsetActive(bool condition = true) { IsActive = condition; };
+
+
 };

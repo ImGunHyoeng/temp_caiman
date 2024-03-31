@@ -6,6 +6,7 @@
 #include "CTraceComponent.h"
 #include "FSM\ATTACK.h"
 #include "FSM\IPlayerState.h"
+#include "CMyWeapon.h"
 
 void UCAnimNotifyState_Trace::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
@@ -17,9 +18,10 @@ void UCAnimNotifyState_Trace::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			UActorComponent* ActorComp = Player->GetComponentByClass(UCTraceComponent::StaticClass());
-			UCTraceComponent* Tracecomp = Cast<UCTraceComponent>(ActorComp);
-			Tracecomp->TsetActive();
+			//UActorComponent* ActorComp = Player->GetComponentByClass(UCTraceComponent::StaticClass());
+			//UCTraceComponent* Tracecomp = Cast<UCTraceComponent>(ActorComp);
+			Player->GetWeapon()->getTrace()->TsetActive();
+			
 		}
 	}
 }
@@ -34,9 +36,10 @@ void UCAnimNotifyState_Trace::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimS
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			UActorComponent* ActorComp = Player->GetComponentByClass(UCTraceComponent::StaticClass());
+			Player->GetWeapon()->getTrace()->TsetActive(false);
+			/*UActorComponent* ActorComp = Player->GetComponentByClass(UCTraceComponent::StaticClass());
 			UCTraceComponent* Tracecomp = Cast<UCTraceComponent>(ActorComp);
-			Tracecomp->TsetActive(false);
+			Tracecomp->TsetActive(false);*/
 			if (Player)
 			{
 				//if (IIPlayerState* currentState = Player->GetCurPlayerState())

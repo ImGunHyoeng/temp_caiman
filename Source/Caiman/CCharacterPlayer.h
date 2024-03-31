@@ -8,7 +8,7 @@
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-//#include "FSM/FSM_Collection.h"
+#include "Hit\HitInterface.h"
 #include "CCharacterPlayer.generated.h"
 
 UENUM(BlueprintType)
@@ -32,7 +32,7 @@ enum class ECharacterState :uint8
  * 
  */
 UCLASS()
-class CAIMAN_API ACCharacterPlayer : public ACCharacterBase
+class CAIMAN_API ACCharacterPlayer : public ACCharacterBase,public IHitInterface
 {
 	GENERATED_BODY()
 public:	
@@ -80,7 +80,10 @@ public:
 	void NoAnimDraw();
 	void Sheath();
 	void NoAnimSheath();
-
+	
+	//particle set
+	UParticleSystem* GetParticle() { return HittedParticle; }
+	virtual void GetHit(FVector ImpactPoint) override;
 
 protected:
 	FKey key;
@@ -187,7 +190,8 @@ protected:
 	//struct FEnhancedInputActionValueBinding const*  DrawActionBinding;
 	//struct FEnhancedInputActionValueBinding const* RunActionBinding;
 	//struct FEnhancedInputActionValueBinding const* AttackActionBinding;
-
+	UPROPERTY(EditAnywhere, Category = VisualEffect)
+	UParticleSystem* HittedParticle;
 private:
 	//TObjectPtr<class IIPlayerState> playerState;
 	class IIPlayerState *playerState;

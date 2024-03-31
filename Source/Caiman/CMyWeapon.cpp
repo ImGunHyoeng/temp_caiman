@@ -2,7 +2,7 @@
 
 
 #include "CMyWeapon.h"
-
+#include "CTraceComponent.h"
 // Sets default values
 ACMyWeapon::ACMyWeapon()
 {
@@ -22,14 +22,20 @@ ACMyWeapon::ACMyWeapon()
 	}
 	Weapon->SetCollisionProfileName(TEXT("NoCollision"));
 	
-	//trace = NewObject<UCTraceComponent>();
+	trace = CreateDefaultSubobject<UCTraceComponent>(FName("TRACE"));
 	//trace = CreateDefaultSubobject<UCTraceComponent>(TEXT("Mytrace"));
+}
+
+UCTraceComponent* ACMyWeapon::getTrace()
+{
+	return trace;
 }
 
 // Called when the game starts or when spawned
 void ACMyWeapon::BeginPlay()
 {
 	Super::BeginPlay();
+	trace->WeaponMesh = Weapon;
 	damage = 10.0f;
 }
 

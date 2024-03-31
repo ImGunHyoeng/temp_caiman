@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "CTraceComponent.h"
 #include "CMyWeapon.generated.h"
 
 UCLASS()
@@ -16,6 +15,7 @@ class CAIMAN_API ACMyWeapon : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ACMyWeapon();
+	class UCTraceComponent* getTrace();
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,6 +32,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void setDamage(float input) { damage=input; }
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UCTraceComponent* trace;
 
-	
+	UParticleSystem* GetParticle() { return HitParticle; }
+	UPROPERTY(EditAnywhere, Category = VisualEffect)
+	UParticleSystem* HitParticle;
 };

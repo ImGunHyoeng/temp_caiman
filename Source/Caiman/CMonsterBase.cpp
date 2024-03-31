@@ -5,6 +5,8 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
+#include "DrawDebugHelpers.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ACMonsterBase::ACMonsterBase()
@@ -72,6 +74,12 @@ void ACMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	
+}
+
+void ACMonsterBase::GetHit(FVector ImpactPoint)
+{
+	DrawDebugSphere(GetWorld(), ImpactPoint, 20,32, FColor::Red, true);
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
 }
 
 float ACMonsterBase::InternalTakePointDamage(float Damage, FPointDamageEvent const& PointDamageEvent, AController* EventInstigator, AActor* DamageCauser)

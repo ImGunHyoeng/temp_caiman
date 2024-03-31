@@ -15,6 +15,7 @@
 #include "FSM/IPlayerState.h"
 #include "FSM\FSM_Collection.h"
 #include "AnimInstance\KwangAnimInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 
 
@@ -493,6 +494,11 @@ void ACCharacterPlayer::Sheath()
 void ACCharacterPlayer::NoAnimSheath()
 {
 	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));
+}
+
+void ACCharacterPlayer::GetHit(FVector ImpactPoint)
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
 }
 
 void ACCharacterPlayer::Run()

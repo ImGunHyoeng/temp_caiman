@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "CMyWeapon.h"
 #include "EngineUtils.h"
+#include "Hit/HitInterface.h"
 // Sets default values for this component's properties
 UCTraceComponent::UCTraceComponent()
 {
@@ -60,7 +61,7 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	//DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 5.0f);
 	color = outResults.IsEmpty() ? FColor::Red : FColor::Green;
 	//if(!outResults.IsEmpty())
-	DrawDebugCapsule(GetWorld(),(start+end)/2, dir.Size()*0.5+10,10, FRotationMatrix::MakeFromZ(dir).ToQuat(),color, false, 2.0f);
+	//DrawDebugCapsule(GetWorld(),(start+end)/2, dir.Size()*0.5+10,10, FRotationMatrix::MakeFromZ(dir).ToQuat(),color, false, 2.0f);
 
 	for (const auto & result : outResults)
 	{
@@ -79,6 +80,12 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 			return;
 		attackObj.Add(result.GetActor());
 		UGameplayStatics::ApplyPointDamage(result.GetActor(), temp->getDamage(), result.ImpactNormal, result, GetWorld()->GetFirstPlayerController(), GetOwner(), nullptr);
+		IHitInterface* Hit=Cast<IHitInterface>(result.GetActor());
+		//UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),player)
+		if (Hit)
+		{
+			Hit->GetHit(result.ImpactPoint);
+		}
 	}
 	//
 
