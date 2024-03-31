@@ -20,7 +20,7 @@ IIPlayerState* S_IDLE::updateInput(ACCharacterPlayer& player)
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{
 		player.Draw();
-		return new D_IDLE();
+		return new DRAWING();
 	}
 	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f)
 	{

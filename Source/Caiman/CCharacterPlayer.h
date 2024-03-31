@@ -59,6 +59,10 @@ public:
 	const FInputActionValue GetLookInputActionValue();
 	FORCEINLINE	UAnimMontage* GetDrawMontage() { return AM_Draw; }
 	FORCEINLINE UAnimMontage* GetSheathMontage() { return AM_Sheath; }
+	FORCEINLINE UAnimMontage* GetAttackMontage() { return AM_Attack; }
+
+	//UFUNCTION(BlueprintCallable)
+	class IIPlayerState* GetCurPlayerState();
 
 	//기다리는 시간 계산
 	FORCEINLINE	const int GetWaitFrame() { return WaitFrame; }

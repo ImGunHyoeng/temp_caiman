@@ -11,3 +11,5 @@
 #include "FSM/D_WALK.h"
 #include "FSM/D_IDLE.h"
 #include "FSM/ATTACK.h"
+#include "FSM/DRAWING.h"
+#include "FSM/SHEATHING.h"

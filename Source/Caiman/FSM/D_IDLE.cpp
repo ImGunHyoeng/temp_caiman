@@ -14,7 +14,7 @@ IIPlayerState* D_IDLE::updateInput(ACCharacterPlayer& player)
 	{
 		//changeState(ECharacterState::S_IDLE);
 		player.Sheath();
-		return new S_IDLE();
+		return new SHEATHING();
 	}
 	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f)
 	{

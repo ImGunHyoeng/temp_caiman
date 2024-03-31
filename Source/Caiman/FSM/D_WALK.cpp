@@ -28,7 +28,7 @@ IIPlayerState* D_WALK::updateInput(ACCharacterPlayer& player)
 	{
 		//changeState(ECharacterState::S_IDLE);
 		player.Sheath();
-		return new S_IDLE();
+		return new SHEATHING();
 	}
 	return NULL;
 }

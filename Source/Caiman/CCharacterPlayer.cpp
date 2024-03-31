@@ -22,6 +22,7 @@
 
 
 
+
 ACCharacterPlayer::ACCharacterPlayer()
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));//엔진에 기본적으로 내장되어있는 카메라 요소를 생성 이름도 설정
@@ -106,6 +107,11 @@ const FInputActionValue ACCharacterPlayer::GetMoveInputActionValue()
 const FInputActionValue ACCharacterPlayer::GetLookInputActionValue()
 {
 	return LookActionBinding->GetValue();
+}
+
+IIPlayerState* ACCharacterPlayer::GetCurPlayerState()
+{
+	 return playerState;
 }
 
 UKwangAnimInstance* ACCharacterPlayer::getAnimInstance()

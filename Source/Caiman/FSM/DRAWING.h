@@ -4,33 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "FSM/IPlayerState.h"
-UENUM()
-enum class EAttackState :uint8
-{
-	READY
-	,DOING
-	,DONE
-};
 /**
-*
- *
+ * 
  */
-class CAIMAN_API ATTACK :public IIPlayerState
+class CAIMAN_API DRAWING:public IIPlayerState
 {
 public:
+	DRAWING();
+	~DRAWING();
 	virtual IIPlayerState* updateInput(class ACCharacterPlayer& player);
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);
 	virtual void Destroy();
-	/*UFUNCTION(BlueprintCallable)
-	void AttackStateReady() { curAttackState = EAttackState::READY; }
-	UFUNCTION(BlueprintCallable)
-	void AttackStateDone() { curAttackState = EAttackState::DONE; }*/
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EAttackState curAttackState;
-
-	int DoingTime;
+	class UKwangAnimInstance* kwang;
 };
-

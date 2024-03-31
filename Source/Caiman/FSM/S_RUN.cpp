@@ -22,7 +22,7 @@ IIPlayerState* S_RUN::updateInput(ACCharacterPlayer& player)
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{
 		player.Draw();
-		return new D_IDLE();
+		return new DRAWING();
 	}
 	return NULL;
 }
