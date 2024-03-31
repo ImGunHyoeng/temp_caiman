@@ -24,4 +24,5 @@ void S_ROLL::exit(ACCharacterPlayer& player)
 
 void S_ROLL::Destroy()
 {
+	delete this;
 }

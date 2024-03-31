@@ -13,6 +13,8 @@
 #include "InputCore.h"
 #include "TimerManager.h"
 #include "FSM/IPlayerState.h"
+#include "FSM\FSM_Collection.h"
+#include "AnimInstance\KwangAnimInstance.h"
 
 
 
@@ -104,6 +106,17 @@ const FInputActionValue ACCharacterPlayer::GetMoveInputActionValue()
 const FInputActionValue ACCharacterPlayer::GetLookInputActionValue()
 {
 	return LookActionBinding->GetValue();
+}
+
+UKwangAnimInstance* ACCharacterPlayer::getAnimInstance()
+{
+	if (GetMesh()->GetAnimInstance())
+	{
+		UAnimInstance* instance = GetMesh()->GetAnimInstance();
+		UKwangAnimInstance* kwang = Cast<UKwangAnimInstance>(instance);
+		return kwang;
+	}
+	return NULL;
 }
 
 const TObjectPtr<class ACMyWeapon> ACCharacterPlayer::GetWeapon()
@@ -300,6 +313,7 @@ void ACCharacterPlayer::updateInput()
 			return;
 		}
 	}*/
+
 }
 void ACCharacterPlayer::changeState(ECharacterState inState)
 {
@@ -455,45 +469,24 @@ void ACCharacterPlayer::Look(const FInputActionValue& Value)
 
 void ACCharacterPlayer::Draw()
 {
-	
-
-	if (!PlayerController->WasInputKeyJustPressed(EKeys::R))
-		return;
-		//bSwordDraw = !bSwordDraw;
 		NoAnimDraw();
-		setPreviousState();
-	if (bSwordDraw)
-	{
-		currentState = ECharacterState::D_IDLE;
-		/*setPreviousState();
-		currentState = ECharacterState::D_IDLE;
-		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Draw")); */
 		PlayAnimMontage(AM_Draw);
-		//AM_Draw->Notifies
-	}
-	else
-	{
-		currentState = ECharacterState::S_IDLE;
-		/*setPreviousState();
-		currentState = ECharacterState::S_IDLE;
-		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));*/
-		PlayAnimMontage(AM_Sheath);
-	}
-	//bTrigger = true;
-	
 }
 
 void ACCharacterPlayer::NoAnimDraw()
 {
-	bSwordDraw = !bSwordDraw;
-	if (bSwordDraw)
-	{
-		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Draw"));
-	}
-	else
-	{
-		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));
-	}
+	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Draw"));
+}
+
+void ACCharacterPlayer::Sheath()
+{
+	NoAnimSheath();
+	PlayAnimMontage(AM_Sheath);
+}
+
+void ACCharacterPlayer::NoAnimSheath()
+{
+	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));
 }
 
 void ACCharacterPlayer::Run()

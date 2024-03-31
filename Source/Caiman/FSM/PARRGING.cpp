@@ -24,4 +24,5 @@ void PARRGING::exit(ACCharacterPlayer& player)
 
 void PARRGING::Destroy()
 {
+	delete this;
 }

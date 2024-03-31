@@ -23,4 +23,5 @@ void DEFENSELESS::exit(ACCharacterPlayer& player)
 
 void DEFENSELESS::Destroy()
 {
+	delete this;
 }

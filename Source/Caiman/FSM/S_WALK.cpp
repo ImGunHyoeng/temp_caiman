@@ -1,11 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FSM/S_WALK.h"
+#include "S_WALK.h"
 #include "CCharacterPlayer.h"
-#include "FSM\S_RUN.h"
-#include "FSM/D_IDLE.h"
-#include "CMyWeapon.h"
+#include "FSM_Collection.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -23,13 +21,13 @@ IIPlayerState * S_WALK::updateInput(ACCharacterPlayer& player)
 	}
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{
-		player.GetWeapon()->AttachToComponent(player.GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Draw"));
-		player.PlayAnimMontage(player.GetDrawMontage());
-		//player.changeState(ECharacterState::D_IDLE);
-		//NoAnimDraw();
-		//PlayAnimMontage(AM_Draw);
-		//changeState(ECharacterState::D_IDLE);
+		player.Draw();
 		return new D_IDLE();
+	}
+	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
+	{
+		//player.changeState(ECharacterState::JUMP);
+		return new JUMP();
 	}
 	return NULL;
 }

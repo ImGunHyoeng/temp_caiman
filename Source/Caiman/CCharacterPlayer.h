@@ -8,7 +8,7 @@
 #include "InputActionValue.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "FSM/FSM_Collection.h"
+//#include "FSM/FSM_Collection.h"
 #include "CCharacterPlayer.generated.h"
 
 UENUM(BlueprintType)
@@ -57,12 +57,27 @@ public:
 	
 	const FInputActionValue GetMoveInputActionValue();
 	const FInputActionValue GetLookInputActionValue();
-	UAnimMontage* GetDrawMontage() { return AM_Draw; }
-	UAnimMontage* GetSheathMontage() { return AM_Sheath; }
+	FORCEINLINE	UAnimMontage* GetDrawMontage() { return AM_Draw; }
+	FORCEINLINE UAnimMontage* GetSheathMontage() { return AM_Sheath; }
+
+	//기다리는 시간 계산
+	FORCEINLINE	const int GetWaitFrame() { return WaitFrame; }
+	FORCEINLINE void SetWaitFrame(int input) { WaitFrame = input; }
+	FORCEINLINE void WaitFramePassing() { WaitFrame--; }
+	
+	class UKwangAnimInstance* getAnimInstance();
 	const TObjectPtr<class ACMyWeapon> GetWeapon();
 	void SetKey(FKey _key);
+
+	//공통적인 행동(보고,움직이고,칼 빼기)
 	void Look(const FInputActionValue& Value);
 	void Move(const FInputActionValue& Value);
+	void Draw();
+	void NoAnimDraw();
+	void Sheath();
+	void NoAnimSheath();
+
+
 protected:
 	FKey key;
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -111,8 +126,7 @@ protected:
 
 	//void Move(const FInputActionValue& Value);
 
-	void Draw();
-	void NoAnimDraw();
+
 	void Roll(const FInputActionValue& Value);
 	void Run();
 	void Walk();
