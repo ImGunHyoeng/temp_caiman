@@ -35,7 +35,7 @@ public:
 	uint32 bIsLive : 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint32 bIsHeal : 1;
-	virtual void GetHit(FVector ImpactPoint) override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 	
 	UParticleSystem* GetParticle() { return HittedParticle; }
 	UPROPERTY(EditAnywhere, Category = VisualEffect)

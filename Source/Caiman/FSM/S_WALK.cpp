@@ -11,12 +11,10 @@ IIPlayerState * S_WALK::updateInput(ACCharacterPlayer& player)
 {
 	if (player.getPlayerController()->IsInputKeyDown(EKeys::LeftShift))
 	{
-		//changeState(ECharacterState::S_RUN);
 		return new S_RUN();
 	}
 	if (player.GetMoveInputActionValue().GetMagnitude() < 0.1f)
 	{
-		//changeState(ECharacterState::S_IDLE);
 		return new S_IDLE();
 	}
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
@@ -26,7 +24,6 @@ IIPlayerState * S_WALK::updateInput(ACCharacterPlayer& player)
 	}
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{
-		//player.changeState(ECharacterState::JUMP);
 		return new JUMP();
 	}
 	return NULL;
@@ -35,8 +32,6 @@ IIPlayerState * S_WALK::updateInput(ACCharacterPlayer& player)
 void S_WALK::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
-	
-	//set this enter
 	player.Move(player.GetMoveInputActionValue());
 }
 

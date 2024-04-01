@@ -14,7 +14,6 @@ IIPlayerState* S_IDLE::updateInput(ACCharacterPlayer& player)
 {
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{
-		//player.changeState(ECharacterState::JUMP);
 		return new JUMP();
 	}
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
@@ -24,7 +23,6 @@ IIPlayerState* S_IDLE::updateInput(ACCharacterPlayer& player)
 	}
 	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f)
 	{
-		//player.changeState(ECharacterState::S_WALK);
 		return new S_WALK();
 	}
 	return NULL;

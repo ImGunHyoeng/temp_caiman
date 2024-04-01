@@ -7,6 +7,8 @@
 #include "CMyWeapon.h"
 #include "EngineUtils.h"
 #include "Hit/HitInterface.h"
+#include "CCharacterPlayer.h"
+#include "Particalble\ParticableBase.h"
 // Sets default values for this component's properties
 UCTraceComponent::UCTraceComponent()
 {
@@ -65,7 +67,15 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 	for (const auto & result : outResults)
 	{
-		
+		if (Cast<AParticableBase>(result.GetActor()))
+		{
+			ACCharacterPlayer* player = Cast<ACCharacterPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+			if (player)
+			{
+				UGameplayStatics::SpawnEmitterAtLocation(player->GetWorld(), player->GetAttackParticle(), result.ImpactPoint);
+				attackObj.Add(result.GetActor());
+			}
+		}
 		//AActor* tempa;
 		//tempa = WeaponMesh->GetOwner();
 		////result.GetActor();
@@ -84,7 +94,7 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		//UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),player)
 		if (Hit)
 		{
-			Hit->GetHit(result.ImpactPoint);
+			Hit->Execute_GetHit(result.GetActor(), result.ImpactPoint);
 		}
 	}
 	//

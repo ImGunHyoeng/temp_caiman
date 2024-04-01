@@ -6,6 +6,7 @@
 #include "CCharacterPlayer.h"
 #include "CMyWeapon.h"
 #include "AnimInstance\KwangAnimInstance.h"
+#include "Kismet/GameplayStatics.h"
 
 
 IIPlayerState* JUMPATTACK::updateInput(ACCharacterPlayer& player)
@@ -37,10 +38,12 @@ void JUMPATTACK::enter(ACCharacterPlayer& player)
 		kwang->setDraw();
 		kwang->setJumpAttack();
 	}
+	player.SetAttackParticle(player.GetJumpAttackParticle());
 }
 
 void JUMPATTACK::exit(ACCharacterPlayer& player)
 {
+	player.SetAttackParticle(player.GetNormalAttackParticle());
 }
 
 void JUMPATTACK::Destroy()

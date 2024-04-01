@@ -76,11 +76,12 @@ void ACMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	
 }
 
-void ACMonsterBase::GetHit(FVector ImpactPoint)
+void ACMonsterBase::GetHit_Implementation(const FVector& ImpactPoint)
 {
-	DrawDebugSphere(GetWorld(), ImpactPoint, 20,32, FColor::Red, true);
+	DrawDebugSphere(GetWorld(), ImpactPoint, 20, 32, FColor::Red, true);
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
 }
+
 
 float ACMonsterBase::InternalTakePointDamage(float Damage, FPointDamageEvent const& PointDamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {

@@ -15,6 +15,7 @@ enum class EAttackState :uint8
 *
  *
  */
+
 class CAIMAN_API ATTACK :public IIPlayerState
 {
 public:

@@ -11,12 +11,10 @@ IIPlayerState* S_RUN::updateInput(ACCharacterPlayer& player)
 {
 	if (player.getPlayerController()->WasInputKeyJustReleased(EKeys::LeftShift))
 	{
-		//changeState(ECharacterState::S_WALK);
 		return new S_WALK();
 	}
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{
-		//changeState(ECharacterState::JUMP);
 		return new JUMP();
 	}
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
@@ -43,6 +41,7 @@ void S_RUN::enter(ACCharacterPlayer& player)
 
 void S_RUN::exit(ACCharacterPlayer& player)
 {
+	player.GetCharacterMovement()->MaxWalkSpeed = 1000 / 2.0f;
 }
 
 void S_RUN::Destroy()

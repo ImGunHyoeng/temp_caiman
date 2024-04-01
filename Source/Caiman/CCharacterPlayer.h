@@ -82,9 +82,17 @@ public:
 	void NoAnimSheath();
 	
 	//particle set
-	UParticleSystem* GetParticle() { return HittedParticle; }
-	virtual void GetHit(FVector ImpactPoint) override;
+	UParticleSystem* GetHittedParticle() { return HittedParticle; }
+	UParticleSystem* GetJumpAttackParticle() { return JumpAttackParticle; }
+	UParticleSystem* GetAttackParticle() { return AttackParticle; }
+	UParticleSystem* GetNormalAttackParticle() { return NormalAttackParticle; }
+	void SetAttackParticle(UParticleSystem* set) { AttackParticle = set; }
 
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	UFUNCTION(BlueprintCallable)
+	void Hitted(const FVector& ImpactPoint);
 protected:
 	FKey key;
 	UPROPERTY(EditAnywhere, Category = Input)
@@ -123,6 +131,8 @@ protected:
 		UAnimMontage* AM_Attack;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_Roll;
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
+		UAnimMontage* AM_Hitted;
 
 	//UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	//UInputAction* JumpAction;*/
@@ -192,6 +202,12 @@ protected:
 	//struct FEnhancedInputActionValueBinding const* AttackActionBinding;
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
+	UPROPERTY(EditAnywhere, Category = VisualEffect)
+	UParticleSystem* JumpAttackParticle;
+	UPROPERTY(EditAnywhere, Category = VisualEffect)
+	UParticleSystem* NormalAttackParticle;
+	UPROPERTY(EditAnywhere, Category = VisualEffect)
+	UParticleSystem* AttackParticle;
 private:
 	//TObjectPtr<class IIPlayerState> playerState;
 	class IIPlayerState *playerState;

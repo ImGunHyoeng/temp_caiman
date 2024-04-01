@@ -16,8 +16,6 @@ IIPlayerState* JUMP::updateInput(ACCharacterPlayer& player)
 		player.SetWaitFrame(40);
 		return new JUMPATTACK();
 	}
-
-
 	if (!(player.GetCharacterMovement()->IsFalling()))
 	{
 		return new GROUNDED();

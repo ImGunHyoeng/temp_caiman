@@ -8,25 +8,21 @@
 
 
 
+
 IIPlayerState* D_IDLE::updateInput(ACCharacterPlayer& player)
 {
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{
-		//changeState(ECharacterState::S_IDLE);
 		player.Sheath();
 		return new SHEATHING();
 	}
 	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f)
 	{
-		//changeState(ECharacterState::D_WALK);
 		return new D_WALK();
 	}
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 	{
-		//setPreviousState();
-		//currentState = ECharacterState::ATTACK;
-		player.SetWaitFrame(70);// WaitFrame = 70;
-		//ComboAttack();
+		player.SetWaitFrame(70);
 		return new ATTACK();
 	}
 	return NULL;
@@ -40,6 +36,7 @@ void D_IDLE::update(ACCharacterPlayer& player)
 
 void D_IDLE::enter(ACCharacterPlayer& player)
 {
+	
 	kwang = player.getAnimInstance();
 	if (kwang)
 		kwang->setDraw();

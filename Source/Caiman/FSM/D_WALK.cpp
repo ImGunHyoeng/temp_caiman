@@ -5,28 +5,23 @@
 #include "FSM_Collection.h"
 #include "CCharacterPlayer.h"
 #include "CMyWeapon.h"
-
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 IIPlayerState* D_WALK::updateInput(ACCharacterPlayer& player)
 {
 	if (player.GetMoveInputActionValue().GetMagnitude() < 0.1f)
 	{
-		//changeState(ECharacterState::D_IDLE);
+
 		return new D_IDLE();
 	}
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 	{
-		//setPreviousState();
-		//currentState = ECharacterState::ATTACK;
-		//WaitFrame = 70;
 		player.SetWaitFrame(70);
-		//ComboAttack();
 		return new ATTACK();
 	}
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{
-		//changeState(ECharacterState::S_IDLE);
 		player.Sheath();
 		return new SHEATHING();
 	}
@@ -41,6 +36,7 @@ void D_WALK::update(ACCharacterPlayer& player)
 
 void D_WALK::enter(ACCharacterPlayer& player)
 {
+	player.GetCharacterMovement()->MaxWalkSpeed = 1000 / 3.0f;
 }
 
 void D_WALK::exit(ACCharacterPlayer& player)
