@@ -244,10 +244,6 @@ void ACCharacterPlayer::Hitted(const FVector& ImpactPoint)
 	FVector forward=GetActorForwardVector();
 	FVector hitno_z = FVector(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
 	FVector toHit = (hitno_z - GetActorLocation()).GetSafeNormal();
-
-	
-
-
 	float cos = FVector::DotProduct(forward, toHit);
 	float seta = acos(cos);
 	float degree = FMath::RadiansToDegrees(seta);
