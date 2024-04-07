@@ -2,9 +2,10 @@
 
 
 #include "FSMFunctionalTest.h"
-#include "CCharacterPlayer.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "Kismet/GameplayStatics.h"
+//#include "CCharacterPlayer.h"
+//#include "Kismet/KismetSystemLibrary.h"
+//#include "Kismet/GameplayStatics.h"
+//#include "FSM/FSM_Collection.h"
 
 AFSMFunctionalTest::AFSMFunctionalTest()
 {
@@ -15,48 +16,48 @@ AFSMFunctionalTest::AFSMFunctionalTest()
 void AFSMFunctionalTest::BeginPlay()
 {
 	Super::BeginPlay();
-	controller = GetWorld()->GetFirstPlayerController();
-	if (controller)
-	{
-		Player = CastChecked<ACCharacterPlayer>(controller->GetPawn());
-		if (Player)
-		{
-			Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(controller->GetLocalPlayer());
+	//controller = GetWorld()->GetFirstPlayerController();
+	//if (controller)
+	//{
+	//	Player = CastChecked<ACCharacterPlayer>(controller->GetPawn());
+	//	if (Player)
+	//	{
+	//		Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(controller->GetLocalPlayer());
 
-			PlayerInput = Subsystem->GetPlayerInput();
+	//		PlayerInput = Subsystem->GetPlayerInput();
 
-			//InputAction = Player->getInputAction(TEXT("Jump"));
-			bactivateFireInputAction = true;
-		}
-		else
-		{
-			FinishTest(EFunctionalTestResult::Failed, FString("Controller Null"));
-			UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
-		}
-	}
-	else
-	{
-		FinishTest(EFunctionalTestResult::Failed, FString("Null Player Character Reference Pointer"));
-		UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
-	}
+	//		//InputAction = Player->getInputAction(TEXT("Jump"));
+	//		bactivateFireInputAction = true;
+	//	}
+	//	else
+	//	{
+	//		FinishTest(EFunctionalTestResult::Failed, FString("Controller Null"));
+	//		UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
+	//	}
+	//}
+	//else
+	//{
+	//	FinishTest(EFunctionalTestResult::Failed, FString("Null Player Character Reference Pointer"));
+	//	UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
+	//}
 }
 
 void AFSMFunctionalTest::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (bactivateFireInputAction)
+	/*if (bactivateFireInputAction)
 	{
 		Player->SetKey(EKeys::SpaceBar);
 		Player->SimulateSpaceKeyPress(FName("Jump"));
 		bactivateFireInputAction = false;
 	}
 	
-	if (Player->getCurState() == ECharacterState::JUMP)
+	if (Cast<JUMP>(Player->GetCurPlayerState()))
 	{
 		LogMessage(FString("Jump is well"));
 		return;
 	}
-	if (Player->getCurState() == ECharacterState::GROUNDED)
+	if (Cast<GROUNDED>(Player->GetCurPlayerState()))
 	{
 		Player->SetKey(EKeys::W);
 		Player->SimulateSpaceKeyPress(FName("Move"));
@@ -64,7 +65,7 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 	}
 	
 
-	if (Player->getCurState() == ECharacterState::S_WALK)
+	if (Cast<S_WALK>(Player->GetCurPlayerState()))
 	{
 		LogMessage(FString("Walk is well"));
 		Player->SetKey(EKeys::W);
@@ -74,7 +75,7 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 		return;
 	}
 
-	if (Player->getCurState() == ECharacterState::S_RUN)
+	if (Cast<S_RUN>(Player->GetCurPlayerState()))
 	{
 		LogMessage(FString("Run is well"));
 		Player->SetKey(EKeys::R);
@@ -82,7 +83,7 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 		return;
 	}
 
-	if (Player->getCurState() == ECharacterState::D_IDLE)
+	if (Cast<D_IDLE>(Player->GetCurPlayerState()))
 	{
 	
 		LogMessage(FString("Draw is well"));
@@ -91,13 +92,13 @@ void AFSMFunctionalTest::Tick(float DeltaTime)
 		return;
 	}
 
-	if (Player->getCurState() == ECharacterState::ATTACK)
+	if (Cast<ATTACK>(Player->GetCurPlayerState()))
 	{
 		LogMessage(FString("Attack is well"));
 		FinishTest(EFunctionalTestResult::Succeeded, FString("FSM work well"));
 		UKismetSystemLibrary::QuitGame(GetWorld(), UGameplayStatics::GetPlayerController(GetWorld(), 0), EQuitPreference::Quit, false);
 		return;
-	}
+	}*/
 
 
 

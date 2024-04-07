@@ -31,6 +31,8 @@ enum class ECharacterState :uint8
 /**
  * 
  */
+class ACMyWeapon;
+class IIPlayerState;
 UCLASS()
 class CAIMAN_API ACCharacterPlayer : public ACCharacterBase,public IHitInterface
 {
@@ -46,11 +48,11 @@ public:
 	void AttackCheck();
 	virtual void update();
 	virtual void updateInput();
-	void changeState(ECharacterState inState);
+	//void changeState(ECharacterState inState);
 	
 	
-	ECharacterState getCurState();
-	void setCurState(ECharacterState state);
+	//ECharacterState getCurState();
+	//void setCurState(ECharacterState state);
 	APlayerController* getPlayerController();
 	void SimulateSpaceKeyPress(const FName name);
 	void OnReleaseKey();
@@ -144,28 +146,24 @@ protected:
 	//void Move(const FInputActionValue& Value);
 
 
-	void Roll(const FInputActionValue& Value);
-	void Run();
-	void Walk();
-	void GoPrevious();
-	void GoWalk();
-	void GoIdle();
-	virtual void Jump() override;
-	void Landing(); 
-	void setPreviousState();
+	//void Roll(const FInputActionValue& Value);
+	//void Run();
+	//void Walk();
+	//void GoPrevious();
+	//void GoWalk();
+	//void GoIdle();
+	//virtual void Jump() override;
+	//void Landing(); 
+	//void setPreviousState();
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	void JumpAttack();
-	void Attack();
-	void Roll();
+	//void JumpAttack();
+	//void Attack();
+	//void Roll();
 
-	UFUNCTION(BlueprintImplementableEvent,category="Temp")
-	void Attack_BP();
+	//
+	//void ComboAttack();
 
-	
-	void ComboAttack();
 
-	UFUNCTION(BlueprintImplementableEvent, category = "Temp")
-		void LateBeginPlay();
 	
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -184,8 +182,8 @@ protected:
 
 
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TObjectPtr<class ACMyWeapon> Weapon;
+
+	ACMyWeapon * Weapon;
 
 	TObjectPtr<class UEnhancedInputComponent> EnhancedInputComponent;
 	APlayerController* PlayerController;
@@ -196,10 +194,6 @@ protected:
 	struct FEnhancedInputActionValueBinding const* MoveActionBinding;
 	struct FEnhancedInputActionValueBinding const* LookActionBinding;
 	
-	//struct FEnhancedInputActionValueBinding const* JumpActionBinding;
-	//struct FEnhancedInputActionValueBinding const*  DrawActionBinding;
-	//struct FEnhancedInputActionValueBinding const* RunActionBinding;
-	//struct FEnhancedInputActionValueBinding const* AttackActionBinding;
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
@@ -208,12 +202,14 @@ protected:
 	UParticleSystem* NormalAttackParticle;
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* AttackParticle;
+	
+	UPROPERTY(EditAnywhere, Category = Weapon)
+	TSubclassOf<ACMyWeapon> MyWeapon;
 private:
-	//TObjectPtr<class IIPlayerState> playerState;
-	class IIPlayerState *playerState;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
-		ECharacterState currentState;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
-		ECharacterState previousState;
-	//virtual void SetCharacterControlData(const UABCharacterControlDataAsset* CharacterControlData);
+
+	IIPlayerState *playerState;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	//	ECharacterState currentState;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
+	//	ECharacterState previousState;
 };

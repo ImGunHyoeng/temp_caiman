@@ -13,3 +13,4 @@
 #include "FSM/ATTACK.h"
 #include "FSM/DRAWING.h"
 #include "FSM/SHEATHING.h"
+#include "FSM/S_IDLE_NEW.h"

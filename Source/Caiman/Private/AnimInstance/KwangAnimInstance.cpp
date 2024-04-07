@@ -19,8 +19,15 @@ void UKwangAnimInstance::NativeBeginPlay()
 void UKwangAnimInstance::NativeUpdateAnimation(float DeltaTime)
 {
 	Super::NativeUpdateAnimation(DeltaTime);
+	if (Player)
+	{
+		Waitframe=Player->GetWaitFrame();
+		
+	}
 	if (PlayerMovement)
 	{
 		Velocity = UKismetMathLibrary::VSizeXY(PlayerMovement->Velocity);
+		MaxSpeed = PlayerMovement->GetMaxSpeed();
+		IsFalling=PlayerMovement->IsFalling();
 	}
 }

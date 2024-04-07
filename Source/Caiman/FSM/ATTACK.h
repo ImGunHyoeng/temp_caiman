@@ -7,9 +7,9 @@
 UENUM()
 enum class EAttackState :uint8
 {
-	READY
-	,DOING
+	END
 	,DONE
+	,DOING
 };
 /**
 *
@@ -24,13 +24,16 @@ public:
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);
 	virtual void Destroy();
-	/*UFUNCTION(BlueprintCallable)
-	void AttackStateReady() { curAttackState = EAttackState::READY; }
-	UFUNCTION(BlueprintCallable)
-	void AttackStateDone() { curAttackState = EAttackState::DONE; }*/
 
+	UFUNCTION(BlueprintCallable)
+	void AttackStateEnd() { curAttackState = EAttackState::END; }
+	UFUNCTION(BlueprintCallable)
+	void AttackStateDone() { curAttackState = EAttackState::DONE; }
+	UFUNCTION(BlueprintCallable)
+	void AttackStateDoing() { curAttackState = EAttackState::DOING; }
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EAttackState curAttackState;
+	EAttackState curAttackState;	
+
 
 	int DoingTime;
 };

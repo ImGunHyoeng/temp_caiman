@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "CMyWeapon.generated.h"
 
+class UCTraceComponent;
 UCLASS()
 class CAIMAN_API ACMyWeapon : public AActor
 {
@@ -15,7 +16,7 @@ class CAIMAN_API ACMyWeapon : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ACMyWeapon();
-	class UCTraceComponent* getTrace();
+	UCTraceComponent* getTrace();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,8 +25,9 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	USkeletalMeshComponent* Weapon;
+
+	UPROPERTY(EditAnywhere,Category = Mesh)
+	UStaticMeshComponent* WeaponMesh;
 
 	UFUNCTION(BlueprintPure)
 	float getDamage() const { return damage; }

@@ -13,7 +13,7 @@
 #include "InputCore.h"
 #include "TimerManager.h"
 #include "FSM/IPlayerState.h"
-#include "FSM\FSM_Collection.h"
+#include "FSM/FSM_Collection.h"
 #include "AnimInstance\KwangAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -41,8 +41,8 @@ ACCharacterPlayer::ACCharacterPlayer()
 	Camera->bUsePawnControlRotation = false;//카메라가 붐에 따라서 간다면 카메라의 회전이 달라짐
 	
 	
-	currentState = ECharacterState::S_IDLE;
-	previousState = ECharacterState::S_IDLE;
+	//currentState = ECharacterState::S_IDLE;
+	//previousState = ECharacterState::S_IDLE;
 	moveSpeed = 1000.0f;
 	bSwordDraw = false;
 	WaitFrame = 0;
@@ -57,10 +57,12 @@ void ACCharacterPlayer::BeginPlay()
 	
 	//KeyMappingArray = PlayerContext->GetMappings();
 	FName WeaponSocket(TEXT("S_Sheath"));
-	Weapon = GetWorld()->SpawnActor<ACMyWeapon>(FVector::ZeroVector, FRotator::ZeroRotator);
-	Weapon->SetActorScale3D(FVector{ 0.35f,0.35f,0.35f });
-	//Weapon->CalculateComponentsBoundingBoxInLocalSpace();
-	if (nullptr != Weapon)
+	if (MyWeapon)
+	{
+		Weapon = GetWorld()->SpawnActor<ACMyWeapon>(MyWeapon, FVector::ZeroVector, FRotator::ZeroRotator);
+	}
+	//무기 손에 붙이기
+	if (Weapon)
 	{
 		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 	}
@@ -73,11 +75,11 @@ void ACCharacterPlayer::BeginPlay()
 	
 	check(EnhancedInputComponent != nullptr&&"you don't allow EnhancedInputComponent");
 	//check(bWasInitialized && "Did you forget to call Init()?");
-	LateBeginPlay();
+	//LateBeginPlay();
 	//SimulateSpaceKeyPress(FName("Jump"),EKeys::SpaceBar);
 	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
 	LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
-	playerState = new S_IDLE();
+	playerState = new S_IDLE();//new US_IDLE_NEW();
 
 }
 
@@ -112,6 +114,7 @@ const FInputActionValue ACCharacterPlayer::GetLookInputActionValue()
 
 IIPlayerState* ACCharacterPlayer::GetCurPlayerState()
 {
+	//UE_LOG(LogTemp, Warning, TEXT("playerState class: %s"), (this->playerState)->_getUObject());
 	 return playerState;
 }
 
@@ -135,24 +138,24 @@ void ACCharacterPlayer::SetKey(FKey _key)
 	key = _key;
 }
 
-void ACCharacterPlayer::changeState(ECharacterState inState)
-{
-	
-	setPreviousState();
-	//Destroy(playerState);
-
-	playerState->exit(*this);
-	playerState->enter(*this);
-	currentState = inState;
-}
-ECharacterState ACCharacterPlayer::getCurState()
-{
-	return currentState;
-}
-void ACCharacterPlayer::setCurState(ECharacterState state)
-{
-	currentState = state;
-}
+//void ACCharacterPlayer::changeState(ECharacterState inState)
+//{
+//	
+//	setPreviousState();
+//	//Destroy(playerState);
+//
+//	playerState->exit(*this);
+//	playerState->enter(*this);
+//	currentState = inState;
+//}
+//ECharacterState ACCharacterPlayer::getCurState()
+//{
+//	return currentState;
+//}
+//void ACCharacterPlayer::setCurState(ECharacterState state)
+//{
+//	currentState = state;
+//}
 APlayerController* ACCharacterPlayer::getPlayerController()
 {
 	return PlayerController;
@@ -168,6 +171,11 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 void ACCharacterPlayer::update()
 {
 	playerState->update(*this);
+	if (Cast<S_IDLE>(playerState))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IS S_IDLE"));
+		/*UE_LOG(LogTemp, Warning, TEXT("playerState class: %s"), (this->playerState)->_getUObject());*/
+	}
 }
 void ACCharacterPlayer::updateInput()
 {
@@ -272,110 +280,110 @@ void ACCharacterPlayer::Hitted(const FVector& ImpactPoint)
 
 }
 
-void ACCharacterPlayer::Run()
-{
+//void ACCharacterPlayer::Run()
+//{
+//
+//	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftShift))
+//		return;
+//	{
+//		setPreviousState();
+//		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
+//		currentState = ECharacterState::S_RUN;
+//	}
+//}
 
-	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftShift))
-		return;
-	{
-		setPreviousState();
-		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
-		currentState = ECharacterState::S_RUN;
-	}
-}
+//void ACCharacterPlayer::Walk()
+//{
+//	if (MoveActionBinding->GetValue().GetMagnitude() < 0.1f)
+//		return;
+//	if (currentState == ECharacterState::S_IDLE)
+//	{
+//		setPreviousState();
+//		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
+//		currentState = ECharacterState::S_WALK;
+//		return;
+//	}
+//	if (currentState == ECharacterState::D_IDLE)
+//	{
+//		setPreviousState();
+//		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.5f;
+//		currentState = ECharacterState::D_WALK;
+//	}
+//}
+//
+//void ACCharacterPlayer::GoPrevious()
+//{
+//	currentState = previousState;
+//	if (currentState != ECharacterState::S_WALK)
+//		return;
+//	GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
+//}
 
-void ACCharacterPlayer::Walk()
-{
-	if (MoveActionBinding->GetValue().GetMagnitude() < 0.1f)
-		return;
-	if (currentState == ECharacterState::S_IDLE)
-	{
-		setPreviousState();
-		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
-		currentState = ECharacterState::S_WALK;
-		return;
-	}
-	if (currentState == ECharacterState::D_IDLE)
-	{
-		setPreviousState();
-		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.5f;
-		currentState = ECharacterState::D_WALK;
-	}
-}
-
-void ACCharacterPlayer::GoPrevious()
-{
-	currentState = previousState;
-	if (currentState != ECharacterState::S_WALK)
-		return;
-	GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
-}
-
-void ACCharacterPlayer::Jump()
-{
-
-	if (!PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
-		return;
-	Super::Jump();
-	setPreviousState();
-	currentState = ECharacterState::JUMP;
-	if (bPressedJump)
-		bIsJump = true;
-}
+//void ACCharacterPlayer::Jump()
+//{
+//
+//	if (!PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
+//		return;
+//	Super::Jump();
+//	setPreviousState();
+//	currentState = ECharacterState::JUMP;
+//	if (bPressedJump)
+//		bIsJump = true;
+//}
 
 
-void ACCharacterPlayer::Landing()
-{
-	setPreviousState();
-	currentState = ECharacterState::GROUNDED;
-	bIsJump = false;
-}
+//void ACCharacterPlayer::Landing()
+//{
+//	setPreviousState();
+//	currentState = ECharacterState::GROUNDED;
+//	bIsJump = false;
+//}
+//
+//void ACCharacterPlayer::setPreviousState()
+//{
+//	previousState = currentState;
+//}
 
-void ACCharacterPlayer::setPreviousState()
-{
-	previousState = currentState;
-}
+//void ACCharacterPlayer::JumpAttack()
+//{
+//	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+//		return;
+//	bIsJumpAttack = true;
+//	WaitFrame = 30;
+//	
+//}
+//
+//void ACCharacterPlayer::Attack()
+//{
+//
+//	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+//		return;
+//	setPreviousState();
+//	currentState = ECharacterState::ATTACK;
+//	WaitFrame = 70;
+//	ComboAttack();
+//}
 
-void ACCharacterPlayer::JumpAttack()
-{
-	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-		return;
-	bIsJumpAttack = true;
-	WaitFrame = 30;
-	
-}
-
-void ACCharacterPlayer::Attack()
-{
-
-	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-		return;
-	setPreviousState();
-	currentState = ECharacterState::ATTACK;
-	WaitFrame = 70;
-	ComboAttack();
-}
-
-void ACCharacterPlayer::Roll()
-{
-	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftControl))
-		return;
-	PlayAnimMontage(AM_Roll);
-	if (currentState < ECharacterState::JUMP)
-	{
-		currentState = ECharacterState::S_ROLL;
-		setPreviousState();
-		return;
-	}
-	currentState = ECharacterState::D_ROLL;
-	setPreviousState();
-}
-
-void ACCharacterPlayer::ComboAttack()
-{
-	FString a = !bIsCombo ? TEXT("Attack_2_1") : TEXT("Attack_2_2");
-	PlayAnimMontage(AM_Attack, 1.0f,FName(*a));
-}
+//void ACCharacterPlayer::Roll()
+//{
+//	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftControl))
+//		return;
+//	PlayAnimMontage(AM_Roll);
+//	if (currentState < ECharacterState::JUMP)
+//	{
+//		currentState = ECharacterState::S_ROLL;
+//		setPreviousState();
+//		return;
+//	}
+//	currentState = ECharacterState::D_ROLL;
+//	setPreviousState();
+//}
+//
+//void ACCharacterPlayer::ComboAttack()
+//{
+//	FString a = !bIsCombo ? TEXT("Attack_2_1") : TEXT("Attack_2_2");
+//	PlayAnimMontage(AM_Attack, 1.0f,FName(*a));
+//}
 
 void ACCharacterPlayer::AttackCheck()
 {

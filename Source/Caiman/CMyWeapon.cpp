@@ -3,6 +3,7 @@
 
 #include "CMyWeapon.h"
 #include "CTraceComponent.h"
+#include "Components/StaticMeshComponent.h"
 // Sets default values
 ACMyWeapon::ACMyWeapon()
 {
@@ -10,17 +11,10 @@ ACMyWeapon::ACMyWeapon()
 	PrimaryActorTick.bCanEverTick = false;
 
 	//무기 오브젝트 만들고 애셋 적용하기
-	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WEAPON"));
+	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMesh"));
 
-	RootComponent = Weapon;
-	//Weapon->SetWorldScale3D(FVector(0.325f, 0.325f, 0.325f));
-	USkeletalMesh* SK_WEAPON=LoadObject<USkeletalMesh>(nullptr,TEXT("/Script/Engine.SkeletalMesh'/Game/Mesh/Sketchfab_Sword_forsale_Skeleton.Sketchfab_Sword_forsale_Skeleton'"));
-	if (SK_WEAPON)
-	{
-		Weapon->SetSkeletalMesh(SK_WEAPON);
-		
-	}
-	Weapon->SetCollisionProfileName(TEXT("NoCollision"));
+	RootComponent = WeaponMesh;
+	WeaponMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	
 	trace = CreateDefaultSubobject<UCTraceComponent>(FName("TRACE"));
 	//trace = CreateDefaultSubobject<UCTraceComponent>(TEXT("Mytrace"));
@@ -35,7 +29,7 @@ UCTraceComponent* ACMyWeapon::getTrace()
 void ACMyWeapon::BeginPlay()
 {
 	Super::BeginPlay();
-	trace->WeaponMesh = Weapon;
+	trace->WeaponMesh = WeaponMesh;
 	damage = 10.0f;
 }
 

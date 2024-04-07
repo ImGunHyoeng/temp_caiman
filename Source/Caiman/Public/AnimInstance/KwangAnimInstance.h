@@ -26,6 +26,13 @@ public:
 	bool IsJumpAttack;
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	float Velocity;
+
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	int Waitframe;
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	float MaxSpeed;
+	UPROPERTY(BlueprintReadOnly, Category = Movement)
+	uint8 IsFalling:1;
 	
 	virtual void NativeBeginPlay();
 	virtual void NativeUpdateAnimation(float DeltaTime);
