@@ -20,7 +20,7 @@ IIPlayerState* SHEATHING::updateInput(ACCharacterPlayer& player)
 	{
 		return new S_IDLE();
 	}
-	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f&& player.GetWaitFrame() <= 60)
+	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f&& player.GetWaitFrame() <= 6)
 	{
 		player.StopAnimMontage(player.GetSheathMontage());
 		player.SetWaitFrame(0);
@@ -37,7 +37,7 @@ void SHEATHING::update(ACCharacterPlayer& player)
 
 void SHEATHING::enter(ACCharacterPlayer& player)
 {
-	player.SetWaitFrame(70);
+	player.SetWaitFrame(8);
 }
 
 void SHEATHING::exit(ACCharacterPlayer& player)

@@ -40,4 +40,7 @@ public:
 	UParticleSystem* GetParticle() { return HitParticle; }
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HitParticle;
+	UPROPERTY(EditAnywhere, Category = VisualEffect)
+	UParticleSystem* JumpAttackParticle;
+
 };

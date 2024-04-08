@@ -13,7 +13,7 @@ IIPlayerState* JUMPATTACK::updateInput(ACCharacterPlayer& player)
 {
 	
 	
-	if (player.GetWaitFrame() == 0)
+	if (player.GetWaitFrame() <= 0)
 	{
 		if(kwang)
 			kwang->setJumpAttackEnd();
@@ -38,12 +38,12 @@ void JUMPATTACK::enter(ACCharacterPlayer& player)
 		kwang->setDraw();
 		kwang->setJumpAttack();
 	}
-	player.SetAttackParticle(player.GetJumpAttackParticle());
+	//player.SetAttackParticle(player.GetJumpAttackParticle());
 }
 
 void JUMPATTACK::exit(ACCharacterPlayer& player)
 {
-	player.SetAttackParticle(player.GetNormalAttackParticle());
+	//player.SetAttackParticle(player.GetNormalAttackParticle());
 }
 
 void JUMPATTACK::Destroy()

@@ -19,7 +19,7 @@ IIPlayerState* DRAWING::updateInput(ACCharacterPlayer& player)
 	{
 		return new D_IDLE();
 	}
-	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f && player.GetWaitFrame() <= 60)
+	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f && player.GetWaitFrame() <= 6)
 	{
 		
 		player.StopAnimMontage(player.GetDrawMontage());
@@ -37,7 +37,7 @@ void DRAWING::update(ACCharacterPlayer& player)
 
 void DRAWING::enter(ACCharacterPlayer& player)
 {
-	player.SetWaitFrame(70);
+	player.SetWaitFrame(8);
 }
 
 void DRAWING::exit(ACCharacterPlayer& player)

@@ -13,7 +13,7 @@ IIPlayerState* JUMP::updateInput(ACCharacterPlayer& player)
 	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 	{
 		player.NoAnimDraw();
-		player.SetWaitFrame(40);
+		player.SetWaitFrame(6);
 		return new JUMPATTACK();
 	}
 	if (!(player.GetCharacterMovement()->IsFalling()))

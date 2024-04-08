@@ -67,9 +67,9 @@ public:
 	class IIPlayerState* GetCurPlayerState();
 
 	//기다리는 시간 계산
-	FORCEINLINE	const int GetWaitFrame() { return WaitFrame; }
-	FORCEINLINE void SetWaitFrame(int input) { WaitFrame = input; }
-	FORCEINLINE void WaitFramePassing() { WaitFrame--; }
+	FORCEINLINE	const float GetWaitFrame() { return WaitFrame; }
+	FORCEINLINE void SetWaitFrame(float input) { WaitFrame = input; }
+	void WaitFramePassing();
 	
 	class UKwangAnimInstance* getAnimInstance();
 	const TObjectPtr<class ACMyWeapon> GetWeapon();
@@ -85,10 +85,10 @@ public:
 	
 	//particle set
 	UParticleSystem* GetHittedParticle() { return HittedParticle; }
-	UParticleSystem* GetJumpAttackParticle() { return JumpAttackParticle; }
-	UParticleSystem* GetAttackParticle() { return AttackParticle; }
-	UParticleSystem* GetNormalAttackParticle() { return NormalAttackParticle; }
-	void SetAttackParticle(UParticleSystem* set) { AttackParticle = set; }
+	//UParticleSystem* GetJumpAttackParticle() { return JumpAttackParticle; }
+	//UParticleSystem* GetAttackParticle() { return AttackParticle; }
+	//UParticleSystem* GetNormalAttackParticle() { return NormalAttackParticle; }
+	//void SetAttackParticle(UParticleSystem* set) { AttackParticle = set; }
 
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
@@ -172,7 +172,7 @@ protected:
 		uint32 bIsJump:1;
 	float moveSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int WaitFrame;
+		float WaitFrame;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bIsJumpAttack:1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -196,12 +196,12 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
-	UPROPERTY(EditAnywhere, Category = VisualEffect)
-	UParticleSystem* JumpAttackParticle;
-	UPROPERTY(EditAnywhere, Category = VisualEffect)
-	UParticleSystem* NormalAttackParticle;
-	UPROPERTY(EditAnywhere, Category = VisualEffect)
-	UParticleSystem* AttackParticle;
+	//UPROPERTY(EditAnywhere, Category = VisualEffect)
+	//UParticleSystem* JumpAttackParticle;
+	//UPROPERTY(EditAnywhere, Category = VisualEffect)
+	//UParticleSystem* NormalAttackParticle;
+	//UPROPERTY(EditAnywhere, Category = VisualEffect)
+	//UParticleSystem* AttackParticle;
 	
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	TSubclassOf<ACMyWeapon> MyWeapon;

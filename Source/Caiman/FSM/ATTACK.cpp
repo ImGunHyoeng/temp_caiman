@@ -21,10 +21,7 @@ IIPlayerState* ATTACK::updateInput(ACCharacterPlayer& player)
 void ATTACK::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
-	/*player.WaitFramePassing();
-	DoingTime -= 1;
-	if (DoingTime > 0)
-		return;*/
+
 	if (curAttackState == EAttackState::DONE)
 	{
 		if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))

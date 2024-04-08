@@ -16,6 +16,7 @@
 #include "FSM/FSM_Collection.h"
 #include "AnimInstance\KwangAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
+#include "Misc/App.h"
 
 
 
@@ -79,8 +80,10 @@ void ACCharacterPlayer::BeginPlay()
 	//SimulateSpaceKeyPress(FName("Jump"),EKeys::SpaceBar);
 	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
 	LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
-	playerState = new S_IDLE();//new US_IDLE_NEW();
-
+	
+	//AS_IDLE_NEWA* d = new (EInternal::New)AS_IDLE_NEWA(); //new US_IDLE_NEW();
+	playerState = new S_IDLE();
+	//new S_IDLE()
 }
 
 
@@ -116,6 +119,11 @@ IIPlayerState* ACCharacterPlayer::GetCurPlayerState()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("playerState class: %s"), (this->playerState)->_getUObject());
 	 return playerState;
+}
+
+void ACCharacterPlayer::WaitFramePassing()
+{
+	 WaitFrame=WaitFrame-FApp::GetDeltaTime()*4;
 }
 
 UKwangAnimInstance* ACCharacterPlayer::getAnimInstance()

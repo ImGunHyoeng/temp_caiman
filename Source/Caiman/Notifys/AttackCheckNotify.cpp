@@ -20,8 +20,9 @@ void UAttackCheckNotify::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequ
 			//	(AT)->AttackStateDoing();
 			//}
 			//UE_LOG(LogTemp, Warning, TEXT("playerState class: %s"), (Player->GetCurPlayerState())->_getUObject());
-			ATTACK* AT=StaticCast<ATTACK*>(Player->GetCurPlayerState());
 			//=Cast<ATTACK>(Player->GetCurPlayerState());
+			ATTACK* AT=StaticCast<ATTACK*>(Player->GetCurPlayerState());
+			
 
 			AT->AttackStateDoing();
 			
@@ -37,16 +38,16 @@ void UAttackCheckNotify::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequen
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			ATTACK* AT=Cast<ATTACK>(Player->GetCurPlayerState());
+	/*		ATTACK* AT=Cast<ATTACK>(Player->GetCurPlayerState());
 			if (AT)
 			{
 				(AT)->AttackStateDone();
-			}
+			}*/
 			////Attack *AT=Cast<ATTACK>(Player->GetCurPlayerState());
-			//ATTACK* AT2 = StaticCast<ATTACK*>(Player->GetCurPlayerState());
-			//
+			ATTACK* AT = StaticCast<ATTACK*>(Player->GetCurPlayerState());
+			
 
-			//AT2->AttackStateDone();
+			AT->AttackStateDone();
 		}
 	}
 }

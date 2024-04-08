@@ -9,7 +9,7 @@
 IIPlayerState* GROUNDED::updateInput(ACCharacterPlayer& player)
 {
 	
-	if (player.GetWaitFrame()== 0)
+	if (player.GetWaitFrame()<= 0)
 	{
 		return new S_IDLE();
 	}
@@ -25,7 +25,7 @@ void GROUNDED::update(ACCharacterPlayer& player)
 void GROUNDED::enter(ACCharacterPlayer& player)
 {
 	kwang = player.getAnimInstance();
-	player.SetWaitFrame(5);
+	player.SetWaitFrame(3);
 }
 
 void GROUNDED::exit(ACCharacterPlayer& player)

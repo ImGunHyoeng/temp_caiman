@@ -9,6 +9,7 @@
 #include "Hit/HitInterface.h"
 #include "CCharacterPlayer.h"
 #include "Particalble\ParticableBase.h"
+#include "FSM/FSM_Collection.h"
 // Sets default values for this component's properties
 UCTraceComponent::UCTraceComponent()
 {
@@ -72,7 +73,16 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 			ACCharacterPlayer* player = Cast<ACCharacterPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
 			if (player)
 			{
-				UGameplayStatics::SpawnEmitterAtLocation(player->GetWorld(), player->GetAttackParticle(), result.ImpactPoint);
+				ACMyWeapon* weapon = Cast<ACMyWeapon>(WeaponMesh->GetOwner());
+				//if (JUMPATTACK* jump = StaticCast<JUMPATTACK*>(player->GetCurPlayerState()))
+				//{
+				//	UGameplayStatics::SpawnEmitterAtLocation(player->GetWorld(), weapon->JumpAttackParticle, result.ImpactPoint);
+				//}
+				//else
+				{
+					UGameplayStatics::SpawnEmitterAtLocation(player->GetWorld(), weapon->GetParticle(), result.ImpactPoint);
+				}
+		
 				attackObj.Add(result.GetActor());
 			}
 		}
