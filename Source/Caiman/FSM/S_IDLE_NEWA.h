@@ -8,7 +8,7 @@
 #include "S_IDLE_NEWA.generated.h"
 
 UCLASS()
-class CAIMAN_API AS_IDLE_NEWA : public AActor,public IIPlayerState
+class CAIMAN_API AS_IDLE_NEWA :public AActor ,public IIPlayerState
 {
 	GENERATED_BODY()
 	
@@ -21,11 +21,11 @@ public:
 	virtual void exit(class ACCharacterPlayer& player) ;
 	virtual void Destroy() ;
 	virtual void Tick(float DeltaTime) override;
-	//void* operator new(size_t Size, EInternal In)
-	//{
-	//	void* adr=new New
-	//	return
-	//}
+	void* operator new(size_t Size)
+	{
+		void* adr = FMemory::Malloc(Size);
+		return adr;
+	}
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

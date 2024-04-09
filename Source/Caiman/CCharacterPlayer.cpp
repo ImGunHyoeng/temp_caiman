@@ -17,6 +17,7 @@
 #include "AnimInstance\KwangAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/App.h"
+#include "FSM/S_IDLE_NEWA.h"
 
 
 
@@ -82,8 +83,9 @@ void ACCharacterPlayer::BeginPlay()
 	LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
 	
 	//AS_IDLE_NEWA* d = new (EInternal::New)AS_IDLE_NEWA(); //new US_IDLE_NEW();
-	playerState = new S_IDLE();
+	//playerState =NewObject<US_IDLE_NEW>();//new S_IDLE();
 	//new S_IDLE()
+	playerState = new S_IDLE();
 }
 
 
@@ -179,9 +181,9 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 void ACCharacterPlayer::update()
 {
 	playerState->update(*this);
-	if (Cast<S_IDLE>(playerState))
+	if (Cast<US_IDLE_NEW>(playerState))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("IS S_IDLE"));
+		UE_LOG(LogTemp, Warning, TEXT("IS UAS_IDLE"));
 		/*UE_LOG(LogTemp, Warning, TEXT("playerState class: %s"), (this->playerState)->_getUObject());*/
 	}
 }

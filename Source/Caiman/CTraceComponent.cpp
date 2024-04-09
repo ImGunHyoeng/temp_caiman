@@ -41,6 +41,7 @@ void UCTraceComponent::BeginPlay()
 void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
 	if (!WeaponMesh)
 		return;
 	if (!IsActive)
@@ -54,9 +55,11 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	end = WeaponMesh->GetSocketLocation(FName("End"));
 	dir = end - start;
 	//Dir.Size();
+	UE_LOG(LogTemp, Warning, TEXT("StartPosition: X: %.2f, Y: %.2f, Z: %.2f"), start.X, start.Y, start.Z);
+	UE_LOG(LogTemp, Warning, TEXT("EndPosition: X: %.2f, Y: %.2f, Z: %.2f"), end.X, end.Y, end.Z);
 	
-	UE_LOG(LogTemp, Warning,TEXT("End:%s"), *end.ToString());
-	UE_LOG(LogTemp, Warning, TEXT("Start:%s"), *start.ToString());
+	//UE_LOG(LogTemp, Warning,TEXT("End:%s"), *end.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Start:%s"), *start.ToString());
 	//if (IsActive)
 	
 	mySphere = FCollisionShape::MakeSphere(10);
@@ -74,15 +77,24 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 			if (player)
 			{
 				ACMyWeapon* weapon = Cast<ACMyWeapon>(WeaponMesh->GetOwner());
-				//if (JUMPATTACK* jump = StaticCast<JUMPATTACK*>(player->GetCurPlayerState()))
-				//{
-				//	UGameplayStatics::SpawnEmitterAtLocation(player->GetWorld(), weapon->JumpAttackParticle, result.ImpactPoint);
-				//}
-				//else
+				if (weapon&& weapon->GetWorld())
 				{
-					UGameplayStatics::SpawnEmitterAtLocation(player->GetWorld(), weapon->GetParticle(), result.ImpactPoint);
+					//result.ImpactPoint;
+					//DrawDebugSphere(GetWorld(), result.ImpactPoint, 12, 16, FColor::Red, false, 10);
+					DrawDebugSphere(GetWorld(), result.GetActor()->GetActorLocation(), 200, 16, FColor::Red, false, 10);
+					//UE_LOG(LogTemp, Warning, TEXT("%f"),result.ImpactPoint.X);
+					UE_LOG(LogTemp, Warning, TEXT("Position: X: %.2f, Y: %.2f, Z: %.2f"), result.ImpactPoint.X, result.ImpactPoint.Y, result.ImpactPoint.Z);
+					UParticleSystemComponent*temp =UGameplayStatics::SpawnEmitterAtLocation(weapon->GetWorld(), weapon->GetHitParticle(),FTransform(FRotator(0,0,0), result.ImpactPoint, FVector(1, 1, 1)));
+					if (nullptr == weapon->GetHitParticle())
+					{
+						UE_LOG(LogTemp, Warning, TEXT("Particle No"));
+					}
+					if (temp == nullptr)
+					{
+						UE_LOG(LogTemp, Warning, TEXT("No work"));
+					}
+
 				}
-		
 				attackObj.Add(result.GetActor());
 			}
 		}

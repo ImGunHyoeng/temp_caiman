@@ -3,7 +3,8 @@
 
 #include "CMyWeapon.h"
 #include "CTraceComponent.h"
-#include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
 // Sets default values
 ACMyWeapon::ACMyWeapon()
 {
@@ -11,7 +12,7 @@ ACMyWeapon::ACMyWeapon()
 	PrimaryActorTick.bCanEverTick = false;
 
 	//무기 오브젝트 만들고 애셋 적용하기
-	WeaponMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponMesh"));
+	WeaponMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("WeaponMesh"));
 
 	RootComponent = WeaponMesh;
 	WeaponMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
@@ -37,8 +38,8 @@ void ACMyWeapon::BeginPlay()
 void ACMyWeapon::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	UE_LOG(LogTemp, Warning, TEXT("Damage %f"),damage);
-	
+	//UE_LOG(LogTemp, Warning, TEXT("Damage %f"),damage);
+	//UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), GetHitParticle(), GetActorLocation());
 }
 
 

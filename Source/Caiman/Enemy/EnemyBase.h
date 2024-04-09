@@ -69,7 +69,8 @@ public:
 	class USphereComponent* AttackEndRange;
 
 	class ACCharacterPlayer* player;
-
+	UPROPERTY(EditAnywhere, Category = VisualEffect)
+	UParticleSystem* HittedParticle;
 	int hp;
 
 	

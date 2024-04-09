@@ -26,8 +26,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere,Category = Mesh)
-	UStaticMeshComponent* WeaponMesh;
+	UPROPERTY(VisibleAnywhere, Category = Weapon)
+	USkeletalMeshComponent* WeaponMesh;
 
 	UFUNCTION(BlueprintPure)
 	float getDamage() const { return damage; }
@@ -37,7 +37,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UCTraceComponent* trace;
 
-	UParticleSystem* GetParticle() { return HitParticle; }
+	UFUNCTION(BlueprintCallable)
+	UParticleSystem* GetHitParticle() { return HitParticle; }
+	UFUNCTION(BlueprintCallable)
+	UParticleSystem* GetJumpAttackParticle() { return JumpAttackParticle; }
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HitParticle;
 	UPROPERTY(EditAnywhere, Category = VisualEffect)

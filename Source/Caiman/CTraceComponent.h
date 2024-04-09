@@ -25,7 +25,7 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	UStaticMeshComponent* WeaponMesh;
+	USkeletalMeshComponent* WeaponMesh;
 	uint32 IsActive : 1;
 
 	FVector start;
