@@ -10,6 +10,12 @@ IIPlayerState* US_IDLE_NEW::updateInput(ACCharacterPlayer& player)
 
 void US_IDLE_NEW::update(ACCharacterPlayer& player)
 {
+	updatechild(player);
+}
+
+void US_IDLE_NEW::updatechild(ACCharacterPlayer& player)
+{
+	this->updatechild(player);
 }
 
 void US_IDLE_NEW::enter(ACCharacterPlayer& player)

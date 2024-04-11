@@ -14,9 +14,13 @@ UCLASS()
 class CAIMAN_API US_IDLE_NEW : public UObject,public IIPlayerState
 {
 	GENERATED_BODY()
+public:
 	US_IDLE_NEW() {}
 	virtual IIPlayerState* updateInput(class ACCharacterPlayer& player) ;
+	
+	
 	virtual void update(class ACCharacterPlayer& player) ;
+	virtual void updatechild(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player) ;
 	virtual void exit(class ACCharacterPlayer& player) ;
 	virtual void Destroy();
