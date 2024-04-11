@@ -85,7 +85,7 @@ void ACCharacterPlayer::BeginPlay()
 	//AS_IDLE_NEWA* d = new (EInternal::New)AS_IDLE_NEWA(); //new US_IDLE_NEW();
 	//playerState =NewObject<US_IDLE_NEW>();//new S_IDLE();
 	//new S_IDLE()
-	playerState = NewObject<US_IDLE_NEW>();//new S_IDLE();
+	playerState = new S_IDLE();//new S_IDLE();
 }
 
 

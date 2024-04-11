@@ -9,7 +9,8 @@
 #include "Components/SphereComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "Misc/App.h"
+#include "Enemy/EnemyInstance.h"
 
 // Sets default values
 AEnemyBase::AEnemyBase()
@@ -58,55 +59,73 @@ void AEnemyBase::BeginPlay()
 	//충돌처리하는 것과 엮어주는 기능
 	
 	DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::PlayerInRange);
-	DetectEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::PlayerOutRange);
 
 	AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::InAttackRange);
-	AttackEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::OutAttackRange);
-	AttackEndRange->OnComponentEndOverlap.Remove(this, FName("OutAttackRange"));
+	targetSet = false;	
+	spawnpoint = GetActorLocation();
+	//DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::PlayerInRange);
+	//DetectEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::PlayerOutRange);
+	//AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::InAttackRange);
+	//AttackEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::OutAttackRange);
+
+	//AttackEndRange->OnComponentEndOverlap.Remove(this, FName("OutAttackRange"));
+	enemyaniminstance = Cast<UEnemyInstance>(Bone->GetAnimInstance());
 }
 
 void AEnemyBase::InAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	
 	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("ATTACKRANGE_IN"));
 	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
 	if (target)
 	{
-		if(Curstate==EEnemyState::MOVETOWARDPLAYER)
-			Curstate = EEnemyState::ATTACK;
+		enemyaniminstance->setIsMoveTowardsPlayerEnd();
+		enemyaniminstance->setIsAttack();
+		Curstate = EEnemyState::ATTACK;
 	}
 }
 
-void AEnemyBase::OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("ATTACKRANGE_OUT"));
-	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
-	if (target)
-		if(Curstate==EEnemyState::ATTACK)
-			Curstate = EEnemyState::MOVETOWARDPLAYER;
-}
+//void AEnemyBase::OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+//{
+//	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("ATTACKRANGE_OUT"));
+//	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
+//	if (target)
+//	{
+//		Curstate = EEnemyState::MOVETOWARDPLAYER;
+//		AttackEndRange->OnComponentEndOverlap.Remove(this, FName("OutAttackRange"));
+//
+//		AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::InAttackRange);
+//		
+//
+//	}	/*if (Curstate == EEnemyState::ATTACK)
+//			Curstate = EEnemyState::MOVETOWARDPLAYER;*/
+//}
+//
+//void AEnemyBase::PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+//{
+//	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("DETECT_OUT"));
+//	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
+//	if (target)
+//	{
+//		Curstate = EEnemyState::STROLL;
+//
+//	}
+//}
 
 void AEnemyBase::PlayerInRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (Curstate == EEnemyState::MOVETOWARDPLAYER)
-		return;
 	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("DETECT_IN"));
 	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
 	if (target)
 	{
 		player = target;
+		targetSet= false;
+		enemyaniminstance->setIsMoveTowardsPlayer();
+		enemyaniminstance->setStrollEnd();
 		Curstate = EEnemyState::MOVETOWARDPLAYER;
 	}
 }
-void AEnemyBase::PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("DETECT_OUT"));
-	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
-	if (target)
-	{
-		if(Curstate==EEnemyState::MOVETOWARDPLAYER)
-			Curstate = EEnemyState::STROLL;
-	}
-}
+
 
 
 
@@ -145,42 +164,57 @@ void AEnemyBase::Update()
 			}
 		}
 		GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("MoveTowardPlayer"));
+		return;
 	}
 
 	if (Curstate == EEnemyState::FLEE)
 	{
-		//hp++;
-		FVector PawnLocation = GetActorLocation();
-
+		hp += FApp::GetDeltaTime() * 2;
 		if (player)
 		{
+			FVector MovementDirection = GetActorLocation() - player->GetActorLocation();
+			MovementDirection.Z = 0;
 			FVector PlayerForwardVector = player->GetActorForwardVector();
 			UPawnMovementComponent* MovementComponent = Cast<UPawnMovementComponent>(GetMovementComponent());
 			if (MovementComponent) {
-				MovementComponent->AddInputVector(PlayerForwardVector);
+				MovementComponent->AddInputVector(MovementDirection);
 			}
 		}
 		GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("FLee"));
+		return;
 	}
 
 	if (Curstate == EEnemyState::STROLL)
 	{
-		FVector RandomOffset = FMath::VRand();
-		RandomOffset.Z = 0.0f; 		
-		FVector MovementDirection = GetActorLocation() + RandomOffset;
-		UPawnMovementComponent* MovementComponent = Cast<UPawnMovementComponent>(GetMovementComponent());
-		if (MovementComponent) 
+		if ((GetActorLocation() - spawnpoint).Size() > 4000)
 		{
-			float MovementSpeed = 100.0f;
-			MovementComponent->AddInputVector(MovementDirection);
+			targetSet = true;
+			targetLocation = spawnpoint;
+		}//너무 멀어졌다면 스폰 위치로 이동
+
+		if (!targetSet)
+		{
+			targetLocation = GetActorLocation() + FMath::VRand() * 200;//단위벡터이기에 위치가 사용됨.
+			targetSet = true;
 		}
+		if ((GetActorLocation() - targetLocation).Size() <= 30)
+		{
+			targetSet = false;
+			return;
+		}
+		targetLocation.Z =GetActorLocation().Z;
+		UPawnMovementComponent* MovementComponent = Cast<UPawnMovementComponent>(GetMovementComponent());
+		if (MovementComponent)
+			MovementComponent->AddInputVector((targetLocation - GetActorLocation()).GetSafeNormal());//단위벡터 값 넣어주기
 		GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("Stroll"));
+		return;
 	}
 
 	if (Curstate == EEnemyState::ATTACK)
 	{
 		GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("Attack"));
 		//hp--;
+		return;
 	}
 	
 }
@@ -189,12 +223,30 @@ void AEnemyBase::UpdateInput()
 {
 	if (Curstate == EEnemyState::MOVETOWARDPLAYER)
 	{
+		if ((GetActorLocation() - player->GetActorLocation()).Size() >= 900)
+		{
+			Curstate = EEnemyState::STROLL;
+			player = nullptr;
 
+			enemyaniminstance->setIsMoveTowardsPlayerEnd();
+			enemyaniminstance->setStroll();
+			return;
+		}
 	}
 	if (Curstate == EEnemyState::FLEE)
 	{
 		if (hp >= 60)
+		{
+			DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::PlayerInRange);
+
+			AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::InAttackRange);
 			Curstate = EEnemyState::STROLL;
+			targetSet = false;
+			player = nullptr;
+			enemyaniminstance->setIsFleeEnd ();
+			enemyaniminstance->setStroll();
+			return;
+		}
 	}
 	if (Curstate == EEnemyState::STROLL)
 	{
@@ -202,8 +254,22 @@ void AEnemyBase::UpdateInput()
 	}
 	if (Curstate == EEnemyState::ATTACK)
 	{
-		if (hp == 50)
-		Curstate = EEnemyState::FLEE;
+		if (hp <= 30)
+		{
+			AttackStatrRange->OnComponentBeginOverlap.Remove(this, FName("InAttackRange"));
+			DetectStartRange->OnComponentBeginOverlap.Remove(this, FName("PlayerInRange"));
+			enemyaniminstance->setIsFlee();
+			enemyaniminstance->setIsAttackEnd();
+			Curstate = EEnemyState::FLEE;
+			return;
+		}		
+		if ((GetActorLocation() - player->GetActorLocation()).Size() >= 400)
+		{
+			enemyaniminstance->setIsMoveTowardsPlayer();
+			enemyaniminstance->setIsAttackEnd();
+			Curstate = EEnemyState::MOVETOWARDPLAYER;
+			return;
+		}
 	}
 
 }
@@ -219,5 +285,6 @@ void AEnemyBase::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	//DrawDebugSphere(GetWorld(), ImpactPoint, 20, 32, FColor::Red, true);
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
+	hp -= 10;
 }
 

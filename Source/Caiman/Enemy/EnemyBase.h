@@ -30,8 +30,8 @@ protected:
 	EEnemyState Curstate;
 	virtual void BeginPlay() override;
 	
-	UFUNCTION()
-	virtual void OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	//UFUNCTION()
+	//virtual void OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	UFUNCTION()
 	virtual void PlayerInRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
@@ -40,11 +40,12 @@ protected:
 	UFUNCTION()
 	virtual void InAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	//FComponentEndOverlapSignature, UPrimitiveComponent, OnComponentEndOverlap, UPrimitiveComponent*, OverlappedComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, int32, OtherBodyIndex
-	UFUNCTION()
-	virtual void PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	//UFUNCTION()
+	//virtual void PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	class UEnemyInstance* enemyaniminstance;
 
 	virtual void Update();
 	virtual void UpdateInput();
@@ -75,4 +76,8 @@ public:
 	int hp;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 	
+	FVector  spawnpoint;
+	FVector  targetLocation;
+	FVector  direction;
+	bool targetSet;
 };
