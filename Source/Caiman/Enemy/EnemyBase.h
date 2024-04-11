@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Hit\HitInterface.h"
 #include "EnemyBase.generated.h"
 
 UENUM()
@@ -16,7 +17,7 @@ enum class EEnemyState :uint8
 };
 
 UCLASS()
-class CAIMAN_API AEnemyBase : public APawn
+class CAIMAN_API AEnemyBase : public APawn, public IHitInterface
 {
 	GENERATED_BODY()
 
@@ -72,6 +73,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
 	int hp;
-
+	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 	
 };

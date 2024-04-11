@@ -10,6 +10,7 @@
 #include "CCharacterPlayer.h"
 #include "Particalble\ParticableBase.h"
 #include "FSM/FSM_Collection.h"
+#include "Hit/HitInterface.h"
 // Sets default values for this component's properties
 UCTraceComponent::UCTraceComponent()
 {
@@ -103,10 +104,12 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		////result.GetActor();
 		
 		ACMyWeapon* temp= Cast<ACMyWeapon>(WeaponMesh->GetOwner());
-		ACMonsterBase* monster= Cast<ACMonsterBase>(result.GetActor());
-		if (!IsValid(monster) || temp->getDamage() == 0)
+		IHitInterface* monster= Cast<IHitInterface>(result.GetActor());
+		/*if (!IsValid(monster) || temp->getDamage() == 0)
 			return;
 		if (monster->getHp() <= 0)
+			return;*/
+		if (!monster)
 			return;
 		if (attackObj.Contains<AActor*>(result.GetActor()))
 			return;
