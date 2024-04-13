@@ -18,12 +18,15 @@ AEnemyBase::AEnemyBase()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Bone = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh");
-	RootComponent = Bone;
+	
+	RootComponent = CreateDefaultSubobject<USceneComponent>("Root");
 
 	Body = CreateDefaultSubobject<UCapsuleComponent>("Body");
 	Body->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Block);
-	Body->SetupAttachment(Bone);
+	Body->SetupAttachment(GetRootComponent());
+
+	Bone = CreateDefaultSubobject<USkeletalMeshComponent>("Mesh");
+	Bone->SetupAttachment(Body);
 
 	DetectEndRange = CreateDefaultSubobject<USphereComponent>("DetectEnd");
 	DetectStartRange= CreateDefaultSubobject<USphereComponent>("DetectStart");
@@ -42,10 +45,10 @@ AEnemyBase::AEnemyBase()
 	AttackStatrRange->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 	AttackStatrRange->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Overlap);
 
-	DetectEndRange->SetupAttachment(Body);
-	DetectStartRange->SetupAttachment(Body);
-	AttackEndRange->SetupAttachment(Body);
-	AttackStatrRange->SetupAttachment(Body);
+	DetectEndRange->SetupAttachment(Bone);
+	DetectStartRange->SetupAttachment(Bone);
+	AttackEndRange->SetupAttachment(Bone);
+	AttackStatrRange->SetupAttachment(Bone);
 
 
 	hp = 100;
@@ -69,20 +72,25 @@ void AEnemyBase::BeginPlay()
 	//AttackEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::OutAttackRange);
 
 	//AttackEndRange->OnComponentEndOverlap.Remove(this, FName("OutAttackRange"));
-	enemyaniminstance = Cast<UEnemyInstance>(Bone->GetAnimInstance());
+	enemyaniminstance = Cast<UEnemyInstance>(Bone->GetAnimInstance()); 
+	/*FVector ForwardVector = GetActorForwardVector();
+	FRotator Rotation = FRotator(0, 0, 90);
+	ForwardVector = ForwardVector.RotateVector(Rotation);*/
+
+
 }
 
 void AEnemyBase::InAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	
-	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("ATTACKRANGE_IN"));
-	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
-	if (target)
-	{
-		enemyaniminstance->setIsMoveTowardsPlayerEnd();
-		enemyaniminstance->setIsAttack();
-		Curstate = EEnemyState::ATTACK;
-	}
+	//GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("ATTACKRANGE_IN"));
+	//ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
+	//if (target)
+	//{
+	//	enemyaniminstance->setIsMoveTowardsPlayerEnd();
+	//	enemyaniminstance->setIsAttack();
+	//	Curstate = EEnemyState::ATTACK;
+	//}
 }
 
 //void AEnemyBase::OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -139,7 +147,15 @@ void AEnemyBase::Tick(float DeltaTime)
 
 	UpdateInput();
 	Update();
+	DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Red, false, 2);
+	//Bone->SetRelativeRotation(FRotator(0, 180, 0).Quaternion());
+	UE_LOG(LogTemp, Warning, TEXT("Body %f"), Body->GetComponentRotation().Yaw);
+	UE_LOG(LogTemp, Warning, TEXT("Bone %f"), Bone->GetComponentRotation().Yaw);
+	UE_LOG(LogTemp, Warning, TEXT("Forward %f"), GetActorForwardVector().Rotation().Yaw);
+
+
 }
+
 
 void AEnemyBase::Update()
 {
@@ -155,10 +171,18 @@ void AEnemyBase::Update()
 			FVector MovementDirection = PlayerLocation - PawnLocation;
 			MovementDirection.Normalize();
 			MovementDirection.Z = 0;
-
+		
 		
 			UPawnMovementComponent* MovementComponent = Cast<UPawnMovementComponent>(GetMovementComponent());
 			if (MovementComponent) {
+				float yaw = GetDegree(MovementDirection);
+				//Bone->SetRelativeRotation(FRotator(0, yaw, 0).Quaternion());
+				
+				//RootComponent->SetWorldRotation(PlayerLocation.ToOrientationRotator());
+				SetActorRotation(FRotator(0, yaw, 0).Quaternion());
+				//Body->SetWorldRotation(FRotator(0, yaw, 0).Quaternion());
+				DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + MovementDirection * 100, FColor::Blue, false, 2);
+			/*	GetController()->SetControlRotation(MovementDirection.ToOrientationRotator());*///생각해보니 현재 컨트롤러가 없다.
 				MovementComponent->AddInputVector(MovementDirection);
 				//MovementComponent->AddForce(MovementDirection);
 			}
@@ -177,7 +201,16 @@ void AEnemyBase::Update()
 			FVector PlayerForwardVector = player->GetActorForwardVector();
 			UPawnMovementComponent* MovementComponent = Cast<UPawnMovementComponent>(GetMovementComponent());
 			if (MovementComponent) {
-				MovementComponent->AddInputVector(MovementDirection);
+				float yaw = GetDegree(MovementDirection);
+				//RootComponent->SetWorldRotation(FRotator(0, yaw, 0).Quaternion());
+				//Bone->SetRelativeRotation(FRotator(0, yaw, 0).Quaternion());
+				//Bone->SetWorldRotation(FRotator(0, yaw, 0).Quaternion());
+				//RootComponent->SetWorldRotation((GetActorLocation() + GetActorForwardVector()).ToOrientationRotator());
+				//Bone->SetWorldRotation((GetActorLocation() + GetActorForwardVector()).ToOrientationRotator() + FRotator(0, -90, 0));
+				
+				DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + MovementDirection * 100, FColor::Blue, false, 2);
+				/*GetController()->SetControlRotation(MovementDirection.ToOrientationRotator());
+				*/MovementComponent->AddInputVector(MovementDirection);
 			}
 		}
 		GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("FLee"));
@@ -205,7 +238,19 @@ void AEnemyBase::Update()
 		targetLocation.Z =GetActorLocation().Z;
 		UPawnMovementComponent* MovementComponent = Cast<UPawnMovementComponent>(GetMovementComponent());
 		if (MovementComponent)
-			MovementComponent->AddInputVector((targetLocation - GetActorLocation()).GetSafeNormal());//단위벡터 값 넣어주기
+		{
+			FVector MovementDirection = (targetLocation - GetActorLocation()).GetSafeNormal();
+			float yaw = GetDegree(MovementDirection);
+			//RootComponent->SetWorldRotation(FRotator(0, yaw, 0).Quaternion());
+			//Bone->SetRelativeRotation(FRotator(0, yaw, 0).Quaternion());
+			//Bone->SetWorldRotation(FRotator(0, yaw, 0).Quaternion());
+			MovementComponent->AddInputVector(MovementDirection);//단위벡터 값 넣어주기
+			//GetController()->SetControlRotation((targetLocation - GetActorLocation()).GetSafeNormal().ToOrientationRotator());
+			
+			//RootComponent->SetWorldRotation(targetLocation.ToOrientationRotator());
+			//Bone->SetWorldRotation(targetLocation.ToOrientationRotator() + FRotator(0, -90, 0));
+			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + MovementDirection * 100, FColor::Blue, false, 2);
+		}
 		GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("Stroll"));
 		return;
 	}
@@ -279,6 +324,20 @@ void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+float AEnemyBase::GetDegree(FVector dir)
+{
+	FVector actornotz = FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z);
+	float dot = FVector::DotProduct(actornotz + GetActorForwardVector(), dir+actornotz);//내적
+	FVector cross= FVector::CrossProduct(actornotz + GetActorForwardVector(), dir + actornotz);//외적
+	float result = FMath::RadiansToDegrees(dot);
+	if (cross.Z < 0)
+	{
+		result*=-1;
+	}
+
+	return result;
 }
 
 void AEnemyBase::GetHit_Implementation(const FVector& ImpactPoint)

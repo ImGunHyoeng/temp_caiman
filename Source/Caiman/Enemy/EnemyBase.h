@@ -51,6 +51,7 @@ public:
 	virtual void UpdateInput();
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	float GetDegree(FVector dir);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
 	class USkeletalMeshComponent* Bone;
