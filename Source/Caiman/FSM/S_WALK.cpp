@@ -26,6 +26,20 @@ IIPlayerState * S_WALK::updateInput(ACCharacterPlayer& player)
 	{
 		return new JUMP();
 	}
+	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		FVector2D movementVector = player.GetMoveInputActionValue().Get<FVector2D>();
+		FName temp;
+		if (movementVector.X >= 0)
+			temp = FName("Front");
+		if (movementVector.X < 0)
+			temp = FName("Back");
+		if (movementVector.Y < 0)
+			temp = FName("Left");
+		if (movementVector.Y > 0)
+			temp = FName("Right");
+		return new S_ROLL(temp);
+	}
 	return NULL;
 }
 

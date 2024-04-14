@@ -46,7 +46,7 @@ ACCharacterPlayer::ACCharacterPlayer()
 	//currentState = ECharacterState::S_IDLE;
 	//previousState = ECharacterState::S_IDLE;
 	moveSpeed = 1000.0f;
-	bSwordDraw = false;
+	
 	WaitFrame = 0;
 	//bTrigger = false;
 	PrimaryActorTick.bCanEverTick = true;
@@ -181,6 +181,36 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 void ACCharacterPlayer::update()
 {
 	playerState->update(*this);
+	
+	FVector inputVector = GetLastMovementInputVector();
+	float magnitude = inputVector.Size();
+
+	if (inputVector.X < 0.0f) {
+		UE_LOG(LogTemp, Warning, TEXT("Left"));// 왼쪽으로 이동
+		if (magnitude > 0.0f) {
+			// 이동 거리 확인
+		}
+	}
+	else if (inputVector.X > 0.0f) {
+		// 오른쪽으로 이동
+		UE_LOG(LogTemp, Warning, TEXT("Right"));
+		if (magnitude > 0.0f) {
+			// 이동 거리 확인
+		}
+	}
+	if (inputVector.Y < 0.0f) {
+		UE_LOG(LogTemp, Warning, TEXT("Forward"));// 왼쪽으로 이동
+		if (magnitude > 0.0f) {
+			// 이동 거리 확인
+		}
+	}
+	else if (inputVector.Y > 0.0f) {
+		// 오른쪽으로 이동
+		UE_LOG(LogTemp, Warning, TEXT("backward"));
+		if (magnitude > 0.0f) {
+			// 이동 거리 확인
+		}
+	}
 	//if (Cast<US_IDLE_NEW>(playerState))
 	//{
 	//	UE_LOG(LogTemp, Warning, TEXT("IS UAS_IDLE"));
@@ -214,6 +244,7 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 
 	AddMovementInput(ForwardDirection, MovementVector.X*moveSpeed);
 	AddMovementInput(RightDirection, MovementVector.Y * moveSpeed);
+	
 }
 
 void ACCharacterPlayer::Look(const FInputActionValue& Value)
@@ -248,18 +279,7 @@ void ACCharacterPlayer::NoAnimSheath()
 void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
-}
-
-float ACCharacterPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
-{
-	float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	return Damage;
-}
-
-void ACCharacterPlayer::Hitted(const FVector& ImpactPoint)
-{
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
-	FVector forward=GetActorForwardVector();
+	FVector forward = GetActorForwardVector();
 	FVector hitno_z = FVector(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
 	FVector toHit = (hitno_z - GetActorLocation()).GetSafeNormal();
 	float cos = FVector::DotProduct(forward, toHit);
@@ -268,9 +288,9 @@ void ACCharacterPlayer::Hitted(const FVector& ImpactPoint)
 	FVector Cross = FVector::CrossProduct(forward, toHit);
 	if (Cross.Z < 0)
 		degree *= -1;
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + forward * 50, 5, FColor::Red,15);
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + toHit * 50, 5, FColor::Green,15);
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Cross* 50, 5, FColor::Blue,15);
+	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + forward * 50, 5, FColor::Red, 15);
+	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + toHit * 50, 5, FColor::Green, 15);
+	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Cross * 50, 5, FColor::Blue, 15);
 	FName Section("Back");
 
 	if (degree >= -45.f && degree < 45.f)
@@ -286,118 +306,26 @@ void ACCharacterPlayer::Hitted(const FVector& ImpactPoint)
 		Section = FName("Right");
 	}
 
-	PlayAnimMontage(AM_Hitted, 1,Section);
+	PlayAnimMontage(AM_Hitted, 1, Section);
 
 }
 
-//void ACCharacterPlayer::Run()
-//{
-//
-//	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftShift))
-//		return;
-//	{
-//		setPreviousState();
-//		GetCharacterMovement()->MaxWalkSpeed = moveSpeed;
-//		currentState = ECharacterState::S_RUN;
-//	}
-//}
+float ACCharacterPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	return Damage;
+}
 
-//void ACCharacterPlayer::Walk()
-//{
-//	if (MoveActionBinding->GetValue().GetMagnitude() < 0.1f)
-//		return;
-//	if (currentState == ECharacterState::S_IDLE)
-//	{
-//		setPreviousState();
-//		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
-//		currentState = ECharacterState::S_WALK;
-//		return;
-//	}
-//	if (currentState == ECharacterState::D_IDLE)
-//	{
-//		setPreviousState();
-//		GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.5f;
-//		currentState = ECharacterState::D_WALK;
-//	}
-//}
-//
-//void ACCharacterPlayer::GoPrevious()
-//{
-//	currentState = previousState;
-//	if (currentState != ECharacterState::S_WALK)
-//		return;
-//	GetCharacterMovement()->MaxWalkSpeed = moveSpeed / 2.0f;
-//}
+void ACCharacterPlayer::Hitted(const FVector& ImpactPoint)
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
+	
 
-//void ACCharacterPlayer::Jump()
-//{
-//
-//	if (!PlayerController->WasInputKeyJustPressed(EKeys::SpaceBar))
-//		return;
-//	Super::Jump();
-//	setPreviousState();
-//	currentState = ECharacterState::JUMP;
-//	if (bPressedJump)
-//		bIsJump = true;
-//}
-
-
-//void ACCharacterPlayer::Landing()
-//{
-//	setPreviousState();
-//	currentState = ECharacterState::GROUNDED;
-//	bIsJump = false;
-//}
-//
-//void ACCharacterPlayer::setPreviousState()
-//{
-//	previousState = currentState;
-//}
-
-//void ACCharacterPlayer::JumpAttack()
-//{
-//	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-//		return;
-//	bIsJumpAttack = true;
-//	WaitFrame = 30;
-//	
-//}
-//
-//void ACCharacterPlayer::Attack()
-//{
-//
-//	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-//		return;
-//	setPreviousState();
-//	currentState = ECharacterState::ATTACK;
-//	WaitFrame = 70;
-//	ComboAttack();
-//}
-
-//void ACCharacterPlayer::Roll()
-//{
-//	if (!PlayerController->WasInputKeyJustPressed(EKeys::LeftControl))
-//		return;
-//	PlayAnimMontage(AM_Roll);
-//	if (currentState < ECharacterState::JUMP)
-//	{
-//		currentState = ECharacterState::S_ROLL;
-//		setPreviousState();
-//		return;
-//	}
-//	currentState = ECharacterState::D_ROLL;
-//	setPreviousState();
-//}
-//
-//void ACCharacterPlayer::ComboAttack()
-//{
-//	FString a = !bIsCombo ? TEXT("Attack_2_1") : TEXT("Attack_2_2");
-//	PlayAnimMontage(AM_Attack, 1.0f,FName(*a));
-//}
+}
 
 void ACCharacterPlayer::AttackCheck()
 {
-	if (!bWantCombo)
+	//if (!bWantCombo)
 		return;
 	bIsCombo = true;
 	WaitFrame = 70;

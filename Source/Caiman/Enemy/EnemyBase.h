@@ -15,7 +15,8 @@ enum class EEnemyState :uint8
 	FLEE,
 	MOVETOWARDPLAYER
 };
-
+class UAttributeComponent;
+class UHealthBarComponent;
 UCLASS()
 class CAIMAN_API AEnemyBase : public APawn, public IHitInterface
 {
@@ -43,8 +44,11 @@ protected:
 	//UFUNCTION()
 	//virtual void PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 public:	
-	// Called every frame
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 	virtual void Tick(float DeltaTime) override;
+	//FQuat SmoothRotation( FQuat& StartRotation,  FQuat& EndRotation, float DeltaTime, float RotationSpeed);
 	class UEnemyInstance* enemyaniminstance;
 
 	virtual void Update();
@@ -74,11 +78,29 @@ public:
 	class ACCharacterPlayer* player;
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
-	int hp;
+	//int hp;
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 	
 	FVector  spawnpoint;
 	FVector  targetLocation;
 	FVector  direction;
+	FVector  predirection;
+	float sumDeltaTime;
+	UPROPERTY(EditAnywhere, Category = Rotatespeed)
+	float RotationSpeed;
 	bool targetSet;
+
+	UPROPERTY(EditAnyWhere, Category = "Montage")
+	UAnimMontage* AM_HitReact;
+	UPROPERTY(EditAnywhere, Category = "Montage")
+	UAnimMontage* AM_DeadReact;
+	
+private:
+	void HitReact(const FVector& ImpactPoint);
+	void DeadReact(const FVector& ImpactPoint);
+	UPROPERTY(VisibleAnywhere)
+	UAttributeComponent* Attributes;
+	UPROPERTY(VisibleAnywhere)
+	UHealthBarComponent* HealthBarWidget;
+	UAnimInstance* animInstance;
 };

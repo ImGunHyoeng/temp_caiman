@@ -12,7 +12,8 @@
 				"Engine",
 				"AIModule",
 				"FunctionalTesting",
-				"CoreUObject"
+				"CoreUObject",
+				"UMG"
 			]
 		}
 	],

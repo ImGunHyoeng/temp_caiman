@@ -25,6 +25,10 @@ IIPlayerState* S_IDLE::updateInput(ACCharacterPlayer& player)
 	{
 		return new S_WALK();
 	}
+	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		return new S_ROLL(FName("Front"));
+	}
 	return NULL;
 }
 

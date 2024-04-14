@@ -62,6 +62,7 @@ public:
 	FORCEINLINE	UAnimMontage* GetDrawMontage() { return AM_Draw; }
 	FORCEINLINE UAnimMontage* GetSheathMontage() { return AM_Sheath; }
 	FORCEINLINE UAnimMontage* GetAttackMontage() { return AM_Attack; }
+	FORCEINLINE UAnimMontage* GetRollMontage() { return AM_Roll; }
 
 	//UFUNCTION(BlueprintCallable)
 	class IIPlayerState* GetCurPlayerState();
@@ -166,21 +167,16 @@ protected:
 
 	
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		uint32 bSwordDraw:1;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		uint32 bIsJump:1;
+
 	float moveSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float WaitFrame;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		uint32 bIsJumpAttack:1;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bIsCombo : 1;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		uint32 bWantCombo : 1;
-
-
+		uint32 bIsAttacked: 1;
 
 
 	ACMyWeapon * Weapon;
