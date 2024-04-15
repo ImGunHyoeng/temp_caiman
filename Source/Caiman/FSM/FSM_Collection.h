@@ -15,3 +15,6 @@
 #include "FSM/SHEATHING.h"
 #include "FSM/S_IDLE_NEW.h"
 #include "FSM/S_ROLL.h"
+#include "FSM/PARRGING.h"
+#include "FSM/DEFENSELESS.h"
+#include "FSM/PARRINGSUCESS.h"

@@ -28,13 +28,12 @@ void PARRGING::enter(ACCharacterPlayer& player)
 	player.PlayAnimMontage(player.GetParringMontage(), 1.0f);
 	//player.SetWaitFrame(30);
 	player.SetParring(true);
-	player.SetParringEnd(false);
 }
 
 void PARRGING::exit(ACCharacterPlayer& player)
 {
 	player.SetWaitFrame(0);
-	
+	player.SetParring(false);
 }
 
 void PARRGING::Destroy()

@@ -16,4 +16,5 @@ public:
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);
 	virtual void Destroy();
+	class UKwangAnimInstance* kwang;
 };

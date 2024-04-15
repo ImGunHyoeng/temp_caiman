@@ -18,6 +18,7 @@ IIPlayerState* S_ROLL::updateInput( ACCharacterPlayer& player)
 void S_ROLL::update( ACCharacterPlayer& player)
 {
 	player.WaitFramePassing();
+	player.Look(player.GetLookInputActionValue());
 }
 
 void S_ROLL::enter(ACCharacterPlayer& player)

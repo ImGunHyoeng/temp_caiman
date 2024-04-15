@@ -99,11 +99,7 @@ public:
 	FORCEINLINE bool GetParring() { return bIsParring;}
 	
 	FORCEINLINE bool GetParringEnd() { return bIsParringEnd;}
-	FORCEINLINE void SetParringEnd(bool input) { bIsParringEnd = input; }
-
-	FORCEINLINE bool GetAttacked() { return bIsAttacked; }
-	FORCEINLINE void SetAttacked(bool input) { bIsAttacked = input; }
-
+	FORCEINLINE void SetParringEnd() { bIsParring = true; }
 
 protected:
 	FKey key;
@@ -194,7 +190,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bIsParringEnd: 1;
-	
 
 	ACMyWeapon * Weapon;
 

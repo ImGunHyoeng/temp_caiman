@@ -24,7 +24,6 @@ void DEFENSELESS::update(ACCharacterPlayer& player)
 
 void DEFENSELESS::enter(ACCharacterPlayer& player)
 {
-	player.SetParring(false);
 	kwang = player.getAnimInstance();
 	if (kwang)
 		kwang->setDraw();

@@ -6,10 +6,13 @@
 #include "FSM/IPlayerState.h"
 
 /**
- *
+ * 
  */
-class CAIMAN_API DEFENSELESS :public IIPlayerState
+class CAIMAN_API PARRINGSUCESS:public IIPlayerState
 {
+public:
+	PARRINGSUCESS();
+	~PARRINGSUCESS();
 public:
 	virtual IIPlayerState* updateInput(class ACCharacterPlayer& player);
 	virtual void update(class ACCharacterPlayer& player);

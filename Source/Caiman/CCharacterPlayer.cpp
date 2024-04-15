@@ -278,6 +278,18 @@ void ACCharacterPlayer::NoAnimSheath()
 
 void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 {
+	if (bIsParring)//패링시에 상태 설정해줌
+	{
+		IIPlayerState* state = new PARRINGSUCESS();
+		if (state != NULL)
+		{
+			playerState->exit(*this);
+			playerState->Destroy();
+			playerState = state;
+			playerState->enter(*this);
+		}
+		return;
+	}
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
 	FVector forward = GetActorForwardVector();
 	FVector hitno_z = FVector(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
@@ -316,12 +328,7 @@ float ACCharacterPlayer::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 	return Damage;
 }
 
-void ACCharacterPlayer::Hitted(const FVector& ImpactPoint)
-{
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
-	
 
-}
 
 void ACCharacterPlayer::AttackCheck()
 {
