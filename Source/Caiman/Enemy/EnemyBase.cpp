@@ -14,6 +14,7 @@
 #include "Components/AttributeComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/HealthBarComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
 AEnemyBase::AEnemyBase()
@@ -73,12 +74,6 @@ void AEnemyBase::BeginPlay()
 	
 	targetSet = false;	
 	spawnpoint = GetActorLocation();
-	//DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::PlayerInRange);
-	//DetectEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::PlayerOutRange);
-	//AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::InAttackRange);
-	//AttackEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::OutAttackRange);
-
-	//AttackEndRange->OnComponentEndOverlap.Remove(this, FName("OutAttackRange"));
 	enemyaniminstance = Cast<UEnemyInstance>(Bone->GetAnimInstance()); 
 	/*FVector ForwardVector = GetActorForwardVector();
 	FRotator Rotation = FRotator(0, 0, 90);
@@ -101,35 +96,45 @@ void AEnemyBase::InAttackRange(UPrimitiveComponent* OverlappedComponent, AActor*
 		enemyaniminstance->setIsMoveTowardsPlayerEnd();
 		enemyaniminstance->setIsAttack();
 		Curstate = EEnemyState::ATTACK;
+		AttackEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::OutAttackRange);
+		AttackStatrRange->OnComponentBeginOverlap.Remove(this, FName("InAttackRange"));
+		
 	}
 }
 
-//void AEnemyBase::OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-//{
-//	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("ATTACKRANGE_OUT"));
-//	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
-//	if (target)
-//	{
-//		Curstate = EEnemyState::MOVETOWARDPLAYER;
-//		AttackEndRange->OnComponentEndOverlap.Remove(this, FName("OutAttackRange"));
-//
-//		AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::InAttackRange);
-//		
-//
-//	}	/*if (Curstate == EEnemyState::ATTACK)
-//			Curstate = EEnemyState::MOVETOWARDPLAYER;*/
-//}
-//
-//void AEnemyBase::PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-//{
-//	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("DETECT_OUT"));
-//	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
-//	if (target)
-//	{
-//		Curstate = EEnemyState::STROLL;
-//
-//	}
-//}
+void AEnemyBase::OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("ATTACKRANGE_OUT"));
+	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
+	if (target)
+	{
+		enemyaniminstance->setIsMoveTowardsPlayer();
+		enemyaniminstance->setIsAttackEnd();
+		Curstate = EEnemyState::MOVETOWARDPLAYER;
+		AttackEndRange->OnComponentEndOverlap.Remove(this, FName("OutAttackRange"));
+
+		AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::InAttackRange);
+		
+
+	}
+}
+
+void AEnemyBase::PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("DETECT_OUT"));
+	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
+	if (target)
+	{
+		//Curstate = EEnemyState::STROLL;
+		Curstate = EEnemyState::STROLL;
+		player = nullptr;
+
+		enemyaniminstance->setIsMoveTowardsPlayerEnd();
+		enemyaniminstance->setStroll();
+		DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::PlayerInRange);
+		DetectEndRange->OnComponentEndOverlap.Remove(this, FName("PlayerOutRange"));
+	}
+}
 
 void AEnemyBase::PlayerInRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -142,6 +147,9 @@ void AEnemyBase::PlayerInRange(UPrimitiveComponent* OverlappedComponent, AActor*
 		enemyaniminstance->setIsMoveTowardsPlayer();
 		enemyaniminstance->setStrollEnd();
 		Curstate = EEnemyState::MOVETOWARDPLAYER;
+		DetectStartRange->OnComponentBeginOverlap.Remove(this, FName("PlayerInRange"));
+		
+		DetectEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::PlayerOutRange);
 	}
 }
 
@@ -223,7 +231,16 @@ void AEnemyBase::Update()
 
 	if (Curstate == EEnemyState::FLEE)
 	{
-		Attributes->ReceiveDamage(FApp::GetDeltaTime() * 100);
+		//체력회복하는 것이 보이도록
+		if (Attributes)
+		{
+			Attributes->ReceiveDamage(-(FApp::GetDeltaTime() * 5));
+			if (HealthBarWidget)
+			{
+				HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+			}
+		}
+		
 		//hp += FApp::GetDeltaTime() * 10;
 		if (player)
 		{
@@ -244,16 +261,16 @@ void AEnemyBase::Update()
 
 	if (Curstate == EEnemyState::STROLL)
 	{ 
-		 direction;
-		if ((GetActorLocation() - spawnpoint).Size() > 500)
+		if ((GetActorLocation() - spawnpoint).Size() > 500)//원점 복귀
 		{
 			targetSet = true;
-			predirection=(targetLocation - GetActorLocation()).GetSafeNormal();
+			//predirection=(targetLocation - GetActorLocation()).GetSafeNormal();
+			predirection = GetActorForwardVector();
 			targetLocation = spawnpoint;
 			targetLocation.Z = GetActorLocation().Z;
 			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Black, false, 10.f, 0, 10.0f);
 			direction = (targetLocation - GetActorLocation()).GetSafeNormal();
-			float yaw = GetDegree(direction);
+			//float yaw = GetDegree(direction);
 
 			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Red, false, 10.f,0,10.0f);
 			UE_LOG(LogTemp, Warning, TEXT("Body %f"), Body->GetComponentRotation().Yaw);
@@ -264,12 +281,12 @@ void AEnemyBase::Update()
 
 		if (!targetSet)
 		{
-			predirection = (targetLocation - GetActorLocation()).GetSafeNormal();
+			predirection = GetActorForwardVector();
 			//이전 벡터의 방향을 구함.
 			targetLocation = GetActorLocation() + FMath::VRand() * 200;//단위벡터이기에 위치가 사용됨.
 			targetLocation.Z = GetActorLocation().Z;
 			direction = (targetLocation - GetActorLocation()).GetSafeNormal();
-			float yaw = GetDegree(direction);
+			//float yaw = GetDegree(direction);
 			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Black, false, 10.f, 0, 10.0f);
 			
 			//RootComponent->SetWorldRotation((FRotator(0, yaw, 0)));
@@ -290,19 +307,21 @@ void AEnemyBase::Update()
 		UPawnMovementComponent* MovementComponent = Cast<UPawnMovementComponent>(GetMovementComponent());
 		if (MovementComponent)
 		{
-			//sumDeltaTime += FApp::GetDeltaTime();
+			sumDeltaTime += FApp::GetDeltaTime();
 			//sumDeltaTime *= RotationSpeed;
-			//sumDeltaTime = FMath::Min(sumDeltaTime, 1.0f);
+			sumDeltaTime = FMath::Min(sumDeltaTime, 1.0f);
 
-			//SetActorRotation(FQuat::Slerp(predirection.ToOrientationQuat(), direction.ToOrientationQuat(), sumDeltaTime));
-			SetActorRotation(direction.Rotation());
+			//SetActorRotation(direction.Rotation());
+			//FMath::RInterpTo(predirection.Rotation(), direction.Rotation(), sumDeltaTime, RotationSpeed);
+			SetActorRotation(FMath::RInterpTo(GetActorForwardVector().Rotation(), direction.Rotation(), sumDeltaTime, RotationSpeed));
+			
 			MovementComponent->AddInputVector(direction * 0.4f);//단위벡터 값 넣어주기
 			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Red, false, 10.f, 0, 10.0f);
 			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + direction * 100, FColor::Blue, false, 2.1f,0,15);
 		}
 
 	
-		
+
 		
 		GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("Stroll"));
 		return;
@@ -321,15 +340,15 @@ void AEnemyBase::UpdateInput()
 {
 	if (Curstate == EEnemyState::MOVETOWARDPLAYER)
 	{
-		if ((GetActorLocation() - player->GetActorLocation()).Size() >= 900)
-		{
-			Curstate = EEnemyState::STROLL;
-			player = nullptr;
+		//if ((GetActorLocation() - player->GetActorLocation()).Size() >= 900)
+		//{
+		//	Curstate = EEnemyState::STROLL;
+		//	player = nullptr;
 
-			enemyaniminstance->setIsMoveTowardsPlayerEnd();
-			enemyaniminstance->setStroll();
-			return;
-		}
+		//	enemyaniminstance->setIsMoveTowardsPlayerEnd();
+		//	enemyaniminstance->setStroll();
+		//	return;
+		//}
 	}
 	if (Curstate == EEnemyState::FLEE)
 	{
@@ -341,7 +360,7 @@ void AEnemyBase::UpdateInput()
 			Curstate = EEnemyState::STROLL;
 			targetSet = false;
 			player = nullptr;
-			enemyaniminstance->setIsFleeEnd ();
+			enemyaniminstance->setIsFleeEnd();
 			enemyaniminstance->setStroll();
 			return;
 		}
@@ -356,18 +375,20 @@ void AEnemyBase::UpdateInput()
 		{
 			AttackStatrRange->OnComponentBeginOverlap.Remove(this, FName("InAttackRange"));
 			DetectStartRange->OnComponentBeginOverlap.Remove(this, FName("PlayerInRange"));
+			DetectEndRange->OnComponentEndOverlap.Remove(this, FName("PlayerOutRange"));
+			AttackEndRange->OnComponentEndOverlap.Remove(this, FName("OutAttackRange"));
 			enemyaniminstance->setIsFlee();
 			enemyaniminstance->setIsAttackEnd();
 			Curstate = EEnemyState::FLEE;
 			return;
 		}		
-		if ((GetActorLocation() - player->GetActorLocation()).Size() >= 400)
-		{
-			enemyaniminstance->setIsMoveTowardsPlayer();
-			enemyaniminstance->setIsAttackEnd();
-			Curstate = EEnemyState::MOVETOWARDPLAYER;
-			return;
-		}
+		//if ((GetActorLocation() - player->GetActorLocation()).Size() >= 400)
+		//{
+		//	enemyaniminstance->setIsMoveTowardsPlayer();
+		//	enemyaniminstance->setIsAttackEnd();
+		//	Curstate = EEnemyState::MOVETOWARDPLAYER;
+		//	return;
+		//}
 	}
 
 }

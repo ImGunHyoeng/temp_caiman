@@ -211,11 +211,10 @@ void ACCharacterPlayer::update()
 			// 이동 거리 확인
 		}
 	}
-	//if (Cast<US_IDLE_NEW>(playerState))
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("IS UAS_IDLE"));
-	//	/*UE_LOG(LogTemp, Warning, TEXT("playerState class: %s"), (this->playerState)->_getUObject());*/
-	//}
+	if (Cast<US_IDLE_NEW>(playerState))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IS UAS_IDLE"));
+	}
 }
 void ACCharacterPlayer::updateInput()
 {
