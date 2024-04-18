@@ -2,14 +2,14 @@
 
 
 #include "Enemy/EnemyInstance.h"
-#include "Enemy/EnemyBase.h"
+#include "Enemy/AnimalBase.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/PawnMovementComponent.h"
 
 void UEnemyInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
-	Enemy = Cast<AEnemyBase>(TryGetPawnOwner());
+	Enemy = Cast<AAnimalBase>(TryGetPawnOwner());
 	if (Enemy)
 	{
 		EnemyMovement = Enemy->GetMovementComponent();

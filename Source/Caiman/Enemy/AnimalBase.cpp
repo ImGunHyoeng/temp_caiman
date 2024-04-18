@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Enemy/EnemyBase.h"
+#include "Enemy/AnimalBase.h"
 #include "Components/CapsuleComponent.h"
 #include "CCharacterPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -17,7 +17,7 @@
 #include "Kismet/KismetMathLibrary.h"
 
 // Sets default values
-AEnemyBase::AEnemyBase()
+AAnimalBase::AAnimalBase()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -62,15 +62,15 @@ AEnemyBase::AEnemyBase()
 }
 
 // Called when the game starts or when spawned
-void AEnemyBase::BeginPlay()
+void AAnimalBase::BeginPlay()
 {
 	Super::BeginPlay();
 	//충돌처리하는 것과 엮어주는 기능
 	
 
-	DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::PlayerInRange);
+	DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::PlayerInRange);
 
-	AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::InAttackRange);
+	AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::InAttackRange);
 	
 	targetSet = false;	
 	spawnpoint = GetActorLocation();
@@ -86,7 +86,7 @@ void AEnemyBase::BeginPlay()
 	animInstance = Bone->GetAnimInstance();
 }
 
-void AEnemyBase::InAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AAnimalBase::InAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	
 	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("ATTACKRANGE_IN"));
@@ -96,13 +96,13 @@ void AEnemyBase::InAttackRange(UPrimitiveComponent* OverlappedComponent, AActor*
 		enemyaniminstance->setIsMoveTowardsPlayerEnd();
 		enemyaniminstance->setIsAttack();
 		Curstate = EEnemyState::ATTACK;
-		AttackEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::OutAttackRange);
+		AttackEndRange->OnComponentEndOverlap.AddDynamic(this, &AAnimalBase::OutAttackRange);
 		AttackStatrRange->OnComponentBeginOverlap.Remove(this, FName("InAttackRange"));
 		
 	}
 }
 
-void AEnemyBase::OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AAnimalBase::OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("ATTACKRANGE_OUT"));
 	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
@@ -113,13 +113,13 @@ void AEnemyBase::OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor
 		Curstate = EEnemyState::MOVETOWARDPLAYER;
 		AttackEndRange->OnComponentEndOverlap.Remove(this, FName("OutAttackRange"));
 
-		AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::InAttackRange);
+		AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::InAttackRange);
 		
 
 	}
 }
 
-void AEnemyBase::PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+void AAnimalBase::PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("DETECT_OUT"));
 	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
@@ -131,12 +131,12 @@ void AEnemyBase::PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor
 
 		enemyaniminstance->setIsMoveTowardsPlayerEnd();
 		enemyaniminstance->setStroll();
-		DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::PlayerInRange);
+		DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::PlayerInRange);
 		DetectEndRange->OnComponentEndOverlap.Remove(this, FName("PlayerOutRange"));
 	}
 }
 
-void AEnemyBase::PlayerInRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AAnimalBase::PlayerInRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("DETECT_IN"));
 	ACCharacterPlayer* target = Cast<ACCharacterPlayer>(OtherActor);
@@ -149,7 +149,7 @@ void AEnemyBase::PlayerInRange(UPrimitiveComponent* OverlappedComponent, AActor*
 		Curstate = EEnemyState::MOVETOWARDPLAYER;
 		DetectStartRange->OnComponentBeginOverlap.Remove(this, FName("PlayerInRange"));
 		
-		DetectEndRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyBase::PlayerOutRange);
+		DetectEndRange->OnComponentEndOverlap.AddDynamic(this, &AAnimalBase::PlayerOutRange);
 	}
 }
 
@@ -159,7 +159,7 @@ void AEnemyBase::PlayerInRange(UPrimitiveComponent* OverlappedComponent, AActor*
 
 
 
-float AEnemyBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+float AAnimalBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	if (Attributes)
 	{
@@ -173,7 +173,7 @@ float AEnemyBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent
 }
 
 // Called every frame
-void AEnemyBase::Tick(float DeltaTime)
+void AAnimalBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
@@ -186,7 +186,7 @@ void AEnemyBase::Tick(float DeltaTime)
 
 }
 
-//FQuat AEnemyBase:: SmoothRotation(FQuat& StartRotation,  FQuat& EndRotation, float DeltaTime, float RotationSpeed)
+//FQuat AAnimalBase:: SmoothRotation(FQuat& StartRotation,  FQuat& EndRotation, float DeltaTime, float RotationSpeed)
 //{
 //	// 보간을 위한 시간 단계 계산
 //	float T = FMath::Min(DeltaTime, 1.0f);
@@ -200,7 +200,7 @@ void AEnemyBase::Tick(float DeltaTime)
 //	return InterpolatedRotation;
 //}
 
-void AEnemyBase::Update()
+void AAnimalBase::Update()
 {
 	if (Curstate == EEnemyState::MOVETOWARDPLAYER)
 	{
@@ -336,7 +336,7 @@ void AEnemyBase::Update()
 	
 }
 
-void AEnemyBase::UpdateInput()
+void AAnimalBase::UpdateInput()
 {
 	if (Curstate == EEnemyState::MOVETOWARDPLAYER)
 	{
@@ -354,9 +354,9 @@ void AEnemyBase::UpdateInput()
 	{
 		if (Attributes->GetHealthPercent() >=0.6f)
 		{
-			DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::PlayerInRange);
+			DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::PlayerInRange);
 
-			AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyBase::InAttackRange);
+			AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::InAttackRange);
 			Curstate = EEnemyState::STROLL;
 			targetSet = false;
 			player = nullptr;
@@ -394,13 +394,13 @@ void AEnemyBase::UpdateInput()
 }
 
 	// Called to bind functionality to input
-void AEnemyBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AAnimalBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }
 
-float AEnemyBase::GetDegree(FVector dir)
+float AAnimalBase::GetDegree(FVector dir)
 {
 	FVector actornotz = FVector(GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z);
 	//float dot = FVector::DotProduct(actornotz + GetActorForwardVector(), dir+actornotz);//내적
@@ -416,7 +416,7 @@ float AEnemyBase::GetDegree(FVector dir)
 	return result;
 }
 
-void AEnemyBase::GetHit_Implementation(const FVector& ImpactPoint)
+void AAnimalBase::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	//DrawDebugSphere(GetWorld(), ImpactPoint, 20, 32, FColor::Red, true);
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
@@ -429,7 +429,7 @@ void AEnemyBase::GetHit_Implementation(const FVector& ImpactPoint)
 	//PlayAnimMontage(AM_Hitted, 1, Section);
 }
 
-void AEnemyBase::HitReact(const FVector& ImpactPoint)
+void AAnimalBase::HitReact(const FVector& ImpactPoint)
 {
 	FVector forward = GetActorForwardVector();
 	FVector hitno_z = FVector(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
@@ -461,7 +461,7 @@ void AEnemyBase::HitReact(const FVector& ImpactPoint)
 	animInstance->Montage_Play(AM_HitReact);
 	animInstance->Montage_JumpToSection(Section);
 }
-void AEnemyBase::DeadReact(const FVector& ImpactPoint)
+void AAnimalBase::DeadReact(const FVector& ImpactPoint)
 {
 	FVector forward = GetActorForwardVector();
 	FVector hitno_z = FVector(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);

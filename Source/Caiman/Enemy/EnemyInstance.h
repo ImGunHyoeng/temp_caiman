@@ -16,7 +16,7 @@ class CAIMAN_API UEnemyInstance : public UAnimInstance
 
 public:
 	UPROPERTY(BlueprintReadOnly, Category = Character)
-	class AEnemyBase* Enemy;
+	class AAnimalBase* Enemy;
 	UPROPERTY(BlueprintReadOnly, Category = Movement)
 	class UPawnMovementComponent* EnemyMovement;
 	//UPROPERTY(BlueprintReadOnly, Category = Movement)

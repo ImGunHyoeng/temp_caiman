@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
 #include "Hit\HitInterface.h"
-#include "EnemyBase.generated.h"
+#include "AnimalBase.generated.h"
 
 UENUM()
 enum class EEnemyState :uint8
@@ -18,13 +18,13 @@ enum class EEnemyState :uint8
 class UAttributeComponent;
 class UHealthBarComponent;
 UCLASS()
-class CAIMAN_API AEnemyBase : public APawn, public IHitInterface
+class CAIMAN_API AAnimalBase : public APawn, public IHitInterface
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	AEnemyBase();
+	AAnimalBase();
 
 protected:
 	// Called when the game starts or when spawned
