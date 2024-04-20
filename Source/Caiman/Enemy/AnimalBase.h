@@ -8,12 +8,13 @@
 #include "AnimalBase.generated.h"
 
 UENUM()
-enum class EEnemyState :uint8
+enum class EAnimalState :uint8
 {
+	DEAD,
+	HITTED,
 	STROLL,
-	ATTACK,
-	FLEE,
-	MOVETOWARDPLAYER
+	FLEE
+	
 };
 class UAttributeComponent;
 class UHealthBarComponent;
@@ -28,22 +29,29 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
-	EEnemyState Curstate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	EAnimalState Curstate;
 	virtual void BeginPlay() override;
 	
-	UFUNCTION()
-	virtual void OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	//UFUNCTION()
+	//virtual void OutAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	//UFUNCTION()
+	//virtual void PlayerInRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	//
+	////FComponentBeginOverlapSignature, UPrimitiveComponent, OnComponentBeginOverlap, UPrimitiveComponent*, OverlappedComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, int32, OtherBodyIndex, bool, bFromSweep, const FHitResult&, SweepResult
+	//UFUNCTION()
+	//virtual void InAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	////FComponentEndOverlapSignature, UPrimitiveComponent, OnComponentEndOverlap, UPrimitiveComponent*, OverlappedComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, int32, OtherBodyIndex
+
+	//UFUNCTION()
+	//virtual void PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 
 	UFUNCTION()
-	virtual void PlayerInRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	
-	//FComponentBeginOverlapSignature, UPrimitiveComponent, OnComponentBeginOverlap, UPrimitiveComponent*, OverlappedComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, int32, OtherBodyIndex, bool, bFromSweep, const FHitResult&, SweepResult
+	virtual void FLEEInRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	UFUNCTION()
-	virtual void InAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	//FComponentEndOverlapSignature, UPrimitiveComponent, OnComponentEndOverlap, UPrimitiveComponent*, OverlappedComponent, AActor*, OtherActor, UPrimitiveComponent*, OtherComp, int32, OtherBodyIndex
-
-	UFUNCTION()
-	virtual void PlayerOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+	virtual void FLEEOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 public:	
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
@@ -64,17 +72,23 @@ public:
 	UPROPERTY(VisibleAnyWhere, Category = "Collision")
 	class UCapsuleComponent* Body;
 
-	UPROPERTY(VisibleAnyWhere,Category= "Collision")
-	class USphereComponent* DetectStartRange;
+	UPROPERTY(VisibleAnyWhere, Category = "Collision")
+	class USphereComponent* FleeStartRange;
 
 	UPROPERTY(VisibleAnyWhere, Category = "Collision")
-	class USphereComponent* DetectEndRange;
-	
-	UPROPERTY(VisibleAnyWhere, Category = "Collision")
-	class USphereComponent* AttackStatrRange;
-	
-	UPROPERTY(VisibleAnyWhere, Category = "Collision")
-	class USphereComponent* AttackEndRange;
+	class USphereComponent* FleeEndRange;
+
+	//UPROPERTY(VisibleAnyWhere,Category= "Collision")
+	//class USphereComponent* DetectStartRange;
+
+	//UPROPERTY(VisibleAnyWhere, Category = "Collision")
+	//class USphereComponent* DetectEndRange;
+	//
+	//UPROPERTY(VisibleAnyWhere, Category = "Collision")
+	//class USphereComponent* AttackStatrRange;
+	//
+	//UPROPERTY(VisibleAnyWhere, Category = "Collision")
+	//class USphereComponent* AttackEndRange;
 
 	class ACCharacterPlayer* player;
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
