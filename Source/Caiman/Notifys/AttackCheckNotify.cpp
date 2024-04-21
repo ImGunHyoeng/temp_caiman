@@ -3,7 +3,9 @@
 
 #include "Notifys/AttackCheckNotify.h"
 #include "CCharacterPlayer.h"
-#include "FSM/FSM_Collection.h"
+//#include "FSM/FSM_Collection.h"
+//#include "FSM/OBJECT_STATE/OFSMCollection.h"
+#include "FSM/ACTOR_STATE/AFSMCollection.h"
 
 void UAttackCheckNotify::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
@@ -21,10 +23,10 @@ void UAttackCheckNotify::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequ
 			//}
 			//UE_LOG(LogTemp, Warning, TEXT("playerState class: %s"), (Player->GetCurPlayerState())->_getUObject());
 			//=Cast<ATTACK>(Player->GetCurPlayerState());
-			ATTACK* AT=StaticCast<ATTACK*>(Player->GetCurPlayerState());
+			AATTACK_A* AT=Cast<AATTACK_A>(Player->GetCurPlayerState().GetObject());
 			
-
-			AT->AttackStateDoing();
+			if(AT)
+				AT->AttackStateDoing();
 			
 		}
 	}
@@ -44,10 +46,10 @@ void UAttackCheckNotify::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequen
 				(AT)->AttackStateDone();
 			}*/
 			////Attack *AT=Cast<ATTACK>(Player->GetCurPlayerState());
-			ATTACK* AT = StaticCast<ATTACK*>(Player->GetCurPlayerState());
-			
-
-			AT->AttackStateDone();
+			AATTACK_A* AT = Cast<AATTACK_A>(Player->GetCurPlayerState().GetObject());
+			if (AT)
+				AT->AttackStateDone();
+						
 		}
 	}
 }

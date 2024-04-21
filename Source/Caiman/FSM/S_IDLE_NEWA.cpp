@@ -11,7 +11,7 @@ AS_IDLE_NEWA::AS_IDLE_NEWA()
 
 }
 
-IIPlayerState* AS_IDLE_NEWA::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> AS_IDLE_NEWA::updateInput(ACCharacterPlayer& player)
 {
 	return nullptr;
 }

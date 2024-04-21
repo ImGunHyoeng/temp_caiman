@@ -15,17 +15,12 @@ class CAIMAN_API AS_IDLE_NEWA :public AActor ,public IIPlayerState
 public:	
 	// Sets default values for this actor's properties
 	AS_IDLE_NEWA();
-	virtual IIPlayerState* updateInput(class ACCharacterPlayer& player) ;
+	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player) ;
 	virtual void update(class ACCharacterPlayer& player) ;
 	virtual void enter(class ACCharacterPlayer& player) ;
 	virtual void exit(class ACCharacterPlayer& player) ;
 	virtual void Destroy() ;
 	virtual void Tick(float DeltaTime) override;
-	void* operator new(size_t Size)
-	{
-		void* adr = FMemory::Malloc(Size);
-		return adr;
-	}
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

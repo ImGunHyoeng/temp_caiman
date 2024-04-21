@@ -10,25 +10,26 @@
 
 
 
-IIPlayerState* S_IDLE::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> S_IDLE::updateInput(ACCharacterPlayer& player)
 {
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
-	{
-		return new JUMP();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
-	{
-		player.Draw();
-		return new DRAWING();
-	}
-	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f)
-	{
-		return new S_WALK();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		return new S_ROLL(FName("Front"));
-	}
+	//if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
+	//{
+	//	//return new JUMP();
+	//}
+	//if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+	//{
+	//	player.Draw();
+	//	//return new DRAWING();
+	//}
+	//if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f)
+	//{
+	//	//return new S_WALK();
+	//}
+	//if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	//{
+	//	player.StopMove();
+	//	//return new S_ROLL();
+	//}
 	return NULL;
 }
 

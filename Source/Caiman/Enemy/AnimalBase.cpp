@@ -334,13 +334,13 @@ void AAnimalBase::Update()
 		//MovementComponent->SetMaxWalkSpeed(NewMaxWalkSpeed);
 		if (MovementComponent)
 		{
-			sumDeltaTime += FApp::GetDeltaTime();
-			//sumDeltaTime *= RotationSpeed;
-			sumDeltaTime = FMath::Min(sumDeltaTime, 1.0f);
+			//sumDeltaTime += FApp::GetDeltaTime();
+			////sumDeltaTime *= RotationSpeed;
+			//sumDeltaTime = FMath::Min(sumDeltaTime, 1.0f);
 
 			//SetActorRotation(direction.Rotation());
 			//FMath::RInterpTo(predirection.Rotation(), direction.Rotation(), sumDeltaTime, RotationSpeed);
-			SetActorRotation(FMath::RInterpTo(GetActorForwardVector().Rotation(), direction.Rotation(), sumDeltaTime, RotationSpeed));
+			SetActorRotation(FMath::RInterpTo(GetActorForwardVector().Rotation(), direction.Rotation(), FApp::GetDeltaTime(), RotationSpeed));
 
 			MovementComponent->AddInputVector(direction * 0.5f);//단위벡터 값 넣어주기
 			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Red, false, 10.f, 0, 10.0f);

@@ -8,16 +8,19 @@
 
 
 
-IIPlayerState* S_ROLL::updateInput( ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> S_ROLL::updateInput( ACCharacterPlayer& player)
 {
-	if(player.GetWaitFrame()<0)
-		return new S_IDLE();
+	//if(player.GetWaitFrame()<0)
+	//	//return new S_IDLE();
 	return NULL;
 }
 
 void S_ROLL::update( ACCharacterPlayer& player)
 {
 	player.WaitFramePassing();
+	//player.Move(player.GetMoveInputActionValue());
+	if(isRoll)
+		player.AddMovementInput(player.GetActorForwardVector(), 2);
 	player.Look(player.GetLookInputActionValue());
 }
 
@@ -25,7 +28,7 @@ void S_ROLL::enter(ACCharacterPlayer& player)
 {
 	kwang = player.getAnimInstance();
 	player.PlayAnimMontage(player.GetRollMontage(), 1.0f, input);
-	player.SetWaitFrame(5);
+	player.SetWaitFrame(30);
 }
 
 void S_ROLL::exit(ACCharacterPlayer& player)

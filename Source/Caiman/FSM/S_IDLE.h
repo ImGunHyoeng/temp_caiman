@@ -12,7 +12,7 @@ class CAIMAN_API S_IDLE :public IIPlayerState
 {
 public:
 	S_IDLE() {};
-	virtual IIPlayerState* updateInput(class ACCharacterPlayer& player);
+	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);

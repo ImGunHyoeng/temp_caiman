@@ -9,16 +9,16 @@
 #include "Kismet/GameplayStatics.h"
 
 
-IIPlayerState* JUMPATTACK::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> JUMPATTACK::updateInput(ACCharacterPlayer& player)
 {
 	
 	
-	if (player.GetWaitFrame() <= 0)
-	{
-		if(kwang)
-			kwang->setJumpAttackEnd();
-		return new D_IDLE();
-	}
+	//if (player.GetWaitFrame() <= 0)
+	//{
+	//	if(kwang)
+	//		kwang->setJumpAttackEnd();
+	//	//return new D_IDLE();
+	//}
 	
 	return NULL;
 }
@@ -27,7 +27,6 @@ void JUMPATTACK::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
 	player.WaitFramePassing();
-	return;
 }
 
 void JUMPATTACK::enter(ACCharacterPlayer& player)

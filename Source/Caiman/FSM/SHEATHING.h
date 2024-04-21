@@ -13,7 +13,7 @@ public:
 	SHEATHING();
 	~SHEATHING();
 
-	virtual IIPlayerState* updateInput(class ACCharacterPlayer& player);
+	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);

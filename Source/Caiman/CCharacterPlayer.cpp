@@ -13,12 +13,13 @@
 #include "InputCore.h"
 #include "TimerManager.h"
 #include "FSM/IPlayerState.h"
-#include "FSM/FSM_Collection.h"
+//#include "FSM/FSM_Collection.h"
+//#include "FSM/OBJECT_STATE/OFSMCollection.h"
 #include "AnimInstance\KwangAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/App.h"
-#include "FSM/S_IDLE_NEWA.h"
-#include "FSM/S_IDLE_NEW.h"
+//#include "FSM/S_IDLE_NEWA.h"
+#include "FSM/ACTOR_STATE/AFSMCollection.h"
 
 
 
@@ -83,9 +84,11 @@ void ACCharacterPlayer::BeginPlay()
 	LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
 	
 	//AS_IDLE_NEWA* d = new (EInternal::New)AS_IDLE_NEWA(); //new US_IDLE_NEW();
-	//playerState =NewObject<US_IDLE_NEW>();//new S_IDLE();
+	//curState =NewObject<US_IDLE_NEW>();//new S_IDLE();
 	//new S_IDLE()
-	playerState = new S_IDLE();//new S_IDLE();
+	curState = NewObject<AS_IDLE_A>();
+	//curState = NewObject<AS_IDLE_NEWA>();
+	//new S_IDLE();
 }
 
 
@@ -117,10 +120,10 @@ const FInputActionValue ACCharacterPlayer::GetLookInputActionValue()
 	return LookActionBinding->GetValue();
 }
 
-IIPlayerState* ACCharacterPlayer::GetCurPlayerState()
+TScriptInterface<IIPlayerState> ACCharacterPlayer::GetCurPlayerState()
 {
-	//UE_LOG(LogTemp, Warning, TEXT("playerState class: %s"), (this->playerState)->_getUObject());
-	 return playerState;
+	//UE_LOG(LogTemp, Warning, TEXT("curState class: %s"), (this->curState)->_getUObject());
+	 return curState;
 }
 
 void ACCharacterPlayer::WaitFramePassing()
@@ -152,10 +155,10 @@ void ACCharacterPlayer::SetKey(FKey _key)
 //{
 //	
 //	setPreviousState();
-//	//Destroy(playerState);
+//	//Destroy(curState);
 //
-//	playerState->exit(*this);
-//	playerState->enter(*this);
+//	curState->exit(*this);
+//	curState->enter(*this);
 //	currentState = inState;
 //}
 //ECharacterState ACCharacterPlayer::getCurState()
@@ -180,7 +183,7 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 }
 void ACCharacterPlayer::update()
 {
-	playerState->update(*this);
+	curState->update(*this);
 	
 	FVector inputVector = GetLastMovementInputVector();
 	float magnitude = inputVector.Size();
@@ -211,20 +214,21 @@ void ACCharacterPlayer::update()
 			// 이동 거리 확인
 		}
 	}
-	if (Cast<US_IDLE_NEW>(playerState))
+	//if (Cast<US_IDLE_NEW>(curState))
+	if (Cast<AS_IDLE_A>(curState.GetObject()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("IS UAS_IDLE"));
+		UE_LOG(LogTemp, Warning, TEXT("IS_AS_IDLE"));
 	}
 }
 void ACCharacterPlayer::updateInput()
 {
-	IIPlayerState* state = playerState->updateInput(*this);
+	TScriptInterface<IIPlayerState> state = curState->updateInput(*this);
 	if (state != NULL)
 	{
-		playerState->exit(*this);
-		playerState->Destroy();
-		playerState = state;
-		playerState->enter(*this);
+		curState->exit(*this);
+		curState->Destroy();
+		curState = state;
+		curState->enter(*this);
 	}
 }
 
@@ -244,6 +248,11 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 	AddMovementInput(ForwardDirection, MovementVector.X*moveSpeed);
 	AddMovementInput(RightDirection, MovementVector.Y * moveSpeed);
 	
+}
+
+void ACCharacterPlayer::StopMove()
+{
+	AddMovementInput(FVector::ZeroVector, 0.0f);
 }
 
 void ACCharacterPlayer::Look(const FInputActionValue& Value)
@@ -279,13 +288,13 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	if (bIsParring)//패링시에 상태 설정해줌
 	{
-		IIPlayerState* state = new PARRINGSUCESS();
+		TScriptInterface<IIPlayerState> state =NewObject<APARRINGSUCCESS_A>();
 		if (state != NULL)
 		{
-			playerState->exit(*this);
-			playerState->Destroy();
-			playerState = state;
-			playerState->enter(*this);
+			curState->exit(*this);
+			curState->Destroy();
+			curState = state;
+			curState->enter(*this);
 		}
 		return;
 	}

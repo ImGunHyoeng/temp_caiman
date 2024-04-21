@@ -9,6 +9,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Hit\HitInterface.h"
+#include "FSM/IPlayerState.h"
 #include "CCharacterPlayer.generated.h"
 
 UENUM(BlueprintType)
@@ -32,7 +33,6 @@ enum class ECharacterState :uint8
  * 
  */
 class ACMyWeapon;
-class IIPlayerState;
 UCLASS()
 class CAIMAN_API ACCharacterPlayer : public ACCharacterBase,public IHitInterface
 {
@@ -66,7 +66,7 @@ public:
 	FORCEINLINE UAnimMontage* GetParringMontage() { return AM_Parring; }
 
 	//UFUNCTION(BlueprintCallable)
-	class IIPlayerState* GetCurPlayerState();
+	TScriptInterface<IIPlayerState> GetCurPlayerState();
 
 	//기다리는 시간 계산
 	FORCEINLINE	const float GetWaitFrame() { return WaitFrame; }
@@ -80,6 +80,7 @@ public:
 	//공통적인 행동(보고,움직이고,칼 빼기)
 	void Look(const FInputActionValue& Value);
 	void Move(const FInputActionValue& Value);
+	void StopMove();
 	void Draw();
 	void NoAnimDraw();
 	void Sheath();
@@ -219,8 +220,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	TSubclassOf<ACMyWeapon> MyWeapon;
 private:
-
-	IIPlayerState *playerState;
+	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
+	TScriptInterface<IIPlayerState> curState;
+	//IIPlayerState curState;
 	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
 	//	ECharacterState currentState;
 	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))

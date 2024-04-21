@@ -6,13 +6,13 @@
 #include "CCharacterPlayer.h"
 #include "AnimInstance\KwangAnimInstance.h"
 
-IIPlayerState* GROUNDED::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> GROUNDED::updateInput(ACCharacterPlayer& player)
 {
 	
-	if (player.GetWaitFrame()<= 0)
-	{
-		return new S_IDLE();
-	}
+	//if (player.GetWaitFrame()<= 0)
+	//{
+	//	//return new S_IDLE();
+	//}
 	
 	return NULL;
 }

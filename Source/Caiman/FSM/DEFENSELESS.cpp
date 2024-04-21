@@ -7,12 +7,12 @@
 #include "AnimInstance\KwangAnimInstance.h"
 
 
-IIPlayerState* DEFENSELESS::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> DEFENSELESS::updateInput(ACCharacterPlayer& player)
 {
-	if (player.GetWaitFrame() < 0)
-	{
-		return new D_IDLE();
-	}
+	//if (player.GetWaitFrame() < 0)
+	//{
+	//	//return new D_IDLE();
+	//}
 	return NULL;
 }
 

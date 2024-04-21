@@ -7,12 +7,12 @@
 #include "FSM_Collection.h"
 
 
-IIPlayerState* PARRGING::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> PARRGING::updateInput(ACCharacterPlayer& player)
 {
-	if (player.GetParringEnd() == true)
-	{
-		return new DEFENSELESS();
-	}
+	//if (player.GetParringEnd() == true)
+	//{
+	//	//return new DEFENSELESS();
+	//}
 	return NULL;
 }
 

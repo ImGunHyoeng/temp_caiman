@@ -8,23 +8,23 @@
 #include "GameFramework/CharacterMovementComponent.h"
 
 
-IIPlayerState* D_WALK::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> D_WALK::updateInput(ACCharacterPlayer& player)
 {
-	if (player.GetMoveInputActionValue().GetMagnitude() < 0.1f)
-	{
+	//if (player.GetMoveInputActionValue().GetMagnitude() < 0.1f)
+	//{
 
-		return new D_IDLE();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-	{
-		player.SetWaitFrame(70);
-		return new ATTACK();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
-	{
-		player.Sheath();
-		return new SHEATHING();
-	}
+	//	//return new D_IDLE();
+	//}
+	//if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+	//{
+	//	player.SetWaitFrame(70);
+	//	//return new ATTACK();
+	//}
+	//if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+	//{
+	//	player.Sheath();
+	//	//return new SHEATHING();
+	//}
 	return NULL;
 }
 

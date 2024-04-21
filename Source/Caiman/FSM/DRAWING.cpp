@@ -13,19 +13,19 @@ DRAWING::~DRAWING()
 {
 }
 
-IIPlayerState* DRAWING::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> DRAWING::updateInput(ACCharacterPlayer& player)
 {
-	if (player.GetWaitFrame() <= 0)
-	{
-		return new D_IDLE();
-	}
-	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f && player.GetWaitFrame() <= 6)
-	{
-		
-		player.StopAnimMontage(player.GetDrawMontage());
-		player.SetWaitFrame(0);
-		return new D_IDLE();
-	}
+	//if (player.GetWaitFrame() <= 0)
+	//{
+	//	//return new D_IDLE();
+	//}
+	//if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f && player.GetWaitFrame() <= 6)
+	//{
+	//	
+	//	player.StopAnimMontage(player.GetDrawMontage());
+	//	player.SetWaitFrame(0);
+	//	//return new D_IDLE();
+	//}
 	return NULL;
 }
 

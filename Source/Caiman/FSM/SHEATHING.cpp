@@ -14,18 +14,18 @@ SHEATHING::~SHEATHING()
 {
 }
 
-IIPlayerState* SHEATHING::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> SHEATHING::updateInput(ACCharacterPlayer& player)
 {
-	if (player.GetWaitFrame() <= 0)
-	{
-		return new S_IDLE();
-	}
-	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f&& player.GetWaitFrame() <= 6)
-	{
-		player.StopAnimMontage(player.GetSheathMontage());
-		player.SetWaitFrame(0);
-		return new S_IDLE();
-	}
+	//if (player.GetWaitFrame() <= 0)
+	//{
+	//	//return new S_IDLE();
+	//}
+	//if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f&& player.GetWaitFrame() <= 6)
+	//{
+	//	player.StopAnimMontage(player.GetSheathMontage());
+	//	player.SetWaitFrame(0);
+	//	//return new S_IDLE();
+	//}
     return NULL;
 }
 

@@ -16,7 +16,7 @@ class CAIMAN_API US_IDLE_NEW : public UObject,public IIPlayerState
 	GENERATED_BODY()
 public:
 	US_IDLE_NEW() {}
-	virtual IIPlayerState* updateInput(class ACCharacterPlayer& player) ;
+	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player) ;
 	
 	
 	virtual void update(class ACCharacterPlayer& player) ;

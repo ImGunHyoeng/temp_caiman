@@ -14,10 +14,10 @@ PARRINGSUCESS::~PARRINGSUCESS()
 {
 }
 
-IIPlayerState* PARRINGSUCESS::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> PARRINGSUCESS::updateInput(ACCharacterPlayer& player)
 {
-	if (player.GetWaitFrame() < 0)
-		return new D_IDLE();
+	//if (player.GetWaitFrame() < 0)
+	//	//return new D_IDLE();
 	return nullptr;
 }
 

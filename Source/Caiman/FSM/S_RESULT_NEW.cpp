@@ -13,7 +13,7 @@ void US_RESULT_NEW::updatechild(ACCharacterPlayer& player)
 	UE_LOG(LogTemp, Warning, TEXT("Result_new_Operate"));
 }
 
-IIPlayerState* US_RESULT_NEW::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> US_RESULT_NEW::updateInput(ACCharacterPlayer& player)
 {
 	return nullptr;
 }

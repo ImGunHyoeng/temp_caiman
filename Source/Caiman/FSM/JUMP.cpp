@@ -7,19 +7,19 @@
 #include "GameFramework\CharacterMovementComponent.h"
 #include "AnimInstance/KwangAnimInstance.h"
 
-IIPlayerState* JUMP::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> JUMP::updateInput(ACCharacterPlayer& player)
 {
 
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-	{
-		player.NoAnimDraw();
-		player.SetWaitFrame(6);
-		return new JUMPATTACK();
-	}
-	if (!(player.GetCharacterMovement()->IsFalling()))
-	{
-		return new GROUNDED();
-	}
+	//if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+	//{
+	//	player.NoAnimDraw();
+	//	player.SetWaitFrame(6);
+	////	return new JUMPATTACK();
+	//}
+	//if (!(player.GetCharacterMovement()->IsFalling()))
+	//{
+	////	return new GROUNDED();
+	//}
 
 	return NULL;
 }

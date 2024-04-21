@@ -3,7 +3,8 @@
 
 #include "Notifys/AttackEndCheck.h"
 #include "CCharacterPlayer.h"
-#include "FSM\ATTACK.h"
+//#include "FSM/OBJECT_STATE/ATTACK_O.h"
+#include "FSM/ACTOR_STATE/AFSMCollection.h"
 #include "FSM\IPlayerState.h"
 void UAttackEndCheck::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
@@ -14,8 +15,9 @@ void UAttackEndCheck::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase
 		if (Player)
 		{
 
-			ATTACK* attack = StaticCast<ATTACK*>(Player->GetCurPlayerState());
-			attack->AttackStateEnd();
+			AATTACK_A* AT = Cast<AATTACK_A>(Player->GetCurPlayerState().GetObject());
+			if(AT)
+				AT->AttackStateEnd();
 		}
 	}
 }

@@ -11,10 +11,11 @@
 class CAIMAN_API S_ROLL :public IIPlayerState
 {
 public:
-	S_ROLL();
+	S_ROLL() { isRoll = true; };
 	S_ROLL(FName _input) :input(_input) {}
-
-	virtual IIPlayerState* updateInput(class ACCharacterPlayer& player);
+	UPROPERTY(EditAnywhere, BluePrintReadOnly)
+	bool isRoll;
+	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);

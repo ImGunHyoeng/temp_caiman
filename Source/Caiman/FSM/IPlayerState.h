@@ -20,7 +20,7 @@ class CAIMAN_API IIPlayerState
 {
 	GENERATED_BODY()
 public:
-	virtual IIPlayerState * updateInput(class ACCharacterPlayer& player) = 0;
+	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player) = 0;
 	virtual void update(class ACCharacterPlayer& player) = 0;
 	virtual void enter(class ACCharacterPlayer& player) = 0;
 	virtual void exit(class ACCharacterPlayer& player) = 0;

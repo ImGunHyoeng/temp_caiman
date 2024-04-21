@@ -3,7 +3,7 @@
 
 #include "FSM/S_IDLE_NEW.h"
 
-IIPlayerState* US_IDLE_NEW::updateInput(ACCharacterPlayer& player)
+TScriptInterface<IIPlayerState> US_IDLE_NEW::updateInput(ACCharacterPlayer& player)
 {
 	return nullptr;
 }
