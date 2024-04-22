@@ -20,7 +20,7 @@
 #include "Misc/App.h"
 //#include "FSM/S_IDLE_NEWA.h"
 #include "FSM/ACTOR_STATE/AFSMCollection.h"
-
+#include "NiagaraSystem.h"
 
 
 
@@ -43,7 +43,8 @@ ACCharacterPlayer::ACCharacterPlayer()
 	Camera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);//붙이고 SocketName는 'springarmendpoint'라고 지정되어 있음
 	Camera->bUsePawnControlRotation = false;//카메라가 붐에 따라서 간다면 카메라의 회전이 달라짐
 	
-	
+	//AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform);
+	//UNiagaraSystem::create
 	//currentState = ECharacterState::S_IDLE;
 	//previousState = ECharacterState::S_IDLE;
 	moveSpeed = 1000.0f;

@@ -44,6 +44,10 @@ public:
 	UPROPERTY(VisibleAnywhere, BluePrintReadOnly, Category = Camera)
 		TObjectPtr<class UCameraComponent>Camera;//카메라
 
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Naiagra)
+	TObjectPtr<class UNiagaraSystem> NiagaraEffect;
+
+
 	ACCharacterPlayer();
 	void AttackCheck();
 	virtual void update();
@@ -64,6 +68,7 @@ public:
 	FORCEINLINE UAnimMontage* GetAttackMontage() { return AM_Attack; }
 	FORCEINLINE UAnimMontage* GetRollMontage() { return AM_Roll; }
 	FORCEINLINE UAnimMontage* GetParringMontage() { return AM_Parring; }
+	FORCEINLINE UAnimMontage* GetChargeAttackMontage() { return AM_ChargeAttack; }
 
 	//UFUNCTION(BlueprintCallable)
 	TScriptInterface<IIPlayerState> GetCurPlayerState();
@@ -104,9 +109,13 @@ public:
 
 	FORCEINLINE bool GetAttacked() { return bIsAttacked; }
 	FORCEINLINE void SetAttacked(bool input) { bIsAttacked = input; }
-
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetNaiagra();
+	UFUNCTION(BlueprintImplementableEvent)
+	void DeActiveNaiagra();
 
 protected:
+
 	FKey key;
 	UPROPERTY(EditAnywhere, Category = Input)
 		class UInputMappingContext* PlayerContext;
@@ -148,6 +157,8 @@ protected:
 		UAnimMontage* AM_Hitted;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_Parring;
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
+		UAnimMontage* AM_ChargeAttack;
 
 	//UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	//UInputAction* JumpAction;*/

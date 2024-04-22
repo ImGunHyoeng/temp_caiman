@@ -14,6 +14,12 @@ AATTACK_A::AATTACK_A()
 
 TScriptInterface<IIPlayerState> AATTACK_A::updateInput(ACCharacterPlayer& player)
 {
+	if (changeCharge)
+	{
+		//player.StopAnimMontage();
+		player.PlayAnimMontage(player.GetChargeAttackMontage(), 1.0f,FName("ChargingStart"));
+		return NewObject<ACHARGINGATTACK_A>();
+	}
 	if (curAttackState == EAttackState::END)
 	{
 		player.StopAnimMontage();
@@ -25,7 +31,11 @@ TScriptInterface<IIPlayerState> AATTACK_A::updateInput(ACCharacterPlayer& player
 void AATTACK_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
+	//DoingTime+=FApp::GetDeltaTime()*60;
+	//if (player.getPlayerController()->WasInputKeyJustReleased(EKeys::LeftMouseButton))
+	//	DoingTime = 0;
 
+	
 	if (curAttackState == EAttackState::DONE)
 	{
 		if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
@@ -40,9 +50,10 @@ void AATTACK_A::update(ACCharacterPlayer& player)
 
 void AATTACK_A::enter(ACCharacterPlayer& player)
 {
-	//DoingTime = 30;
+	//DoingTime = 0;
 	curAttackState = EAttackState::DOING;
 	player.PlayAnimMontage(player.GetAttackMontage(), 1.0f, "Attack_2_1");
+	changeCharge = false;
 }
 
 void AATTACK_A::exit(ACCharacterPlayer& player)
@@ -51,6 +62,11 @@ void AATTACK_A::exit(ACCharacterPlayer& player)
 
 void AATTACK_A::Destroy()
 {
+}
+
+void AATTACK_A::ChangeChargeAttack()
+{
+	changeCharge = true;
 }
 
 // Called when the game starts or when spawned

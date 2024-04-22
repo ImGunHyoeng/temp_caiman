@@ -5,49 +5,44 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "FSM/IPlayerState.h"
-#include "ATTACK_A.generated.h"
-
+#include "CHARGINGATTACK_A.generated.h"
 UENUM()
-enum class EAttackState :uint8
+enum class EChargeAttackState :uint8
 {
-	END
-	, DONE
+	STAY
+	, START
 	, DOING
+	, DONE
 };
-
 UCLASS()
-class CAIMAN_API AATTACK_A : public AActor,public IIPlayerState
+class CAIMAN_API ACHARGINGATTACK_A : public AActor, public IIPlayerState
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AATTACK_A();
+	ACHARGINGATTACK_A();
 	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);
 	virtual void Destroy();
+	UPROPERTY(BlueprintReadWrite)
+	EChargeAttackState curstate;
+	UAnimInstance* instance;
+	float DoingTime;
+	const float standardDoing = 2;
+	UPROPERTY(BlueprintReadOnly)
+	float resultWaitTime;
 
+	const float ExtraTimeLimit=4;
+	UPROPERTY(BlueprintReadWrite)
+	bool changeState;
 	UFUNCTION(BlueprintCallable)
-	void AttackStateEnd() { curAttackState = EAttackState::END; }
-	UFUNCTION(BlueprintCallable)
-	void AttackStateDone() { curAttackState = EAttackState::DONE; }
-	UFUNCTION(BlueprintCallable)
-	void AttackStateDoing() { curAttackState = EAttackState::DOING; }
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EAttackState curAttackState;
-
-	void ChangeChargeAttack();
-
-	
-	int DoingTime;
-
+	void ChangeDoing(class ACCharacterPlayer* player);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-private:
-	bool changeCharge;
 
 public:	
 	// Called every frame
