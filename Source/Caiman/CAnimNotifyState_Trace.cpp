@@ -4,7 +4,6 @@
 #include "CAnimNotifyState_Trace.h"
 #include "CCharacterPlayer.h"
 #include "CTraceComponent.h"
-#include "FSM\ATTACK.h"
 #include "FSM\IPlayerState.h"
 #include "CMyWeapon.h"
 

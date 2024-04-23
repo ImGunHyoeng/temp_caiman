@@ -9,7 +9,6 @@
 #include "Hit/HitInterface.h"
 #include "CCharacterPlayer.h"
 #include "Particalble\ParticableBase.h"
-#include "FSM/FSM_Collection.h"
 #include "Hit/HitInterface.h"
 // Sets default values for this component's properties
 UCTraceComponent::UCTraceComponent()
