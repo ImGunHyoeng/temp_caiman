@@ -16,6 +16,7 @@ class CAIMAN_API US_RUN_O : public UObject, public IIPlayerState
 	GENERATED_BODY()
 public:
 	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
+	virtual void updateInput() {}
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);

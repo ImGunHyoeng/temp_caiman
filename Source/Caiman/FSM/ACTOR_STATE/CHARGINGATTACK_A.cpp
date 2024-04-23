@@ -57,6 +57,10 @@ TScriptInterface<IIPlayerState> ACHARGINGATTACK_A::updateInput(ACCharacterPlayer
 	return NULL;
 }
 
+void ACHARGINGATTACK_A::updateInput()
+{
+}
+
 void ACHARGINGATTACK_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());

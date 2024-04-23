@@ -28,6 +28,10 @@ TScriptInterface<IIPlayerState> ASHEATHING_A::updateInput(ACCharacterPlayer& pla
 	return nullptr;
 }
 
+void ASHEATHING_A::updateInput()
+{
+}
+
 void ASHEATHING_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());

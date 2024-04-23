@@ -28,6 +28,10 @@ TScriptInterface<IIPlayerState> ADRAWING_A::updateInput(ACCharacterPlayer& playe
 	return nullptr;
 }
 
+void ADRAWING_A::updateInput()
+{
+}
+
 void ADRAWING_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());

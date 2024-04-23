@@ -26,6 +26,7 @@ class CAIMAN_API UATTACK_O : public UObject , public IIPlayerState
 public:
 	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void update(class ACCharacterPlayer& player);
+	virtual void updateInput() {}
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);
 	virtual void Destroy();

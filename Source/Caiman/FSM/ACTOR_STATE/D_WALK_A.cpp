@@ -40,6 +40,10 @@ TScriptInterface<IIPlayerState> AD_WALK_A::updateInput(ACCharacterPlayer& player
 	return nullptr;
 }
 
+void AD_WALK_A::updateInput()
+{
+}
+
 void AD_WALK_A::update(ACCharacterPlayer& player)
 {
 	player.Move(player.GetMoveInputActionValue());

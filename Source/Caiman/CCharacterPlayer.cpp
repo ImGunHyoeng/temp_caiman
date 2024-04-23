@@ -87,8 +87,9 @@ void ACCharacterPlayer::BeginPlay()
 	//AS_IDLE_NEWA* d = new (EInternal::New)AS_IDLE_NEWA(); //new US_IDLE_NEW();
 	//curState =NewObject<US_IDLE_NEW>();//new S_IDLE();
 	//new S_IDLE()
-	curState = NewObject<AS_IDLE_A>();
+	//curState = NewObject<AS_IDLE_A>();
 	stateFactory = new PlayerStateFactory(this);
+	curState = stateFactory->CreateS_IDLE();
 	//curState = NewObject<AS_IDLE_NEWA>();
 	//new S_IDLE();
 }
@@ -224,14 +225,14 @@ void ACCharacterPlayer::update()
 }
 void ACCharacterPlayer::updateInput()
 {
-	TScriptInterface<IIPlayerState> state = curState->updateInput(*this);
-	if (state != NULL)
-	{
-		curState->exit(*this);
-		curState->Destroy();
-		curState = state;
-		curState->enter(*this);
-	}
+	//TScriptInterface<IIPlayerState> state = curState->updateInput(*this);
+	//if (state != NULL)
+	//{
+	//	curState->exit(*this);
+	//	curState->Destroy();
+	//	curState = state;
+	//	curState->enter(*this);
+	//}
 }
 
 void ACCharacterPlayer::Move(const FInputActionValue& Value)

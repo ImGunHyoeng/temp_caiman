@@ -20,6 +20,10 @@ TScriptInterface<IIPlayerState> APARRINGSUCCESS_A::updateInput(ACCharacterPlayer
 	return nullptr;
 }
 
+void APARRINGSUCCESS_A::updateInput()
+{
+}
+
 void APARRINGSUCCESS_A::update(ACCharacterPlayer& player)
 {
 	player.WaitFramePassing();

@@ -22,6 +22,10 @@ TScriptInterface<IIPlayerState> ADEFENSELESS_A::updateInput(ACCharacterPlayer& p
 	return nullptr;
 }
 
+void ADEFENSELESS_A::updateInput()
+{
+}
+
 void ADEFENSELESS_A::update(ACCharacterPlayer& player)
 {
 	player.WaitFramePassing();

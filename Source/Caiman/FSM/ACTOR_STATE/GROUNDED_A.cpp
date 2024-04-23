@@ -22,6 +22,10 @@ TScriptInterface<IIPlayerState> AGROUNDED_A::updateInput(ACCharacterPlayer& play
 	return nullptr;
 }
 
+void AGROUNDED_A::updateInput()
+{
+}
+
 void AGROUNDED_A::update(ACCharacterPlayer& player)
 {
 	player.WaitFramePassing();

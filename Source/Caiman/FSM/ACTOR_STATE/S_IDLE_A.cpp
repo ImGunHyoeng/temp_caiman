@@ -6,6 +6,7 @@
 #include "CCharacterPlayer.h"
 #include "CMyWeapon.h"
 #include "AnimInstance\KwangAnimInstance.h"
+#include "FSM/PlayerStateFactory.h"
 // Sets default values
 AS_IDLE_A::AS_IDLE_A()
 {
@@ -37,9 +38,32 @@ TScriptInterface<IIPlayerState> AS_IDLE_A::updateInput(ACCharacterPlayer& player
 	return nullptr;
 }
 
+void AS_IDLE_A::updateInput()
+{
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
+	{
+		SwitchState(factory->CreateJUMP());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+	{
+		ctx->Draw();
+		SwitchState(factory->CreateDRAWING());
+	}
+	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f)
+	{
+		SwitchState(factory->CreateS_WALK());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		ctx->StopMove();
+		SwitchState(factory->CreateS_ROLL());
+	}
+}
+
 void AS_IDLE_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
+	updateInput();
 }
 
 void AS_IDLE_A::enter(ACCharacterPlayer& player)

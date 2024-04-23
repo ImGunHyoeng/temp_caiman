@@ -46,6 +46,10 @@ TScriptInterface<IIPlayerState> AD_IDLE_A::updateInput(ACCharacterPlayer& player
 	return NULL;
 }
 
+void AD_IDLE_A::updateInput()
+{
+}
+
 void AD_IDLE_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());

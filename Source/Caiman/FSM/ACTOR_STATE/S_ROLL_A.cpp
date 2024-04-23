@@ -23,6 +23,10 @@ TScriptInterface<IIPlayerState> AS_ROLL_A::updateInput(ACCharacterPlayer& player
 	return nullptr;
 }
 
+void AS_ROLL_A::updateInput()
+{
+}
+
 void AS_ROLL_A::update(ACCharacterPlayer& player)
 {
 	player.WaitFramePassing();

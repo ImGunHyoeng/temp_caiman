@@ -16,82 +16,114 @@ PlayerStateFactory::~PlayerStateFactory()
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_IDLE()
 {
-	return NewObject<AS_IDLE_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<AS_IDLE_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateD_IDLE()
 {
-	return NewObject<AD_IDLE_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<AD_IDLE_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_WALK()
 {
-	return NewObject<AS_WALK_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<AS_WALK_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_RUN()
 {
-	return NewObject<AS_RUN_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<AS_RUN_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_ROLL()
 {
-	return NewObject<AS_ROLL_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<AS_ROLL_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateSHEATHING()
 {
-	return NewObject<ASHEATHING_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<ASHEATHING_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreatePARRINGSUCCESS()
 {
-	return NewObject<APARRINGSUCCESS_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<APARRINGSUCCESS_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreatePARRING()
 {
-	return NewObject<APARRING_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<APARRING_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateJUMPATTACK()
 {
-	return NewObject<AJUMPATTACK_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<AJUMPATTACK_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateJUMP()
 {
-	return NewObject<AJUMP_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<AJUMP_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateGROUNDED()
 {
-	return NewObject<AGROUNDED_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<AGROUNDED_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateDRAWING()
 {
-	return NewObject<ADRAWING_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<ADRAWING_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateDEFENSELESS()
 {
-	return NewObject<ADEFENSELESS_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<ADEFENSELESS_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateD_WALK()
 {
-	return NewObject<AD_WALK_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<AD_WALK_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateCHARGINGATTACK()
 {
-	return NewObject<ACHARGINGATTACK_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<ACHARGINGATTACK_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateATTACK() 
+TScriptInterface<IIPlayerState> PlayerStateFactory::CreateATTACK()
 {
-	return NewObject<AATTACK_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<AATTACK_A>();
+	temp->SetInitalProperty(context, this);
+	return temp;
 }

@@ -16,13 +16,31 @@ class UIPlayerState : public UInterface
 /**
  * 
  */
+class ACCharacterPlayer;
+class PlayerStateFactory;
 class CAIMAN_API IIPlayerState
 {
 	GENERATED_BODY()
 public:
-	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player) = 0;
-	virtual void update(class ACCharacterPlayer& player) = 0;
-	virtual void enter(class ACCharacterPlayer& player) = 0;
-	virtual void exit(class ACCharacterPlayer& player) = 0;
+	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player) = 0;	
+	virtual void updateInput() = 0;
+	virtual void update( ACCharacterPlayer& player) = 0;
+	virtual void enter( ACCharacterPlayer& player) = 0;
+	virtual void exit( ACCharacterPlayer& player) = 0;
 	virtual void Destroy() = 0;
+	IIPlayerState():IIPlayerState(NULL,NULL) {}
+	IIPlayerState(ACCharacterPlayer *_ctx,PlayerStateFactory*_factory) 
+	{
+		ctx = _ctx;
+		factory = _factory;
+	}
+	void SwitchState(TScriptInterface<IIPlayerState> newState);
+	void SetInitalProperty(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory)
+	{
+		ctx = _ctx;
+		factory = _factory;
+	}
+protected:
+	ACCharacterPlayer* ctx;
+	PlayerStateFactory* factory;
 };

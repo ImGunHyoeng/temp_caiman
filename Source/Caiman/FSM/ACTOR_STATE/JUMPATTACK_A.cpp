@@ -26,6 +26,10 @@ TScriptInterface<IIPlayerState> AJUMPATTACK_A::updateInput(ACCharacterPlayer& pl
 	return nullptr;
 }
 
+void AJUMPATTACK_A::updateInput()
+{
+}
+
 void AJUMPATTACK_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());

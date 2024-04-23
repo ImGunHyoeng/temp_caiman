@@ -4,8 +4,9 @@
 #include "FSM/ACTOR_STATE/ATTACK_A.h"
 #include "CCharacterPlayer.h"
 #include "AFSMCollection.h"
+#include "FSM/PlayerStateFactory.h"
 // Sets default values
-AATTACK_A::AATTACK_A()
+AATTACK_A::AATTACK_A(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory):IIPlayerState(_ctx,_factory)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -19,13 +20,19 @@ TScriptInterface<IIPlayerState> AATTACK_A::updateInput(ACCharacterPlayer& player
 		//player.StopAnimMontage();
 		player.PlayAnimMontage(player.GetChargeAttackMontage(), 1.0f,FName("ChargingStart"));
 		return NewObject<ACHARGINGATTACK_A>();
+		SwitchState(factory->CreateCHARGINGATTACK());
 	}
 	if (curAttackState == EAttackState::END)
 	{
+		ctx->StopAnimMontage();
 		player.StopAnimMontage();
 		return NewObject<AD_IDLE_A>();
 	}
 	return nullptr;
+}
+
+void AATTACK_A::updateInput()
+{
 }
 
 void AATTACK_A::update(ACCharacterPlayer& player)

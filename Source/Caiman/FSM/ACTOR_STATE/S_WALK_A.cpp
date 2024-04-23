@@ -5,6 +5,7 @@
 #include "CCharacterPlayer.h"
 #include "AFSMCollection.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "FSM/PlayerStateFactory.h"
 // Sets default values
 AS_WALK_A::AS_WALK_A()
 {
@@ -40,10 +41,37 @@ TScriptInterface<IIPlayerState> AS_WALK_A::updateInput(ACCharacterPlayer& player
 	return nullptr;
 }
 
+void AS_WALK_A::updateInput()
+{
+	if (ctx->getPlayerController()->IsInputKeyDown(EKeys::LeftShift))
+	{
+		SwitchState(factory->CreateS_RUN());
+	}
+	if (ctx->GetMoveInputActionValue().GetMagnitude() < 0.1f)
+	{
+		SwitchState(factory->CreateS_IDLE());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+	{
+		ctx->Draw();
+		SwitchState(factory->CreateDRAWING());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
+	{
+		SwitchState(factory->CreateJUMP());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		ctx->StopMove();
+		SwitchState(factory->CreateS_ROLL());
+	}
+}
+
 void AS_WALK_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
 	player.Move(player.GetMoveInputActionValue());
+	updateInput();
 }
 
 void AS_WALK_A::enter(ACCharacterPlayer& player)

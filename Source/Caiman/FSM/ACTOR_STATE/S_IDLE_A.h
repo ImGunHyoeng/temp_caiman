@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "FSM/IPlayerState.h"
 #include "S_IDLE_A.generated.h"
+class ACCharacterPlayer;
+class PlayerStateFactory;
 
 UCLASS()
 class CAIMAN_API AS_IDLE_A : public AActor,public IIPlayerState
@@ -15,7 +17,10 @@ class CAIMAN_API AS_IDLE_A : public AActor,public IIPlayerState
 public:	
 	// Sets default values for this actor's properties
 	AS_IDLE_A();
+	AS_IDLE_A(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory) :IIPlayerState(_ctx, _factory)
+	{}
 	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
+	virtual void updateInput();
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);

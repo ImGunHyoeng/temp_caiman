@@ -20,6 +20,7 @@ class CAIMAN_API US_IDLE_O : public UObject, public IIPlayerState
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);
 	~US_IDLE_O() { UE_LOG(LogTemp, Warning, TEXT("Idle Destroy")); }
-	virtual void Destroy();
+	virtual void Destroy(); 
+	virtual void updateInput() {}
 	class UKwangAnimInstance* kwang;
 };

@@ -22,6 +22,10 @@ TScriptInterface<IIPlayerState> APARRING_A::updateInput(ACCharacterPlayer& playe
 	return nullptr;
 }
 
+void APARRING_A::updateInput()
+{
+}
+
 void APARRING_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());

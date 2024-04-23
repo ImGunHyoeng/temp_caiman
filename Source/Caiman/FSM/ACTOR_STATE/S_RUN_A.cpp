@@ -46,6 +46,10 @@ TScriptInterface<IIPlayerState> AS_RUN_A::updateInput(ACCharacterPlayer& player)
 	return nullptr;
 }
 
+void AS_RUN_A::updateInput()
+{
+}
+
 void AS_RUN_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());

@@ -56,8 +56,8 @@ public:
 	//void changeState(ECharacterState inState);
 	
 	
-	//ECharacterState getCurState();
-	//void setCurState(ECharacterState state);
+	TScriptInterface<IIPlayerState> getCurState() { return curState; }
+	void setCurState(TScriptInterface<IIPlayerState> state) { curState = state; }
 	APlayerController* getPlayerController();
 	void SimulateSpaceKeyPress(const FName name);
 	void OnReleaseKey();

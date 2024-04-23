@@ -6,7 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "FSM/IPlayerState.h"
 #include "D_WALK_A.generated.h"
-
+class ACCharacterPlayer;
+class PlayerStateFactory;
 UCLASS()
 class CAIMAN_API AD_WALK_A : public AActor, public IIPlayerState
 {
@@ -15,7 +16,10 @@ class CAIMAN_API AD_WALK_A : public AActor, public IIPlayerState
 public:	
 	// Sets default values for this actor's properties
 	AD_WALK_A();
+	AD_WALK_A(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory) :IIPlayerState(_ctx, _factory)
+	{}
 	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
+	virtual void updateInput();
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);
