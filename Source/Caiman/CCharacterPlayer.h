@@ -33,6 +33,7 @@ enum class ECharacterState :uint8
  * 
  */
 class ACMyWeapon;
+class PlayerStateFactory;
 UCLASS()
 class CAIMAN_API ACCharacterPlayer : public ACCharacterBase,public IHitInterface
 {
@@ -233,9 +234,5 @@ protected:
 private:
 	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
 	TScriptInterface<IIPlayerState> curState;
-	//IIPlayerState curState;
-	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
-	//	ECharacterState currentState;
-	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
-	//	ECharacterState previousState;
+	PlayerStateFactory *stateFactory;
 };

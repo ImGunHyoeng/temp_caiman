@@ -21,6 +21,7 @@
 //#include "FSM/S_IDLE_NEWA.h"
 #include "FSM/ACTOR_STATE/AFSMCollection.h"
 #include "NiagaraSystem.h"
+#include "FSM/PlayerStateFactory.h"
 
 
 
@@ -88,6 +89,7 @@ void ACCharacterPlayer::BeginPlay()
 	//curState =NewObject<US_IDLE_NEW>();//new S_IDLE();
 	//new S_IDLE()
 	curState = NewObject<AS_IDLE_A>();
+	stateFactory = new PlayerStateFactory(this);
 	//curState = NewObject<AS_IDLE_NEWA>();
 	//new S_IDLE();
 }
