@@ -42,10 +42,34 @@ TScriptInterface<IIPlayerState> AD_WALK_A::updateInput(ACCharacterPlayer& player
 
 void AD_WALK_A::updateInput()
 {
+	if (ctx->GetMoveInputActionValue().GetMagnitude() < 0.1f)
+	{
+		SwitchState(factory->CreateD_IDLE());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+	{
+		ctx->SetWaitFrame(70);
+		SwitchState(factory->CreateATTACK());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+	{
+		ctx->Sheath();
+		SwitchState(factory->CreateSHEATHING());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		ctx->StopMove();
+		ctx->NoAnimSheath();
+		SwitchState(factory->CreateS_ROLL());
+	}
 }
 
 void AD_WALK_A::update()
 {
+	ctx->Move(ctx->GetMoveInputActionValue());
+	ctx->Look(ctx->GetLookInputActionValue());
+	updateInput();
+
 }
 
 void AD_WALK_A::update(ACCharacterPlayer& player)

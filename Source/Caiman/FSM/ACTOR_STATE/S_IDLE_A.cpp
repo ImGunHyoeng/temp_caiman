@@ -62,6 +62,8 @@ void AS_IDLE_A::updateInput()
 
 void AS_IDLE_A::update()
 {
+	ctx->Look(ctx->GetLookInputActionValue());
+	updateInput();
 }
 
 void AS_IDLE_A::update(ACCharacterPlayer& player)

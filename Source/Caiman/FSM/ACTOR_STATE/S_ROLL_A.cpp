@@ -5,6 +5,7 @@
 #include "AnimInstance\KwangAnimInstance.h"
 #include "CCharacterPlayer.h"
 #include "AFSMCollection.h"
+#include "FSM/PlayerStateFactory.h"
 // Sets default values
 AS_ROLL_A::AS_ROLL_A()
 {
@@ -25,10 +26,24 @@ TScriptInterface<IIPlayerState> AS_ROLL_A::updateInput(ACCharacterPlayer& player
 
 void AS_ROLL_A::updateInput()
 {
+	if (ctx->GetWaitFrame() < 0)
+	{
+		SwitchState(factory->CreateS_IDLE());
+		ctx->StopAnimMontage();
+	}
 }
 
 void AS_ROLL_A::update()
 {
+	ctx->WaitFramePassing();
+	//ctx->Move(ctx->GetMoveInputActionValue());
+	if (isRoll)
+		ctx->AddMovementInput(ctx->GetActorForwardVector(), 3);
+	//if (!isRoll)
+	//	ctx->SetWaitFrame(4);
+	ctx->Look(ctx->GetLookInputActionValue());
+	updateInput();
+
 }
 
 void AS_ROLL_A::update(ACCharacterPlayer& player)

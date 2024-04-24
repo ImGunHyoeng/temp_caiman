@@ -18,6 +18,13 @@ void IIPlayerState::SwitchState(TScriptInterface<IIPlayerState> newState)
 		//TScriptInterface<IIPlayerState> temp->;
 		//(IIPlayerState*)temp;
 		//Cast<IIPlayerState>(newState.GetObject());
-		currentSuperstate->SetSubState(Cast<IIPlayerState>(newState.GetObject()));
+		//TScriptInterface<IIPlayerState> temp = (newState.GetObject())
+		//currentSuperstate->SetSubState(Cast<IIPlayerState>(newState.GetObject()));
+		currentSuperstate->SetSubState(newState);
 	}
+}
+
+TScriptInterface<IIPlayerState> IIPlayerState::GetSubState()
+{
+	return currentSubstate;
 }

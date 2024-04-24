@@ -69,6 +69,9 @@ void AS_WALK_A::updateInput()
 
 void AS_WALK_A::update()
 {
+	ctx->Look(ctx->GetLookInputActionValue());
+	ctx->Move(ctx->GetMoveInputActionValue());
+	updateInput();
 }
 
 void AS_WALK_A::update(ACCharacterPlayer& player)

@@ -5,6 +5,8 @@
 #include "CCharacterPlayer.h"
 #include "GameFramework\CharacterMovementComponent.h"
 #include "AFSMCollection.h"
+#include "FSM/PlayerStateFactory.h"
+
 // Sets default values
 AS_RUN_A::AS_RUN_A()
 {
@@ -48,10 +50,43 @@ TScriptInterface<IIPlayerState> AS_RUN_A::updateInput(ACCharacterPlayer& player)
 
 void AS_RUN_A::updateInput()
 {
+	if (ctx->getPlayerController()->WasInputKeyJustReleased(EKeys::LeftShift))
+	{
+		SwitchState(factory->CreateS_WALK());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
+	{
+		SwitchState(factory->CreateJUMP());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+	{
+		ctx->Draw();
+		SwitchState(factory->CreateDRAWING());
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		//FVector2D movementVector = ctx->GetMoveInputActionValue().Get<FVector2D>();
+		//FName temp;
+		//if (movementVector.X >= 0)
+		//	temp = FName("Front");
+		//if (movementVector.X < 0)
+		//	temp = FName("Back");
+		//if (movementVector.Y < 0)
+		//	temp = FName("Left");
+		//if (movementVector.Y > 0)
+		//	temp = FName("Right");
+		ctx->StopMove();
+		SwitchState(factory->CreateS_ROLL());
+	}
 }
 
 void AS_RUN_A::update()
 {
+	ctx->Look(ctx->GetLookInputActionValue());
+
+	//set this enter
+	ctx->Move(ctx->GetMoveInputActionValue());
+	updateInput();
 }
 
 void AS_RUN_A::update(ACCharacterPlayer& player)

@@ -5,6 +5,8 @@
 #include "AnimInstance\KwangAnimInstance.h"
 #include "CCharacterPlayer.h"
 #include "AFSMCollection.h"
+#include "FSM/PlayerStateFactory.h"
+
 // Sets default values
 APARRINGSUCCESS_A::APARRINGSUCCESS_A()
 {
@@ -22,10 +24,16 @@ TScriptInterface<IIPlayerState> APARRINGSUCCESS_A::updateInput(ACCharacterPlayer
 
 void APARRINGSUCCESS_A::updateInput()
 {
+	if (ctx->GetWaitFrame() < 0)
+		SwitchState(factory->CreateD_IDLE());
 }
 
 void APARRINGSUCCESS_A::update()
 {
+	ctx->WaitFramePassing();
+	ctx->Look(ctx->GetLookInputActionValue());
+	updateInput();
+
 }
 
 void APARRINGSUCCESS_A::update(ACCharacterPlayer& player)

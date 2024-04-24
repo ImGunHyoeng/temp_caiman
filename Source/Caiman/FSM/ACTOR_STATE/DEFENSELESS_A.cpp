@@ -24,10 +24,18 @@ TScriptInterface<IIPlayerState> ADEFENSELESS_A::updateInput(ACCharacterPlayer& p
 
 void ADEFENSELESS_A::updateInput()
 {
+	if (ctx->GetWaitFrame() < 0)
+	{
+		SwitchState(factory->CreateD_IDLE());
+	}
 }
 
 void ADEFENSELESS_A::update()
 {
+	ctx->WaitFramePassing();
+	ctx->Look(ctx->GetLookInputActionValue());
+	updateInput();
+
 }
 
 void ADEFENSELESS_A::update(ACCharacterPlayer& player)

@@ -5,6 +5,8 @@
 #include "AFSMCollection.h"
 #include "CCharacterPlayer.h"
 #include "Animation/AnimInstance.h"
+#include "FSM/PlayerStateFactory.h"
+
 // Sets default values
 ASHEATHING_A::ASHEATHING_A()
 {
@@ -30,10 +32,23 @@ TScriptInterface<IIPlayerState> ASHEATHING_A::updateInput(ACCharacterPlayer& pla
 
 void ASHEATHING_A::updateInput()
 {
+	if (ctx->GetWaitFrame() <= 0)
+	{
+		SwitchState(factory->CreateS_IDLE());
+	}
+	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f && ctx->GetWaitFrame() <= 6)
+	{
+		ctx->StopAnimMontage(ctx->GetSheathMontage());
+		ctx->SetWaitFrame(0);
+		SwitchState(factory->CreateS_IDLE());
+	}
 }
 
 void ASHEATHING_A::update()
 {
+	ctx->Look(ctx->GetLookInputActionValue());
+	ctx->WaitFramePassing(); 
+	updateInput();
 }
 
 void ASHEATHING_A::update(ACCharacterPlayer& player)

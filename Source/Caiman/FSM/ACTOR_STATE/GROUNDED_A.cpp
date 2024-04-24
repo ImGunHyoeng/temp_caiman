@@ -24,10 +24,17 @@ TScriptInterface<IIPlayerState> AGROUNDED_A::updateInput(ACCharacterPlayer& play
 
 void AGROUNDED_A::updateInput()
 {
+	if (ctx->GetWaitFrame() <= 0)
+	{
+		SwitchState(factory->CreateS_IDLE());
+	}
 }
 
 void AGROUNDED_A::update()
 {
+	ctx->WaitFramePassing();
+	updateInput();
+
 }
 
 void AGROUNDED_A::update(ACCharacterPlayer& player)

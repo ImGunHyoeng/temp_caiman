@@ -4,6 +4,7 @@
 #include "AnimNotify_ComboAttack.h"
 #include "CCharacterPlayer.h"
 #include "FSM\IPlayerState.h"
+#include "FSM/ACTOR_STATE/ATTACK_A.h"
 void UAnimNotify_ComboAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation, EventReference);
@@ -13,15 +14,11 @@ void UAnimNotify_ComboAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 		if (Player)
 		{
 			//Player->AttackCheck();
-//			Cast<ATTACK>(Player->GetCurPlayerState())->AttackStateDone();
-			//if (IIPlayerState* currentState = Player->GetCurPlayerState())
-			//{
-			//	ATTACK* attack = Cast<ATTACK>(currentState);
-			//	if (attack)
-			//	{
-			//		//attack->AttackStateDone();
-			//	}
-			//}
+			
+			if (AATTACK_A* currentState = Cast<AATTACK_A>(Player->GetCurPlayerState()->GetSubState().GetObject()))
+			{
+				currentState->AttackStateDone();
+			}
 			//if (ATTACK* attack = Cast<ATTACK>(Player->GetCurPlayerState()))
 			//{
 			//	

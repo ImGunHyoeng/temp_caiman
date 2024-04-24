@@ -29,5 +29,8 @@ public:
 	TScriptInterface<IIPlayerState>CreateD_IDLE();
 	TScriptInterface<IIPlayerState>CreateCHARGINGATTACK();
 	TScriptInterface<IIPlayerState>CreateATTACK();
+	TScriptInterface<IIPlayerState>CreateHIT();
+	TScriptInterface<IIPlayerState>CreateNOTHIT();
+	TScriptInterface<IIPlayerState>CreateINVINCIBILITY();
 	~PlayerStateFactory();
 };

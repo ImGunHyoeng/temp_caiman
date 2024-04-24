@@ -5,6 +5,10 @@
 #include "AnimInstance\KwangAnimInstance.h"
 #include "CCharacterPlayer.h"
 #include "AFSMCollection.h"
+#include "FSM/PlayerStateFactory.h"
+
+
+
 // Sets default values
 APARRING_A::APARRING_A()
 {
@@ -24,10 +28,17 @@ TScriptInterface<IIPlayerState> APARRING_A::updateInput(ACCharacterPlayer& playe
 
 void APARRING_A::updateInput()
 {
+	if (ctx->GetParringEnd() == true)
+	{
+		SwitchState(factory->CreateDEFENSELESS());
+	}
 }
 
 void APARRING_A::update()
 {
+	ctx->Look(ctx->GetLookInputActionValue());
+	updateInput();
+
 }
 
 void APARRING_A::update(ACCharacterPlayer& player)

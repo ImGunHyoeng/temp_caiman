@@ -48,10 +48,41 @@ TScriptInterface<IIPlayerState> AD_IDLE_A::updateInput(ACCharacterPlayer& player
 
 void AD_IDLE_A::updateInput()
 {
+	if (!ctx->GetAttacked())
+	{
+		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+		{
+			ctx->Sheath();
+			SwitchState(factory->CreateSHEATHING());
+		}
+		if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f)
+		{
+			SwitchState(factory->CreateD_WALK());
+		}
+		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+		{
+			ctx->SetWaitFrame(70);
+			SwitchState(factory->CreateATTACK());
+		}
+		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
+		{
+			SwitchState(factory->CreatePARRING());
+		}
+		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+		{
+			ctx->StopMove();
+			ctx->NoAnimSheath();
+			SwitchState(factory->CreateS_ROLL());
+		}
+
+	}
 }
 
 void AD_IDLE_A::update()
 {
+	ctx->Look(ctx->GetLookInputActionValue());
+	updateInput();
+
 }
 
 void AD_IDLE_A::update(ACCharacterPlayer& player)

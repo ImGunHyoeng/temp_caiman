@@ -30,10 +30,25 @@ TScriptInterface<IIPlayerState> ADRAWING_A::updateInput(ACCharacterPlayer& playe
 
 void ADRAWING_A::updateInput()
 {
+	if (ctx->GetWaitFrame() <= 0)
+	{
+		SwitchState(factory->CreateD_IDLE());
+	}
+	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f && ctx->GetWaitFrame() <= 6)
+	{
+
+		ctx->StopAnimMontage(ctx->GetDrawMontage());
+		ctx->SetWaitFrame(0);
+		SwitchState(factory->CreateD_IDLE());
+	}
 }
 
 void ADRAWING_A::update()
 {
+	ctx->Look(ctx->GetLookInputActionValue());
+	ctx->WaitFramePassing();
+	updateInput();
+
 }
 
 void ADRAWING_A::update(ACCharacterPlayer& player)

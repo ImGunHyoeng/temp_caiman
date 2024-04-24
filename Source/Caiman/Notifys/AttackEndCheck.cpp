@@ -15,9 +15,10 @@ void UAttackEndCheck::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase
 		if (Player)
 		{
 
-			AATTACK_A* AT = Cast<AATTACK_A>(Player->GetCurPlayerState().GetObject());
-			if(AT)
-				AT->AttackStateEnd();
+			if (AATTACK_A* currentState = Cast<AATTACK_A>(Player->GetCurPlayerState()->GetSubState().GetObject()))
+			{
+				currentState->AttackStateEnd();
+			}
 		}
 	}
 }

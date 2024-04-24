@@ -31,10 +31,25 @@ TScriptInterface<IIPlayerState> AJUMP_A::updateInput(ACCharacterPlayer& player)
 
 void AJUMP_A::updateInput()
 {
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+	{
+		ctx->NoAnimDraw();
+		ctx->SetWaitFrame(6);
+		//return NewObject<AJUMPATTACK_A>();
+		SwitchState(factory->CreateJUMPATTACK());
+	}
+	if (!(ctx->GetCharacterMovement()->IsFalling()))
+	{
+		//return NewObject<AGROUNDED_A>();
+		SwitchState(factory->CreateGROUNDED());
+	}
 }
 
 void AJUMP_A::update()
 {
+	ctx->Look(ctx->GetLookInputActionValue());
+	updateInput();
+
 }
 
 void AJUMP_A::update(ACCharacterPlayer& player)

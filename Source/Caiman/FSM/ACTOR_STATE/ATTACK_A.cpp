@@ -33,10 +33,41 @@ TScriptInterface<IIPlayerState> AATTACK_A::updateInput(ACCharacterPlayer& player
 
 void AATTACK_A::updateInput()
 {
+	if (changeCharge)
+	{
+		//player.StopAnimMontage();
+		ctx->PlayAnimMontage(ctx->GetChargeAttackMontage(), 1.0f, FName("ChargingStart"));
+		SwitchState(factory->CreateCHARGINGATTACK());
+	}
+	if (curAttackState == EAttackState::END)
+	{
+		ctx->StopAnimMontage();
+		ctx->StopAnimMontage();
+		//return NewObject<AD_IDLE_A>();
+		SwitchState(factory->CreateD_IDLE());
+	}
 }
 
 void AATTACK_A::update()
 {
+	ctx->Look(ctx->GetLookInputActionValue());
+	//DoingTime+=FApp::GetDeltaTime()*60;
+	//if (ctx->getPlayerController()->WasInputKeyJustReleased(EKeys::LeftMouseButton))
+	//	DoingTime = 0;
+
+
+	if (curAttackState == EAttackState::DONE)
+	{
+		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+		{
+			curAttackState = EAttackState::DOING;
+			//DoingTime = 100;
+			//ctx->SetWaitFrame(60);
+			ctx->PlayAnimMontage(ctx->GetAttackMontage(), 1.0f, "Attack_2_2");
+		}
+	}
+	updateInput();
+
 }
 
 void AATTACK_A::update(ACCharacterPlayer& player)

@@ -89,7 +89,9 @@ void ACCharacterPlayer::BeginPlay()
 	//new S_IDLE()
 	//curState = NewObject<AS_IDLE_A>();
 	stateFactory = new PlayerStateFactory(this);
-	curState = stateFactory->CreateS_IDLE();
+	curState = stateFactory->CreateNOTHIT();
+	curState->enter(*this);
+	//curState = stateFactory->CreateS_IDLE();
 	//curState = NewObject<AS_IDLE_NEWA>();
 	//new S_IDLE();
 }
@@ -186,7 +188,8 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 }
 void ACCharacterPlayer::update()
 {
-	curState->update(*this);
+	//curState->update(*this);
+	curState->UpdateStates();
 	
 	FVector inputVector = GetLastMovementInputVector();
 	float magnitude = inputVector.Size();
@@ -301,6 +304,7 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 		}
 		return;
 	}
+	curState->SwitchState(stateFactory->CreateHIT());
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
 	FVector forward = GetActorForwardVector();
 	FVector hitno_z = FVector(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);

@@ -52,20 +52,21 @@ public:
 	}
 	void SetRoot(bool _input=false) 
 	{ isRootState = _input; }
-protected:
 	void SwitchState(TScriptInterface<IIPlayerState> newState);
-	void SetSuperState(IIPlayerState* newSuperState)
+	TScriptInterface<IIPlayerState> GetSubState();
+protected:
+	void SetSuperState(TScriptInterface<IIPlayerState> newSuperState)
 	{
 		currentSuperstate = newSuperState;
 	}
-	void SetSubState(IIPlayerState* newSubState)
+	void SetSubState(TScriptInterface<IIPlayerState> newSubState)
 	{
 		currentSubstate = newSubState;
-		newSubState->SetSuperState(this);
+		newSubState->SetSuperState(this->_getUObject());
 	}
 	ACCharacterPlayer* ctx;
 	PlayerStateFactory* factory;
-	IIPlayerState* currentSuperstate;
-	IIPlayerState* currentSubstate;
+	TScriptInterface<IIPlayerState> currentSuperstate;
+	TScriptInterface<IIPlayerState> currentSubstate;
 	bool isRootState;
 };

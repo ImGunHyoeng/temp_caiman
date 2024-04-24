@@ -17,3 +17,7 @@
 #include "FSM/ACTOR_STATE/DEFENSELESS_A.h"
 #include "FSM/ACTOR_STATE/PARRINGSUCCESS_A.h"
 #include "FSM/ACTOR_STATE/CHARGINGATTACK_A.h"
+#include "FSM/ACTOR_STATE/NOTHIT_A.h"
+#include "FSM/ACTOR_STATE/HIT_A.h"
+#include "FSM/ACTOR_STATE/INVINCIBILITY_A.h"
+#include "FSM/PlayerStateFactory.h"

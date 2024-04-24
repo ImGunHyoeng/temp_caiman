@@ -28,10 +28,20 @@ TScriptInterface<IIPlayerState> AJUMPATTACK_A::updateInput(ACCharacterPlayer& pl
 
 void AJUMPATTACK_A::updateInput()
 {
+	if (ctx->GetWaitFrame() <= 0)
+	{
+		if (kwang)
+			kwang->setJumpAttackEnd();
+		SwitchState(factory->CreateD_IDLE());
+	}
 }
 
 void AJUMPATTACK_A::update()
 {
+	ctx->Look(ctx->GetLookInputActionValue());
+	ctx->WaitFramePassing();
+	updateInput();
+
 }
 
 void AJUMPATTACK_A::update(ACCharacterPlayer& player)
