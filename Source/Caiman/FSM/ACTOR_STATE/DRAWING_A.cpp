@@ -32,6 +32,10 @@ void ADRAWING_A::updateInput()
 {
 }
 
+void ADRAWING_A::update()
+{
+}
+
 void ADRAWING_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -50,6 +54,10 @@ void ADRAWING_A::exit(ACCharacterPlayer& player)
 void ADRAWING_A::Destroy()
 {
 	this->MarkPendingKill();
+}
+
+void ADRAWING_A::InitializeSubState()
+{
 }
 
 // Called when the game starts or when spawned

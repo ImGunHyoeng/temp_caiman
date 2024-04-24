@@ -60,6 +60,10 @@ void AS_IDLE_A::updateInput()
 	}
 }
 
+void AS_IDLE_A::update()
+{
+}
+
 void AS_IDLE_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -80,6 +84,10 @@ void AS_IDLE_A::exit(ACCharacterPlayer& player)
 void AS_IDLE_A::Destroy()
 {
 	this->MarkPendingKill();
+}
+
+void AS_IDLE_A::InitializeSubState()
+{
 }
 
 // Called when the game starts or when spawned

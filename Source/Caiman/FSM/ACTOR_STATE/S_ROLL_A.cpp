@@ -27,6 +27,10 @@ void AS_ROLL_A::updateInput()
 {
 }
 
+void AS_ROLL_A::update()
+{
+}
+
 void AS_ROLL_A::update(ACCharacterPlayer& player)
 {
 	player.WaitFramePassing();
@@ -52,6 +56,10 @@ void AS_ROLL_A::exit(ACCharacterPlayer& player)
 void AS_ROLL_A::Destroy()
 {
 	this->MarkPendingKill();
+}
+
+void AS_ROLL_A::InitializeSubState()
+{
 }
 
 // Called when the game starts or when spawned

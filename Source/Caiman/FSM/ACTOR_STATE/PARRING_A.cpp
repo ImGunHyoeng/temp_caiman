@@ -26,6 +26,10 @@ void APARRING_A::updateInput()
 {
 }
 
+void APARRING_A::update()
+{
+}
+
 void APARRING_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -48,6 +52,10 @@ void APARRING_A::exit(ACCharacterPlayer& player)
 void APARRING_A::Destroy()
 {
 	this->MarkPendingKill();
+}
+
+void APARRING_A::InitializeSubState()
+{
 }
 
 // Called when the game starts or when spawned

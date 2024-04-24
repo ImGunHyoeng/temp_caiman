@@ -71,6 +71,8 @@ public:
 	FORCEINLINE UAnimMontage* GetParringMontage() { return AM_Parring; }
 	FORCEINLINE UAnimMontage* GetChargeAttackMontage() { return AM_ChargeAttack; }
 
+	//FORCEINLINE UKwangAnimInstance * GetKwangAnim() { return Cast<UKwangAnimInstance>(GetMesh()->GetAnimInstance()); }
+
 	//UFUNCTION(BlueprintCallable)
 	TScriptInterface<IIPlayerState> GetCurPlayerState();
 

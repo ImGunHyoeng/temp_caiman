@@ -21,9 +21,11 @@ public:
 	{}
 	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();
+	virtual void update();
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);
+	virtual void InitializeSubState();
 	virtual void Destroy();
 protected:
 	// Called when the game starts or when spawned

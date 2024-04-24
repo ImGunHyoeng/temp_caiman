@@ -61,6 +61,10 @@ void ACHARGINGATTACK_A::updateInput()
 {
 }
 
+void ACHARGINGATTACK_A::update()
+{
+}
+
 void ACHARGINGATTACK_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -122,6 +126,10 @@ void ACHARGINGATTACK_A::exit(ACCharacterPlayer& player)
 void ACHARGINGATTACK_A::Destroy()
 {
 
+}
+
+void ACHARGINGATTACK_A::InitializeSubState()
+{
 }
 
 void ACHARGINGATTACK_A::ChangeDoing(ACCharacterPlayer* player)

@@ -26,6 +26,10 @@ void ADEFENSELESS_A::updateInput()
 {
 }
 
+void ADEFENSELESS_A::update()
+{
+}
+
 void ADEFENSELESS_A::update(ACCharacterPlayer& player)
 {
 	player.WaitFramePassing();
@@ -48,6 +52,10 @@ void ADEFENSELESS_A::exit(ACCharacterPlayer& player)
 void ADEFENSELESS_A::Destroy()
 {
 	this->MarkPendingKill();
+}
+
+void ADEFENSELESS_A::InitializeSubState()
+{
 }
 
 // Called when the game starts or when spawned

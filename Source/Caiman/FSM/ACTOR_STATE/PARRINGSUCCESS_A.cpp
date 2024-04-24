@@ -24,6 +24,10 @@ void APARRINGSUCCESS_A::updateInput()
 {
 }
 
+void APARRINGSUCCESS_A::update()
+{
+}
+
 void APARRINGSUCCESS_A::update(ACCharacterPlayer& player)
 {
 	player.WaitFramePassing();
@@ -48,6 +52,10 @@ void APARRINGSUCCESS_A::exit(ACCharacterPlayer& player)
 void APARRINGSUCCESS_A::Destroy()
 {
 	this->MarkPendingKill();
+}
+
+void APARRINGSUCCESS_A::InitializeSubState()
+{
 }
 
 // Called when the game starts or when spawned

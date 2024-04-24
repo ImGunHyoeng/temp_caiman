@@ -35,6 +35,10 @@ void AATTACK_A::updateInput()
 {
 }
 
+void AATTACK_A::update()
+{
+}
+
 void AATTACK_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -68,6 +72,10 @@ void AATTACK_A::exit(ACCharacterPlayer& player)
 }
 
 void AATTACK_A::Destroy()
+{
+}
+
+void AATTACK_A::InitializeSubState()
 {
 }
 

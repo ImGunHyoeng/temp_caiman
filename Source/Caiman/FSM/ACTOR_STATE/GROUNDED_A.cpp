@@ -26,6 +26,10 @@ void AGROUNDED_A::updateInput()
 {
 }
 
+void AGROUNDED_A::update()
+{
+}
+
 void AGROUNDED_A::update(ACCharacterPlayer& player)
 {
 	player.WaitFramePassing();
@@ -44,6 +48,10 @@ void AGROUNDED_A::exit(ACCharacterPlayer& player)
 void AGROUNDED_A::Destroy()
 {
 	this->MarkPendingKill();
+}
+
+void AGROUNDED_A::InitializeSubState()
+{
 }
 
 // Called when the game starts or when spawned

@@ -50,6 +50,10 @@ void AS_RUN_A::updateInput()
 {
 }
 
+void AS_RUN_A::update()
+{
+}
+
 void AS_RUN_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -66,6 +70,10 @@ void AS_RUN_A::enter(ACCharacterPlayer& player)
 void AS_RUN_A::exit(ACCharacterPlayer& player)
 {
 	player.GetCharacterMovement()->MaxWalkSpeed = 1000 / 2.0f;
+}
+
+void AS_RUN_A::InitializeSubState()
+{
 }
 
 void AS_RUN_A::Destroy()

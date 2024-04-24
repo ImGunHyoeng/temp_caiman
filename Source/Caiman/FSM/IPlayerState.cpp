@@ -10,5 +10,14 @@ void IIPlayerState::SwitchState(TScriptInterface<IIPlayerState> newState)
 	exit(*ctx);
 
 	newState->enter(*ctx);
-	ctx->setCurState(newState);
+	if(isRootState)
+		ctx->setCurState(newState);
+	else if (currentSuperstate != NULL)
+	{
+		//(IIPlayerState*)newState;
+		//TScriptInterface<IIPlayerState> temp->;
+		//(IIPlayerState*)temp;
+		//Cast<IIPlayerState>(newState.GetObject());
+		currentSuperstate->SetSubState(Cast<IIPlayerState>(newState.GetObject()));
+	}
 }

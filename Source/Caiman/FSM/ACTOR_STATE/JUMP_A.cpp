@@ -33,6 +33,10 @@ void AJUMP_A::updateInput()
 {
 }
 
+void AJUMP_A::update()
+{
+}
+
 void AJUMP_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -55,6 +59,10 @@ void AJUMP_A::exit(ACCharacterPlayer& player)
 void AJUMP_A::Destroy()
 {
 	this->MarkPendingKill();
+}
+
+void AJUMP_A::InitializeSubState()
+{
 }
 
 // Called when the game starts or when spawned

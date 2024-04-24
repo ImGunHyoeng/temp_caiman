@@ -32,6 +32,10 @@ void ASHEATHING_A::updateInput()
 {
 }
 
+void ASHEATHING_A::update()
+{
+}
+
 void ASHEATHING_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -45,6 +49,11 @@ void ASHEATHING_A::enter(ACCharacterPlayer& player)
 
 void ASHEATHING_A::exit(ACCharacterPlayer& player)
 {
+}
+
+void ASHEATHING_A::InitializeSubState()
+{
+
 }
 
 void ASHEATHING_A::Destroy()

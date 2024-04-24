@@ -67,6 +67,10 @@ void AS_WALK_A::updateInput()
 	}
 }
 
+void AS_WALK_A::update()
+{
+}
+
 void AS_WALK_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -80,6 +84,10 @@ void AS_WALK_A::enter(ACCharacterPlayer& player)
 }
 
 void AS_WALK_A::exit(ACCharacterPlayer& player)
+{
+}
+
+void AS_WALK_A::InitializeSubState()
 {
 }
 

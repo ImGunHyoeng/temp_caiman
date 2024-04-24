@@ -23,10 +23,12 @@ public:
 	bool isRoll;
 	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();
+	virtual void update();
 	virtual void update(class ACCharacterPlayer& player);
 	virtual void enter(class ACCharacterPlayer& player);
 	virtual void exit(class ACCharacterPlayer& player);
 	virtual void Destroy();
+	virtual void InitializeSubState();
 	class UKwangAnimInstance* kwang;
 	
 

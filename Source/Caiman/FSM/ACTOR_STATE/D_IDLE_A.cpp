@@ -50,6 +50,10 @@ void AD_IDLE_A::updateInput()
 {
 }
 
+void AD_IDLE_A::update()
+{
+}
+
 void AD_IDLE_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -67,6 +71,10 @@ void AD_IDLE_A::exit(ACCharacterPlayer& player)
 }
 
 void AD_IDLE_A::Destroy()
+{
+}
+
+void AD_IDLE_A::InitializeSubState()
 {
 }
 

@@ -44,6 +44,10 @@ void AD_WALK_A::updateInput()
 {
 }
 
+void AD_WALK_A::update()
+{
+}
+
 void AD_WALK_A::update(ACCharacterPlayer& player)
 {
 	player.Move(player.GetMoveInputActionValue());
@@ -62,6 +66,10 @@ void AD_WALK_A::exit(ACCharacterPlayer& player)
 void AD_WALK_A::Destroy()
 {
 	this->MarkPendingKill();
+}
+
+void AD_WALK_A::InitializeSubState()
+{
 }
 
 // Called when the game starts or when spawned

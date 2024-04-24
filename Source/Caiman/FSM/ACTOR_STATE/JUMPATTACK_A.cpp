@@ -30,6 +30,10 @@ void AJUMPATTACK_A::updateInput()
 {
 }
 
+void AJUMPATTACK_A::update()
+{
+}
+
 void AJUMPATTACK_A::update(ACCharacterPlayer& player)
 {
 	player.Look(player.GetLookInputActionValue());
@@ -53,6 +57,10 @@ void AJUMPATTACK_A::exit(ACCharacterPlayer& player)
 void AJUMPATTACK_A::Destroy()
 {
 	this->MarkPendingKill();
+}
+
+void AJUMPATTACK_A::InitializeSubState()
+{
 }
 
 // Called when the game starts or when spawned
