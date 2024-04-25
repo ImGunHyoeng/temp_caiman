@@ -12,27 +12,28 @@ ADRAWING_A::ADRAWING_A()
 
 }
 
-TScriptInterface<IIPlayerState> ADRAWING_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.GetWaitFrame() <= 0)
-	{
-		return NewObject<AD_IDLE_A>();
-	}
-	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f && player.GetWaitFrame() <= 6)
-	{
-
-		player.StopAnimMontage(player.GetDrawMontage());
-		player.SetWaitFrame(0);
-		return NewObject<AD_IDLE_A>();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> ADRAWING_A::updateInput(ACCharacterPlayer& player)
+//{
+//	if (player.GetWaitFrame() <= 0)
+//	{
+//		return NewObject<AD_IDLE_A>();
+//	}
+//	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f && player.GetWaitFrame() <= 6)
+//	{
+//
+//		player.StopAnimMontage(player.GetDrawMontage());
+//		player.SetWaitFrame(0);
+//		return NewObject<AD_IDLE_A>();
+//	}
+//	return nullptr;
+//}
 
 void ADRAWING_A::updateInput()
 {
 	if (ctx->GetWaitFrame() <= 0)
 	{
 		SwitchState(factory->CreateD_IDLE());
+		return;
 	}
 	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f && ctx->GetWaitFrame() <= 6)
 	{
@@ -40,6 +41,7 @@ void ADRAWING_A::updateInput()
 		ctx->StopAnimMontage(ctx->GetDrawMontage());
 		ctx->SetWaitFrame(0);
 		SwitchState(factory->CreateD_IDLE());
+		return;
 	}
 }
 
@@ -51,18 +53,18 @@ void ADRAWING_A::update()
 
 }
 
-void ADRAWING_A::update(ACCharacterPlayer& player)
+//void ADRAWING_A::update(ACCharacterPlayer& player)
+//{
+//	player.Look(player.GetLookInputActionValue());
+//	player.WaitFramePassing();
+//}
+
+void ADRAWING_A::enter()
 {
-	player.Look(player.GetLookInputActionValue());
-	player.WaitFramePassing();
+	ctx->SetWaitFrame(8);
 }
 
-void ADRAWING_A::enter(ACCharacterPlayer& player)
-{
-	player.SetWaitFrame(8);
-}
-
-void ADRAWING_A::exit(ACCharacterPlayer& player)
+void ADRAWING_A::exit()
 {
 }
 

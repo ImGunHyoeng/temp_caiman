@@ -16,13 +16,13 @@ class CAIMAN_API ASUPERARMOR_A : public AActor,public IIPlayerState
 public:	
 	// Sets default values for this actor's properties
 	ASUPERARMOR_A();
-	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
+	//virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();
-	virtual void update(class ACCharacterPlayer& player);
+	//virtual void update(class ACCharacterPlayer& player);
 	virtual void update();
-	virtual void enter(ACCharacterPlayer& player);
+	virtual void enter();
 	virtual void InitializeSubState();
-	virtual void exit(ACCharacterPlayer& player);
+	virtual void exit();
 	virtual void Destroy();
 protected:
 	// Called when the game starts or when spawned

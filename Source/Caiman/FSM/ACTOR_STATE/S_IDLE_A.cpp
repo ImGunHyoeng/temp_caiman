@@ -15,48 +15,46 @@ AS_IDLE_A::AS_IDLE_A()
 
 }
 
-TScriptInterface<IIPlayerState> AS_IDLE_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
-	{
-		return NewObject<AJUMP_A>();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
-	{
-		player.Draw();
-		return NewObject<ADRAWING_A>();
-	}
-	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f)
-	{
-		return NewObject<AS_WALK_A>();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		player.StopMove();
-		return NewObject<AS_ROLL_A>();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> AS_IDLE_A::updateInput(ACCharacterPlayer& player)
+//{
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
+//	{
+//		return NewObject<AJUMP_A>();
+//	}
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+//	{
+//		player.Draw();
+//		return NewObject<ADRAWING_A>();
+//	}
+//	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f)
+//	{
+//		return NewObject<AS_WALK_A>();
+//	}
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+//	{
+//		player.StopMove();
+//		return NewObject<AS_ROLL_A>();
+//	}
+//	return nullptr;
+//}
 
 void AS_IDLE_A::updateInput()
 {
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{
 		SwitchState(factory->CreateJUMP());
+		return;
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{
 		ctx->Draw();
 		SwitchState(factory->CreateDRAWING());
+		return;
 	}
 	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f)
 	{
 		SwitchState(factory->CreateS_WALK());
-	}
-	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		ctx->StopMove();
-		SwitchState(factory->CreateS_ROLL());
+		return;
 	}
 }
 
@@ -66,20 +64,20 @@ void AS_IDLE_A::update()
 	updateInput();
 }
 
-void AS_IDLE_A::update(ACCharacterPlayer& player)
-{
-	player.Look(player.GetLookInputActionValue());
-	updateInput();
-}
+//void AS_IDLE_A::update(ACCharacterPlayer& player)
+//{
+//	player.Look(player.GetLookInputActionValue());
+//	updateInput();
+//}
 
-void AS_IDLE_A::enter(ACCharacterPlayer& player)
+void AS_IDLE_A::enter()
 {
-	kwang = player.getAnimInstance();
+	kwang = ctx->getAnimInstance();
 	if (kwang)
 		kwang->setSheath();
 }
 
-void AS_IDLE_A::exit(ACCharacterPlayer& player)
+void AS_IDLE_A::exit()
 {
 }
 

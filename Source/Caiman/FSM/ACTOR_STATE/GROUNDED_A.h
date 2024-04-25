@@ -18,12 +18,12 @@ public:
 	AGROUNDED_A();
 	AGROUNDED_A(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory) :IIPlayerState(_ctx, _factory)
 	{}
-	virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
+	//virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();
 	virtual void update();
-	virtual void update(class ACCharacterPlayer& player);
-	virtual void enter(class ACCharacterPlayer& player);
-	virtual void exit(class ACCharacterPlayer& player);
+	//virtual void update(class ACCharacterPlayer& player);
+	virtual void enter();
+	virtual void exit();
 	virtual void Destroy();
 	virtual void InitializeSubState();
 	class UKwangAnimInstance* kwang;

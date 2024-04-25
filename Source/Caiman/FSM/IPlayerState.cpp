@@ -5,21 +5,27 @@
 #include "CCharacterPlayer.h"
 // Add default functionality here for any IIPlayerState functions that are not pure virtual.
 
+void IIPlayerState::SetInitalProperty(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory)
+{
+	
+	ctx = _ctx;
+	factory = _factory;
+	
+}
+
+void IIPlayerState::SetRoot(bool _input)
+{
+	 isRootState = _input;
+}
+
 void IIPlayerState::SwitchState(TScriptInterface<IIPlayerState> newState)
 {
-	exit(*ctx);
-
-	newState->enter(*ctx);
+	ExitStates();
+	newState->EnterStates();
 	if(isRootState)
 		ctx->setCurState(newState);
 	else if (currentSuperstate != NULL)
 	{
-		//(IIPlayerState*)newState;
-		//TScriptInterface<IIPlayerState> temp->;
-		//(IIPlayerState*)temp;
-		//Cast<IIPlayerState>(newState.GetObject());
-		//TScriptInterface<IIPlayerState> temp = (newState.GetObject())
-		//currentSuperstate->SetSubState(Cast<IIPlayerState>(newState.GetObject()));
 		currentSuperstate->SetSubState(newState);
 	}
 }
@@ -27,4 +33,40 @@ void IIPlayerState::SwitchState(TScriptInterface<IIPlayerState> newState)
 TScriptInterface<IIPlayerState> IIPlayerState::GetSubState()
 {
 	return currentSubstate;
+}
+
+void IIPlayerState::SetSuperState(TScriptInterface<IIPlayerState> newSuperState)
+{
+	currentSuperstate = newSuperState;
+}
+
+void IIPlayerState::SetSubState(TScriptInterface<IIPlayerState> newSubState)
+{
+	currentSubstate = newSubState;
+	newSubState->SetSuperState(this->_getUObject());
+}
+
+void IIPlayerState::UpdateStates()
+{
+	update();
+	if (currentSubstate == NULL)
+		return;
+	currentSubstate->UpdateStates();
+	
+}
+
+void IIPlayerState::EnterStates()
+{
+	enter();
+	if (currentSubstate == NULL)
+		return;
+	currentSubstate->EnterStates();
+}
+
+void IIPlayerState::ExitStates()
+{
+	exit();
+	if (currentSubstate == NULL)
+		return;
+	currentSubstate->ExitStates();
 }

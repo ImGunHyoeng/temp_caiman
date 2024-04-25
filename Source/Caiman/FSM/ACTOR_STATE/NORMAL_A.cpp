@@ -1,84 +1,102 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FSM/ACTOR_STATE/NOTHIT_A.h"
+#include "FSM/ACTOR_STATE/NORMAL_A.h"
 #include "FSM/PlayerStateFactory.h"
 #include "CCharacterPlayer.h"
 // Sets default values
-ANOTHIT_A::ANOTHIT_A()
+ANORMAL_A::ANORMAL_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 }
 
-TScriptInterface<IIPlayerState> ANOTHIT_A::updateInput(ACCharacterPlayer& player)
+//TScriptInterface<IIPlayerState> ANORMAL_A::updateInput(ACCharacterPlayer& player)
+//{
+//	return TScriptInterface<IIPlayerState>();
+//}
+
+void ANORMAL_A::updateInput()
 {
-	return TScriptInterface<IIPlayerState>();
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		ctx->StopMove();
+		SwitchState(factory->CreateINVINCIBILITY());
+		return;
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
+	{
+		SwitchState(factory->CreateINVINCIBILITY());
+		return;
+	}
 }
 
-void ANOTHIT_A::updateInput()
-{
+//void ANORMAL_A::update(ACCharacterPlayer& player)
+//{
+//}
 
-}
-
-void ANOTHIT_A::update(ACCharacterPlayer& player)
-{
-}
-
-void ANOTHIT_A::update()
+void ANORMAL_A::update()
 {
 	updateInput();
+	
 }
 
-void ANOTHIT_A::enter(ACCharacterPlayer& player)
+void ANORMAL_A::enter()
 {
+	UE_LOG(LogTemp, Warning, TEXT("Normal"));
 	InitializeSubState();
 }
 
-void ANOTHIT_A::InitializeSubState()
+void ANORMAL_A::InitializeSubState()
 {
+	if (ctx->GetParringEnd() == true)
+	{
+		SetSubState(factory->CreateDEFENSELESS());
+		return;
+	}
 	if (ctx->GetMoveInputActionValue().GetMagnitude() < 0.1f)
 	{
 		SetSubState((factory->CreateS_IDLE()));
+		return;
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{
 		SetSubState((factory->CreateJUMP()));
+		return;
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{
 		ctx->Draw();
 		SetSubState((factory->CreateDRAWING()));
+		return;
 	}
 	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f)
 	{
 		SetSubState((factory->CreateS_WALK()));
+		return;
 	}
-	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		ctx->StopMove();
-		SetSubState((factory->CreateS_ROLL()));
-	}
+
 }
 
-void ANOTHIT_A::exit(ACCharacterPlayer& player)
+void ANORMAL_A::exit()
 {
+
 }
 
-void ANOTHIT_A::Destroy()
+void ANORMAL_A::Destroy()
 {
 }
 
 // Called when the game starts or when spawned
-void ANOTHIT_A::BeginPlay()
+void ANORMAL_A::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ANOTHIT_A::Tick(float DeltaTime)
+void ANORMAL_A::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 

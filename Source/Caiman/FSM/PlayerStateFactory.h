@@ -30,7 +30,8 @@ public:
 	TScriptInterface<IIPlayerState>CreateCHARGINGATTACK();
 	TScriptInterface<IIPlayerState>CreateATTACK();
 	TScriptInterface<IIPlayerState>CreateHIT();
-	TScriptInterface<IIPlayerState>CreateNOTHIT();
+	TScriptInterface<IIPlayerState>CreateNORMAL();
 	TScriptInterface<IIPlayerState>CreateINVINCIBILITY();
+	TScriptInterface<IIPlayerState>CreateSUPERARMOR();
 	~PlayerStateFactory();
 };

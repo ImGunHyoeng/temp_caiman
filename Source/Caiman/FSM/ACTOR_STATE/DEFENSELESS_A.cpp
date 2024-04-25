@@ -13,20 +13,21 @@ ADEFENSELESS_A::ADEFENSELESS_A()
 
 }
 
-TScriptInterface<IIPlayerState> ADEFENSELESS_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.GetWaitFrame() < 0)
-	{
-		return NewObject<AD_IDLE_A>();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> ADEFENSELESS_A::updateInput(ACCharacterPlayer& player)
+//{
+//	if (player.GetWaitFrame() < 0)
+//	{
+//		return NewObject<AD_IDLE_A>();
+//	}
+//	return nullptr;
+//}
 
 void ADEFENSELESS_A::updateInput()
 {
 	if (ctx->GetWaitFrame() < 0)
 	{
 		SwitchState(factory->CreateD_IDLE());
+		return;
 	}
 }
 
@@ -38,22 +39,22 @@ void ADEFENSELESS_A::update()
 
 }
 
-void ADEFENSELESS_A::update(ACCharacterPlayer& player)
-{
-	player.WaitFramePassing();
-	player.Look(player.GetLookInputActionValue());
-}
+//void ADEFENSELESS_A::update(ACCharacterPlayer& player)
+//{
+//	player.WaitFramePassing();
+//	player.Look(player.GetLookInputActionValue());
+//}
 
-void ADEFENSELESS_A::enter(ACCharacterPlayer& player)
+void ADEFENSELESS_A::enter()
 {
-	player.SetParring(false);
-	kwang = player.getAnimInstance();
+	ctx->SetParring(false);
+	kwang = ctx->getAnimInstance();
 	if (kwang)
 		kwang->setDraw();
-	player.SetWaitFrame(20);
+	ctx->SetWaitFrame(20);
 }
 
-void ADEFENSELESS_A::exit(ACCharacterPlayer& player)
+void ADEFENSELESS_A::exit()
 {
 }
 

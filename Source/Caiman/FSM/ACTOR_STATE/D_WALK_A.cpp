@@ -14,31 +14,25 @@ AD_WALK_A::AD_WALK_A()
 
 }
 
-TScriptInterface<IIPlayerState> AD_WALK_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.GetMoveInputActionValue().GetMagnitude() < 0.1f)
-	{
-
-		return NewObject<AD_IDLE_A>();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-	{
-		player.SetWaitFrame(70);
-		return NewObject<AATTACK_A>();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
-	{
-		player.Sheath();
-		return NewObject<ASHEATHING_A>();
-	}	
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		player.StopMove();
-		player.NoAnimSheath();
-		return NewObject<AS_ROLL_A>();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> AD_WALK_A::updateInput(ACCharacterPlayer& player)
+//{
+//	if (player.GetMoveInputActionValue().GetMagnitude() < 0.1f)
+//	{
+//
+//		return NewObject<AD_IDLE_A>();
+//	}
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+//	{
+//		player.SetWaitFrame(70);
+//		return NewObject<AATTACK_A>();
+//	}
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+//	{
+//		player.Sheath();
+//		return NewObject<ASHEATHING_A>();
+//	}	
+//	return nullptr;
+//}
 
 void AD_WALK_A::updateInput()
 {
@@ -56,12 +50,6 @@ void AD_WALK_A::updateInput()
 		ctx->Sheath();
 		SwitchState(factory->CreateSHEATHING());
 	}
-	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		ctx->StopMove();
-		ctx->NoAnimSheath();
-		SwitchState(factory->CreateS_ROLL());
-	}
 }
 
 void AD_WALK_A::update()
@@ -72,18 +60,18 @@ void AD_WALK_A::update()
 
 }
 
-void AD_WALK_A::update(ACCharacterPlayer& player)
+//void AD_WALK_A::update(ACCharacterPlayer& player)
+//{
+//	player.Move(player.GetMoveInputActionValue());
+//	player.Look(player.GetLookInputActionValue());
+//}
+
+void AD_WALK_A::enter()
 {
-	player.Move(player.GetMoveInputActionValue());
-	player.Look(player.GetLookInputActionValue());
+	ctx->GetCharacterMovement()->MaxWalkSpeed = 1000 / 3.0f;
 }
 
-void AD_WALK_A::enter(ACCharacterPlayer& player)
-{
-	player.GetCharacterMovement()->MaxWalkSpeed = 1000 / 3.0f;
-}
-
-void AD_WALK_A::exit(ACCharacterPlayer& player)
+void AD_WALK_A::exit()
 {
 }
 

@@ -2,6 +2,10 @@
 
 
 #include "FSM/ACTOR_STATE/INVINCIBILITY_A.h"
+#include "AnimInstance\KwangAnimInstance.h"
+#include "CCharacterPlayer.h"
+#include "AFSMCollection.h"
+#include "FSM/PlayerStateFactory.h"
 
 // Sets default values
 AINVINCIBILITY_A::AINVINCIBILITY_A()
@@ -11,32 +15,49 @@ AINVINCIBILITY_A::AINVINCIBILITY_A()
 
 }
 
-TScriptInterface<IIPlayerState> AINVINCIBILITY_A::updateInput(ACCharacterPlayer& player)
-{
-	return TScriptInterface<IIPlayerState>();
-}
+//TScriptInterface<IIPlayerState> AINVINCIBILITY_A::updateInput(ACCharacterPlayer& player)
+//{
+//	return TScriptInterface<IIPlayerState>();
+//}
 
 void AINVINCIBILITY_A::updateInput()
 {
-}
+	if (ctx->GetParringEnd() == true)
+	{
+		SwitchState(factory->CreateNORMAL());
+		return;
+	}
 
-void AINVINCIBILITY_A::update(ACCharacterPlayer& player)
-{
 }
 
 void AINVINCIBILITY_A::update()
 {
+	updateInput();
+	
 }
 
-void AINVINCIBILITY_A::enter(ACCharacterPlayer& player)
+void AINVINCIBILITY_A::enter()
 {
+
+	InitializeSubState();
 }
 
 void AINVINCIBILITY_A::InitializeSubState()
 {
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		ctx->StopMove();
+		SetSubState(factory->CreateS_ROLL());
+		return;
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
+	{
+		SetSubState(factory->CreatePARRING());
+		return;
+	}
 }
 
-void AINVINCIBILITY_A::exit(ACCharacterPlayer& player)
+void AINVINCIBILITY_A::exit()
 {
 }
 

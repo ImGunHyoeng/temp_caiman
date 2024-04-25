@@ -14,22 +14,23 @@ AS_ROLL_A::AS_ROLL_A()
 	 isRoll = true;
 }
 
-TScriptInterface<IIPlayerState> AS_ROLL_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.GetWaitFrame() < 0)
-	{
-		return NewObject<AS_IDLE_A>();
-		player.StopAnimMontage();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> AS_ROLL_A::updateInput(ACCharacterPlayer& player)
+//{
+//	if (player.GetWaitFrame() < 0)
+//	{
+//		return NewObject<AS_IDLE_A>();
+//		player.StopAnimMontage();
+//	}
+//	return nullptr;
+//}
 
 void AS_ROLL_A::updateInput()
 {
 	if (ctx->GetWaitFrame() < 0)
 	{
-		SwitchState(factory->CreateS_IDLE());
 		ctx->StopAnimMontage();
+		SwitchState(factory->CreateNORMAL());
+		return;
 	}
 }
 
@@ -43,28 +44,28 @@ void AS_ROLL_A::update()
 	//	ctx->SetWaitFrame(4);
 	ctx->Look(ctx->GetLookInputActionValue());
 	updateInput();
-
 }
 
-void AS_ROLL_A::update(ACCharacterPlayer& player)
+//void AS_ROLL_A::update(ACCharacterPlayer& player)
+//{
+//	player.WaitFramePassing();
+//	//player.Move(player.GetMoveInputActionValue());
+//	if (isRoll)
+//		player.AddMovementInput(player.GetActorForwardVector(), 3);
+//	//if (!isRoll)
+//	//	player.SetWaitFrame(4);
+//	player.Look(player.GetLookInputActionValue());
+//}
+
+void AS_ROLL_A::enter()
 {
-	player.WaitFramePassing();
-	//player.Move(player.GetMoveInputActionValue());
-	if (isRoll)
-		player.AddMovementInput(player.GetActorForwardVector(), 3);
-	//if (!isRoll)
-	//	player.SetWaitFrame(4);
-	player.Look(player.GetLookInputActionValue());
+	kwang = ctx->getAnimInstance();
+	isRoll = true;
+	ctx->PlayAnimMontage(ctx->GetRollMontage(), 1.0f, input);
+	ctx->SetWaitFrame(30);
 }
 
-void AS_ROLL_A::enter(ACCharacterPlayer& player)
-{
-	kwang = player.getAnimInstance();
-	player.PlayAnimMontage(player.GetRollMontage(), 1.0f, input);
-	player.SetWaitFrame(30);
-}
-
-void AS_ROLL_A::exit(ACCharacterPlayer& player)
+void AS_ROLL_A::exit()
 {
 }
 

@@ -15,68 +15,56 @@ AS_RUN_A::AS_RUN_A()
 
 }
 
-TScriptInterface<IIPlayerState> AS_RUN_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.getPlayerController()->WasInputKeyJustReleased(EKeys::LeftShift))
-	{
-		return NewObject<AS_WALK_A>();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
-	{
-		return NewObject<AJUMP_A>();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
-	{
-		player.Draw();
-		return NewObject<ADRAWING_A>();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		//FVector2D movementVector = player.GetMoveInputActionValue().Get<FVector2D>();
-		//FName temp;
-		//if (movementVector.X >= 0)
-		//	temp = FName("Front");
-		//if (movementVector.X < 0)
-		//	temp = FName("Back");
-		//if (movementVector.Y < 0)
-		//	temp = FName("Left");
-		//if (movementVector.Y > 0)
-		//	temp = FName("Right");
-		player.StopMove();
-		return NewObject<AS_ROLL_A>();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> AS_RUN_A::updateInput(ACCharacterPlayer& ctx->
+//{
+//	if (player.getPlayerController()->WasInputKeyJustReleased(EKeys::LeftShift))
+//	{
+//		return NewObject<AS_WALK_A>();
+//	}
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
+//	{
+//		return NewObject<AJUMP_A>();
+//	}
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+//	{
+//		player.Draw();
+//		return NewObject<ADRAWING_A>();
+//	}
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+//	{
+//		//FVector2D movementVector = player.GetMoveInputActionValue().Get<FVector2D>();
+//		//FName temp;
+//		//if (movementVector.X >= 0)
+//		//	temp = FName("Front");
+//		//if (movementVector.X < 0)
+//		//	temp = FName("Back");
+//		//if (movementVector.Y < 0)
+//		//	temp = FName("Left");
+//		//if (movementVector.Y > 0)
+//		//	temp = FName("Right");
+//		player.StopMove();
+//		return NewObject<AS_ROLL_A>();
+//	}
+//	return nullptr;
+//}
 
 void AS_RUN_A::updateInput()
 {
 	if (ctx->getPlayerController()->WasInputKeyJustReleased(EKeys::LeftShift))
 	{
 		SwitchState(factory->CreateS_WALK());
+		return;
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{
 		SwitchState(factory->CreateJUMP());
+		return;
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{
 		ctx->Draw();
 		SwitchState(factory->CreateDRAWING());
-	}
-	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		//FVector2D movementVector = ctx->GetMoveInputActionValue().Get<FVector2D>();
-		//FName temp;
-		//if (movementVector.X >= 0)
-		//	temp = FName("Front");
-		//if (movementVector.X < 0)
-		//	temp = FName("Back");
-		//if (movementVector.Y < 0)
-		//	temp = FName("Left");
-		//if (movementVector.Y > 0)
-		//	temp = FName("Right");
-		ctx->StopMove();
-		SwitchState(factory->CreateS_ROLL());
+		return;
 	}
 }
 
@@ -89,22 +77,22 @@ void AS_RUN_A::update()
 	updateInput();
 }
 
-void AS_RUN_A::update(ACCharacterPlayer& player)
-{
-	player.Look(player.GetLookInputActionValue());
+//void AS_RUN_A::update(ACCharacterPlayer& player)
+//{
+//	player.Look(player.GetLookInputActionValue());
+//
+//	//set this enter
+//	player.Move(player.GetMoveInputActionValue());
+//}
 
-	//set this enter
-	player.Move(player.GetMoveInputActionValue());
+void AS_RUN_A::enter()
+{
+	ctx->GetCharacterMovement()->MaxWalkSpeed = 1000;
 }
 
-void AS_RUN_A::enter(ACCharacterPlayer& player)
+void AS_RUN_A::exit()
 {
-	player.GetCharacterMovement()->MaxWalkSpeed = 1000;
-}
-
-void AS_RUN_A::exit(ACCharacterPlayer& player)
-{
-	player.GetCharacterMovement()->MaxWalkSpeed = 1000 / 2.0f;
+	ctx->GetCharacterMovement()->MaxWalkSpeed = 1000 / 2.0f;
 }
 
 void AS_RUN_A::InitializeSubState()

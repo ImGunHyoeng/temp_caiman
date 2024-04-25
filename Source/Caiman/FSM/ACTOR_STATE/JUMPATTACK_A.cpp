@@ -14,17 +14,17 @@ AJUMPATTACK_A::AJUMPATTACK_A()
 	PrimaryActorTick.bCanEverTick = true;
 
 }
-
-TScriptInterface<IIPlayerState> AJUMPATTACK_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.GetWaitFrame() <= 0)
-	{
-		if (kwang)
-			kwang->setJumpAttackEnd();
-		return NewObject<AD_IDLE_A>();
-	}
-	return nullptr;
-}
+//
+//TScriptInterface<IIPlayerState> AJUMPATTACK_A::updateInput(ACCharacterPlayer& player)
+//{
+//	if (player.GetWaitFrame() <= 0)
+//	{
+//		if (kwang)
+//			kwang->setJumpAttackEnd();
+//		return NewObject<AD_IDLE_A>();
+//	}
+//	return nullptr;
+//}
 
 void AJUMPATTACK_A::updateInput()
 {
@@ -33,6 +33,7 @@ void AJUMPATTACK_A::updateInput()
 		if (kwang)
 			kwang->setJumpAttackEnd();
 		SwitchState(factory->CreateD_IDLE());
+		return;
 	}
 }
 
@@ -44,15 +45,15 @@ void AJUMPATTACK_A::update()
 
 }
 
-void AJUMPATTACK_A::update(ACCharacterPlayer& player)
-{
-	player.Look(player.GetLookInputActionValue());
-	player.WaitFramePassing();
-}
+//void AJUMPATTACK_A::update(ACCharacterPlayer& player)
+//{
+//	player.Look(player.GetLookInputActionValue());
+//	player.WaitFramePassing();
+//}
 
-void AJUMPATTACK_A::enter(ACCharacterPlayer& player)
+void AJUMPATTACK_A::enter()
 {
-	kwang = player.getAnimInstance();
+	kwang = ctx->getAnimInstance();
 	if (kwang)
 	{
 		kwang->setDraw();
@@ -60,7 +61,7 @@ void AJUMPATTACK_A::enter(ACCharacterPlayer& player)
 	}
 }
 
-void AJUMPATTACK_A::exit(ACCharacterPlayer& player)
+void AJUMPATTACK_A::exit()
 {
 }
 

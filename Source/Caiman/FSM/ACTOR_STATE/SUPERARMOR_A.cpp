@@ -11,24 +11,24 @@ ASUPERARMOR_A::ASUPERARMOR_A()
 
 }
 
-TScriptInterface<IIPlayerState> ASUPERARMOR_A::updateInput(ACCharacterPlayer& player)
-{
-	return TScriptInterface<IIPlayerState>();
-}
+//TScriptInterface<IIPlayerState> ASUPERARMOR_A::updateInput(ACCharacterPlayer& player)
+//{
+//	return TScriptInterface<IIPlayerState>();
+//}
 
 void ASUPERARMOR_A::updateInput()
 {
 }
 
-void ASUPERARMOR_A::update(ACCharacterPlayer& player)
-{
-}
+//void ASUPERARMOR_A::update(ACCharacterPlayer& player)
+//{
+//}
 
 void ASUPERARMOR_A::update()
 {
 }
 
-void ASUPERARMOR_A::enter(ACCharacterPlayer& player)
+void ASUPERARMOR_A::enter()
 {
 }
 
@@ -36,7 +36,7 @@ void ASUPERARMOR_A::InitializeSubState()
 {
 }
 
-void ASUPERARMOR_A::exit(ACCharacterPlayer& player)
+void ASUPERARMOR_A::exit()
 {
 }
 

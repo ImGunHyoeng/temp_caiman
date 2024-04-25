@@ -17,21 +17,18 @@ APARRING_A::APARRING_A()
 
 }
 
-TScriptInterface<IIPlayerState> APARRING_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.GetParringEnd() == true)
-	{
-		return NewObject<ADEFENSELESS_A>();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> APARRING_A::updateInput(ACCharacterPlayer& player)
+//{
+//	if (player.GetParringEnd() == true)
+//	{
+//		return NewObject<ADEFENSELESS_A>();
+//	}
+//	return nullptr;
+//}
 
 void APARRING_A::updateInput()
 {
-	if (ctx->GetParringEnd() == true)
-	{
-		SwitchState(factory->CreateDEFENSELESS());
-	}
+
 }
 
 void APARRING_A::update()
@@ -41,23 +38,23 @@ void APARRING_A::update()
 
 }
 
-void APARRING_A::update(ACCharacterPlayer& player)
+//void APARRING_A::update(ACCharacterPlayer& player)
+//{
+//	player.Look(player.GetLookInputActionValue());
+//}
+
+void APARRING_A::enter()
 {
-	player.Look(player.GetLookInputActionValue());
+	kwang = ctx->getAnimInstance();
+	ctx->PlayAnimMontage(ctx->GetParringMontage(), 1.0f);
+	//ctx->SetWaitFrame(30);
+	ctx->SetParring(true);
+	ctx->SetParringEnd(false);
 }
 
-void APARRING_A::enter(ACCharacterPlayer& player)
+void APARRING_A::exit()
 {
-	kwang = player.getAnimInstance();
-	player.PlayAnimMontage(player.GetParringMontage(), 1.0f);
-	//player.SetWaitFrame(30);
-	player.SetParring(true);
-	player.SetParringEnd(false);
-}
-
-void APARRING_A::exit(ACCharacterPlayer& player)
-{
-	player.SetWaitFrame(0);
+	ctx->SetWaitFrame(0);
 }
 
 void APARRING_A::Destroy()

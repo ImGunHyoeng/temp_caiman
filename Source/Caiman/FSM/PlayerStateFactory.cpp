@@ -152,9 +152,9 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateHIT()
 	return temp;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateNOTHIT()
+TScriptInterface<IIPlayerState> PlayerStateFactory::CreateNORMAL()
 {
-	TScriptInterface<IIPlayerState> temp = NewObject<ANOTHIT_A>();
+	TScriptInterface<IIPlayerState> temp = NewObject<ANORMAL_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot(true);
 	return temp;
@@ -163,6 +163,14 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateNOTHIT()
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateINVINCIBILITY()
 {
 	TScriptInterface<IIPlayerState> temp = NewObject<AINVINCIBILITY_A>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot(true);
+	return temp;
+}
+
+TScriptInterface<IIPlayerState> PlayerStateFactory::CreateSUPERARMOR()
+{
+	TScriptInterface<IIPlayerState> temp = NewObject<ASUPERARMOR_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot(true);
 	return temp;

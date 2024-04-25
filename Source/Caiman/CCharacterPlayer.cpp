@@ -89,8 +89,8 @@ void ACCharacterPlayer::BeginPlay()
 	//new S_IDLE()
 	//curState = NewObject<AS_IDLE_A>();
 	stateFactory = new PlayerStateFactory(this);
-	curState = stateFactory->CreateNOTHIT();
-	curState->enter(*this);
+	curState = stateFactory->CreateNORMAL();
+	curState->EnterStates();
 	//curState = stateFactory->CreateS_IDLE();
 	//curState = NewObject<AS_IDLE_NEWA>();
 	//new S_IDLE();
@@ -191,40 +191,40 @@ void ACCharacterPlayer::update()
 	//curState->update(*this);
 	curState->UpdateStates();
 	
-	FVector inputVector = GetLastMovementInputVector();
-	float magnitude = inputVector.Size();
+	//FVector inputVector = GetLastMovementInputVector();
+	//float magnitude = inputVector.Size();
 
-	if (inputVector.X < 0.0f) {
-		UE_LOG(LogTemp, Warning, TEXT("Left"));// 왼쪽으로 이동
-		if (magnitude > 0.0f) {
-			// 이동 거리 확인
-		}
-	}
-	else if (inputVector.X > 0.0f) {
-		// 오른쪽으로 이동
-		UE_LOG(LogTemp, Warning, TEXT("Right"));
-		if (magnitude > 0.0f) {
-			// 이동 거리 확인
-		}
-	}
-	if (inputVector.Y < 0.0f) {
-		UE_LOG(LogTemp, Warning, TEXT("Forward"));// 왼쪽으로 이동
-		if (magnitude > 0.0f) {
-			// 이동 거리 확인
-		}
-	}
-	else if (inputVector.Y > 0.0f) {
-		// 오른쪽으로 이동
-		UE_LOG(LogTemp, Warning, TEXT("backward"));
-		if (magnitude > 0.0f) {
-			// 이동 거리 확인
-		}
-	}
-	//if (Cast<US_IDLE_NEW>(curState))
-	if (Cast<AS_IDLE_A>(curState.GetObject()))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("IS_AS_IDLE"));
-	}
+	//if (inputVector.X < 0.0f) {
+	//	UE_LOG(LogTemp, Warning, TEXT("Left"));// 왼쪽으로 이동
+	//	if (magnitude > 0.0f) {
+	//		// 이동 거리 확인
+	//	}
+	//}
+	//else if (inputVector.X > 0.0f) {
+	//	// 오른쪽으로 이동
+	//	UE_LOG(LogTemp, Warning, TEXT("Right"));
+	//	if (magnitude > 0.0f) {
+	//		// 이동 거리 확인
+	//	}
+	//}
+	//if (inputVector.Y < 0.0f) {
+	//	UE_LOG(LogTemp, Warning, TEXT("Forward"));// 왼쪽으로 이동
+	//	if (magnitude > 0.0f) {
+	//		// 이동 거리 확인
+	//	}
+	//}
+	//else if (inputVector.Y > 0.0f) {
+	//	// 오른쪽으로 이동
+	//	UE_LOG(LogTemp, Warning, TEXT("backward"));
+	//	if (magnitude > 0.0f) {
+	//		// 이동 거리 확인
+	//	}
+	//}
+	////if (Cast<US_IDLE_NEW>(curState))
+	//if (Cast<AS_IDLE_A>(curState.GetObject()))
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("IS_AS_IDLE"));
+	//}
 }
 void ACCharacterPlayer::updateInput()
 {
@@ -294,15 +294,12 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	if (bIsParring)//패링시에 상태 설정해줌
 	{
-		TScriptInterface<IIPlayerState> state =NewObject<APARRINGSUCCESS_A>();
+		APARRING_A * state = Cast<APARRING_A>(curState->GetSubState().GetObject());
 		if (state != NULL)
 		{
-			curState->exit(*this);
-			curState->Destroy();
-			curState = state;
-			curState->enter(*this);
+			curState->SwitchState(stateFactory->CreatePARRINGSUCCESS());
+			return;
 		}
-		return;
 	}
 	curState->SwitchState(stateFactory->CreateHIT());
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);

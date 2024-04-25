@@ -14,56 +14,55 @@ AS_WALK_A::AS_WALK_A()
 
 }
 
-TScriptInterface<IIPlayerState> AS_WALK_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.getPlayerController()->IsInputKeyDown(EKeys::LeftShift))
-	{
-		return NewObject<AS_RUN_A>();
-	}
-	if (player.GetMoveInputActionValue().GetMagnitude() < 0.1f)
-	{
-		return NewObject<AS_IDLE_A>();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
-	{
-		player.Draw();
-		return NewObject<ADRAWING_A>();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
-	{
-		return NewObject<AJUMP_A>();
-	}
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		player.StopMove();
-		return NewObject<AS_ROLL_A>();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> AS_WALK_A::updateInput(ACCharacterPlayer& player)
+//{
+//	if (player.getPlayerController()->IsInputKeyDown(EKeys::LeftShift))
+//	{
+//		return NewObject<AS_RUN_A>();
+//	}
+//	if (player.GetMoveInputActionValue().GetMagnitude() < 0.1f)
+//	{
+//		return NewObject<AS_IDLE_A>();
+//	}
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+//	{
+//		player.Draw();
+//		return NewObject<ADRAWING_A>();
+//	}
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
+//	{
+//		return NewObject<AJUMP_A>();
+//	}
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+//	{
+//		player.StopMove();
+//		return NewObject<AS_ROLL_A>();
+//	}
+//	return nullptr;
+//}
 
 void AS_WALK_A::updateInput()
 {
 	if (ctx->getPlayerController()->IsInputKeyDown(EKeys::LeftShift))
 	{
 		SwitchState(factory->CreateS_RUN());
+		return;
 	}
 	if (ctx->GetMoveInputActionValue().GetMagnitude() < 0.1f)
 	{
 		SwitchState(factory->CreateS_IDLE());
+		return;
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{
 		ctx->Draw();
 		SwitchState(factory->CreateDRAWING());
+		return;
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{
 		SwitchState(factory->CreateJUMP());
-	}
-	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		ctx->StopMove();
-		SwitchState(factory->CreateS_ROLL());
+		return;
 	}
 }
 
@@ -74,19 +73,19 @@ void AS_WALK_A::update()
 	updateInput();
 }
 
-void AS_WALK_A::update(ACCharacterPlayer& player)
+//void AS_WALK_A::update(ACCharacterPlayer& player)
+//{
+//	player.Look(player.GetLookInputActionValue());
+//	player.Move(player.GetMoveInputActionValue());
+//	updateInput();
+//}
+
+void AS_WALK_A::enter()
 {
-	player.Look(player.GetLookInputActionValue());
-	player.Move(player.GetMoveInputActionValue());
-	updateInput();
+	ctx->GetCharacterMovement()->MaxWalkSpeed = 1000 / 2.0f;
 }
 
-void AS_WALK_A::enter(ACCharacterPlayer& player)
-{
-	player.GetCharacterMovement()->MaxWalkSpeed = 1000 / 2.0f;
-}
-
-void AS_WALK_A::exit(ACCharacterPlayer& player)
+void AS_WALK_A::exit()
 {
 }
 

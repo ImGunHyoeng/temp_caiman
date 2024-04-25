@@ -13,38 +13,38 @@ AD_IDLE_A::AD_IDLE_A()
 
 }
 
-TScriptInterface<IIPlayerState> AD_IDLE_A::updateInput(ACCharacterPlayer& player)
-{
-	if (!player.GetAttacked())
-	{
-		if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
-		{
-			player.Sheath();
-			return NewObject<ASHEATHING_A>();
-		}
-		if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f)
-		{
-			return NewObject<AD_WALK_A>();
-		}
-		if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-		{
-			player.SetWaitFrame(70);
-			return NewObject<AATTACK_A>();
-		}
-		if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
-		{
-			return NewObject<APARRING_A>();
-		}
-		if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-		{
-			player.StopMove();
-			player.NoAnimSheath();
-			return NewObject<AS_ROLL_A>();
-		}
-
-	}
-	return NULL;
-}
+//TScriptInterface<IIPlayerState> AD_IDLE_A::updateInput(ACCharacterPlayer& player)
+//{
+//	if (!player.GetAttacked())
+//	{
+//		if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+//		{
+//			player.Sheath();
+//			return NewObject<ASHEATHING_A>();
+//		}
+//		if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f)
+//		{
+//			return NewObject<AD_WALK_A>();
+//		}
+//		if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+//		{
+//			player.SetWaitFrame(70);
+//			return NewObject<AATTACK_A>();
+//		}
+//		if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
+//		{
+//			return NewObject<APARRING_A>();
+//		}
+//		if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+//		{
+//			player.StopMove();
+//			player.NoAnimSheath();
+//			return NewObject<AS_ROLL_A>();
+//		}
+//
+//	}
+//	return NULL;
+//}
 
 void AD_IDLE_A::updateInput()
 {
@@ -54,27 +54,19 @@ void AD_IDLE_A::updateInput()
 		{
 			ctx->Sheath();
 			SwitchState(factory->CreateSHEATHING());
+			return;
 		}
 		if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f)
 		{
 			SwitchState(factory->CreateD_WALK());
+			return;
 		}
 		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 		{
 			ctx->SetWaitFrame(70);
 			SwitchState(factory->CreateATTACK());
+			return;
 		}
-		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
-		{
-			SwitchState(factory->CreatePARRING());
-		}
-		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-		{
-			ctx->StopMove();
-			ctx->NoAnimSheath();
-			SwitchState(factory->CreateS_ROLL());
-		}
-
 	}
 }
 
@@ -85,19 +77,19 @@ void AD_IDLE_A::update()
 
 }
 
-void AD_IDLE_A::update(ACCharacterPlayer& player)
-{
-	player.Look(player.GetLookInputActionValue());
-}
+//void AD_IDLE_A::update(ACCharacterPlayer& player)
+//{
+//	player.Look(player.GetLookInputActionValue());
+//}
 
-void AD_IDLE_A::enter(ACCharacterPlayer& player)
+void AD_IDLE_A::enter()
 {
-	kwang = player.getAnimInstance();
+	kwang = ctx->getAnimInstance();
 	if (kwang)
 		kwang->setDraw();
 }
 
-void AD_IDLE_A::exit(ACCharacterPlayer& player)
+void AD_IDLE_A::exit()
 {
 }
 

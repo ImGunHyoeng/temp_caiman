@@ -15,7 +15,7 @@ void UIsLeftMousePressing::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenc
 	if (!Player)
 		return;
 		
-	AATTACK_A* AT = Cast<AATTACK_A>(Player->GetCurPlayerState().GetObject());
+	AATTACK_A* AT = Cast<AATTACK_A>(Player->GetCurPlayerState()->GetSubState().GetObject());
 	if (!AT)
 		return;
 	if (Player->getPlayerController()->IsInputKeyDown(EKeys::LeftMouseButton))

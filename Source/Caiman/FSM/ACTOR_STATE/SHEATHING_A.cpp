@@ -15,20 +15,20 @@ ASHEATHING_A::ASHEATHING_A()
 
 }
 
-TScriptInterface<IIPlayerState> ASHEATHING_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.GetWaitFrame() <= 0)
-	{
-		return NewObject<AS_IDLE_A>();
-	}
-	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f && player.GetWaitFrame() <= 6)
-	{
-		player.StopAnimMontage(player.GetSheathMontage());
-		player.SetWaitFrame(0);
-		return NewObject<AS_IDLE_A>();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> ASHEATHING_A::updateInput(ACCharacterPlayer& player)
+//{
+//	if (player.GetWaitFrame() <= 0)
+//	{
+//		return NewObject<AS_IDLE_A>();
+//	}
+//	if (player.GetMoveInputActionValue().GetMagnitude() > 0.1f && player.GetWaitFrame() <= 6)
+//	{
+//		player.StopAnimMontage(player.GetSheathMontage());
+//		player.SetWaitFrame(0);
+//		return NewObject<AS_IDLE_A>();
+//	}
+//	return nullptr;
+//}
 
 void ASHEATHING_A::updateInput()
 {
@@ -51,18 +51,18 @@ void ASHEATHING_A::update()
 	updateInput();
 }
 
-void ASHEATHING_A::update(ACCharacterPlayer& player)
+//void ASHEATHING_A::update(ACCharacterPlayer& player)
+//{
+//	player.Look(player.GetLookInputActionValue());
+//	player.WaitFramePassing();
+//}
+
+void ASHEATHING_A::enter()
 {
-	player.Look(player.GetLookInputActionValue());
-	player.WaitFramePassing();
+	ctx->SetWaitFrame(8);
 }
 
-void ASHEATHING_A::enter(ACCharacterPlayer& player)
-{
-	player.SetWaitFrame(8);
-}
-
-void ASHEATHING_A::exit(ACCharacterPlayer& player)
+void ASHEATHING_A::exit()
 {
 }
 

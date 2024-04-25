@@ -14,20 +14,20 @@ AJUMP_A::AJUMP_A()
 
 }
 
-TScriptInterface<IIPlayerState> AJUMP_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-	{
-		player.NoAnimDraw();
-		player.SetWaitFrame(6);
-		return NewObject<AJUMPATTACK_A>();
-	}
-	if (!(player.GetCharacterMovement()->IsFalling()))
-	{
-		return NewObject<AGROUNDED_A>();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> AJUMP_A::updateInput(ACCharacterPlayer& ctx->
+//{
+//	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+//	{
+//		player.NoAnimDraw();
+//		player.SetWaitFrame(6);
+//		return NewObject<AJUMPATTACK_A>();
+//	}
+//	if (!(player.GetCharacterMovement()->IsFalling()))
+//	{
+//		return NewObject<AGROUNDED_A>();
+//	}
+//	return nullptr;
+//}
 
 void AJUMP_A::updateInput()
 {
@@ -37,11 +37,13 @@ void AJUMP_A::updateInput()
 		ctx->SetWaitFrame(6);
 		//return NewObject<AJUMPATTACK_A>();
 		SwitchState(factory->CreateJUMPATTACK());
+		return;
 	}
 	if (!(ctx->GetCharacterMovement()->IsFalling()))
 	{
 		//return NewObject<AGROUNDED_A>();
 		SwitchState(factory->CreateGROUNDED());
+		return;
 	}
 }
 
@@ -52,20 +54,20 @@ void AJUMP_A::update()
 
 }
 
-void AJUMP_A::update(ACCharacterPlayer& player)
-{
-	player.Look(player.GetLookInputActionValue());
-}
+//void AJUMP_A::update(ACCharacterPlayer& player)
+//{
+//	player.Look(player.GetLookInputActionValue());
+//}
 
-void AJUMP_A::enter(ACCharacterPlayer& player)
+void AJUMP_A::enter()
 {
-	kwang = player.getAnimInstance();
+	kwang = ctx->getAnimInstance();
 	if (kwang)
 		kwang->setJump();
-	player.Super::Jump();
+	ctx->Super::Jump();
 }
 
-void AJUMP_A::exit(ACCharacterPlayer& player)
+void AJUMP_A::exit()
 {
 	if (kwang)
 		kwang->setJumpEnd();

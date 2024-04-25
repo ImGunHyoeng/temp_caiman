@@ -11,24 +11,24 @@ AHIT_A::AHIT_A()
 
 }
 
-TScriptInterface<IIPlayerState> AHIT_A::updateInput(ACCharacterPlayer& player)
-{
-	return TScriptInterface<IIPlayerState>();
-}
+//TScriptInterface<IIPlayerState> AHIT_A::updateInput(ACCharacterPlayer& player)
+//{
+//	return TScriptInterface<IIPlayerState>();
+//}
 
 void AHIT_A::updateInput()
 {
 }
 
-void AHIT_A::update(ACCharacterPlayer& player)
-{
-}
+//void AHIT_A::update(ACCharacterPlayer& player)
+//{
+//}
 
 void AHIT_A::update()
 {
 }
 
-void AHIT_A::enter(ACCharacterPlayer& player)
+void AHIT_A::enter()
 {
 }
 
@@ -36,7 +36,7 @@ void AHIT_A::InitializeSubState()
 {
 }
 
-void AHIT_A::exit(ACCharacterPlayer& player)
+void AHIT_A::exit()
 {
 }
 

@@ -13,20 +13,21 @@ AGROUNDED_A::AGROUNDED_A()
 
 }
 
-TScriptInterface<IIPlayerState> AGROUNDED_A::updateInput(ACCharacterPlayer& player)
-{
-	if (player.GetWaitFrame() <= 0)
-	{
-		return NewObject<AS_IDLE_A>();
-	}
-	return nullptr;
-}
+//TScriptInterface<IIPlayerState> AGROUNDED_A::updateInput()
+//{
+//	if (player.GetWaitFrame() <= 0)
+//	{
+//		return NewObject<AS_IDLE_A>();
+//	}
+//	return nullptr;
+//}
 
 void AGROUNDED_A::updateInput()
 {
 	if (ctx->GetWaitFrame() <= 0)
 	{
 		SwitchState(factory->CreateS_IDLE());
+		return;
 	}
 }
 
@@ -37,18 +38,18 @@ void AGROUNDED_A::update()
 
 }
 
-void AGROUNDED_A::update(ACCharacterPlayer& player)
+//void AGROUNDED_A::update()
+//{
+//	player.WaitFramePassing();
+//}
+
+void AGROUNDED_A::enter()
 {
-	player.WaitFramePassing();
+	kwang = ctx->getAnimInstance();
+	ctx->SetWaitFrame(3);
 }
 
-void AGROUNDED_A::enter(ACCharacterPlayer& player)
-{
-	kwang = player.getAnimInstance();
-	player.SetWaitFrame(3);
-}
-
-void AGROUNDED_A::exit(ACCharacterPlayer& player)
+void AGROUNDED_A::exit()
 {
 }
 
