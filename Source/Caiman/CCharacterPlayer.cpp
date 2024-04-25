@@ -88,9 +88,11 @@ void ACCharacterPlayer::BeginPlay()
 	//curState =NewObject<US_IDLE_NEW>();//new S_IDLE();
 	//new S_IDLE()
 	//curState = NewObject<AS_IDLE_A>();
+	bIsSheath = true;
 	stateFactory = new PlayerStateFactory(this);
 	curState = stateFactory->CreateNORMAL();
 	curState->EnterStates();
+	
 	//curState = stateFactory->CreateS_IDLE();
 	//curState = NewObject<AS_IDLE_NEWA>();
 	//new S_IDLE();
@@ -297,11 +299,11 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 		APARRING_A * state = Cast<APARRING_A>(curState->GetSubState().GetObject());
 		if (state != NULL)
 		{
-			curState->SwitchState(stateFactory->CreatePARRINGSUCCESS());
+			curState->GetSubState()->SwitchState(stateFactory->CreatePARRINGSUCCESS());//서브 상태에서 바꾸는 것이기에 이렇게 사용해야함.
 			return;
 		}
 	}
-	curState->SwitchState(stateFactory->CreateHIT());
+	/*curState->SwitchState(stateFactory->CreateHIT());
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
 	FVector forward = GetActorForwardVector();
 	FVector hitno_z = FVector(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
@@ -330,7 +332,7 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 		Section = FName("Right");
 	}
 
-	PlayAnimMontage(AM_Hitted, 1, Section);
+	PlayAnimMontage(AM_Hitted, 1, Section);*/
 
 }
 

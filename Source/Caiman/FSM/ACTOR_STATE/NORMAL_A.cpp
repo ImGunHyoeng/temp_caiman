@@ -55,12 +55,23 @@ void ANORMAL_A::InitializeSubState()
 		SetSubState(factory->CreateDEFENSELESS());
 		return;
 	}
-	if (ctx->GetMoveInputActionValue().GetMagnitude() < 0.1f)
+	if (ctx->GetParringSuccessEnd() == true)
+	{
+		SetSubState(factory->CreateD_IDLE());
+		ctx->SetParringSuccessEnd(false);
+		return;
+	}
+	if (ctx->GetSheath())
 	{
 		SetSubState((factory->CreateS_IDLE()));
 		return;
 	}
-	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
+	if (ctx->GetSheath()==false)
+	{
+		SetSubState((factory->CreateD_IDLE()));
+		return;
+	}
+	/*if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{
 		SetSubState((factory->CreateJUMP()));
 		return;
@@ -75,7 +86,7 @@ void ANORMAL_A::InitializeSubState()
 	{
 		SetSubState((factory->CreateS_WALK()));
 		return;
-	}
+	}*/
 
 }
 

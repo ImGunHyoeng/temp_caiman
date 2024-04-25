@@ -46,6 +46,8 @@ void IIPlayerState::SetSubState(TScriptInterface<IIPlayerState> newSubState)
 	newSubState->SetSuperState(this->_getUObject());
 }
 
+
+
 void IIPlayerState::UpdateStates()
 {
 	update();

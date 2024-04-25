@@ -84,6 +84,7 @@ void AD_IDLE_A::update()
 
 void AD_IDLE_A::enter()
 {
+	ctx->SetSheath(false);
 	kwang = ctx->getAnimInstance();
 	if (kwang)
 		kwang->setDraw();

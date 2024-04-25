@@ -26,7 +26,7 @@ void APARRINGSUCCESS_A::updateInput()
 {
 	if (ctx->GetWaitFrame() < 0)
 	{
-		SwitchState(factory->CreateD_IDLE());
+		ctx->SetParringSuccessEnd(true);
 		return;
 	}
 }
@@ -53,6 +53,7 @@ void APARRINGSUCCESS_A::enter()
 	ctx->PlayAnimMontage(ctx->GetParringMontage(), 1.0f, FName("Act"));
 	ctx->SetWaitFrame(10);
 	ctx->SetParring(false);
+	ctx->SetParringSuccessEnd(false);
 }
 
 void APARRINGSUCCESS_A::exit()

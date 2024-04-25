@@ -53,6 +53,7 @@ void AJUMPATTACK_A::update()
 
 void AJUMPATTACK_A::enter()
 {
+	ctx->SetSheath(false);
 	kwang = ctx->getAnimInstance();
 	if (kwang)
 	{

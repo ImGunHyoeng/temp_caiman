@@ -109,9 +109,13 @@ public:
 	
 	FORCEINLINE bool GetParringEnd() { return bIsParringEnd;}
 	FORCEINLINE void SetParringEnd(bool input) { bIsParringEnd = input; }
+	FORCEINLINE bool GetParringSuccessEnd() { return bIsParringSuccessEnd; }
+	FORCEINLINE void SetParringSuccessEnd(bool input) { bIsParringSuccessEnd = input; }
 
 	FORCEINLINE bool GetAttacked() { return bIsAttacked; }
 	FORCEINLINE void SetAttacked(bool input) { bIsAttacked = input; }
+	FORCEINLINE bool GetSheath() { return bIsSheath; }
+	FORCEINLINE void SetSheath(bool input) { bIsSheath= input; }
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetNaiagra();
 	UFUNCTION(BlueprintImplementableEvent)
@@ -209,6 +213,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		uint32 bIsParringEnd: 1;
+
+		uint32 bIsParringSuccessEnd: 1;
+		uint32 bIsSheath: 1;
 	
 
 	ACMyWeapon * Weapon;

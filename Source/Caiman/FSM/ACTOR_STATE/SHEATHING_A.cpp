@@ -59,6 +59,7 @@ void ASHEATHING_A::update()
 
 void ASHEATHING_A::enter()
 {
+	ctx->SetSheath(true);
 	ctx->SetWaitFrame(8);
 }
 

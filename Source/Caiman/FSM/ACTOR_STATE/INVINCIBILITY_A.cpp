@@ -27,6 +27,11 @@ void AINVINCIBILITY_A::updateInput()
 		SwitchState(factory->CreateNORMAL());
 		return;
 	}
+	if (ctx->GetParringSuccessEnd() == true)
+	{
+		SwitchState(factory->CreateNORMAL());
+		return;
+	}
 
 }
 
@@ -40,6 +45,7 @@ void AINVINCIBILITY_A::enter()
 {
 
 	InitializeSubState();
+	UE_LOG(LogTemp, Warning, TEXT("AINVINCIBILITY_A"));
 }
 
 void AINVINCIBILITY_A::InitializeSubState()
