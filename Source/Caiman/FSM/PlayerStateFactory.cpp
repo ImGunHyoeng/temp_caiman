@@ -29,6 +29,8 @@ PlayerStateFactory::PlayerStateFactory(ACCharacterPlayer* input)
 	s_walk = NULL;
 	sheathing = NULL;
 	superarmor = NULL;
+	s_rest = NULL;
+	d_rest = NULL;
 
 }
 
@@ -256,4 +258,26 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateSUPERARMOR()
 	temp->SetRoot(true);
 	superarmor = temp;
 	return superarmor;
+}
+
+TScriptInterface<IIPlayerState> PlayerStateFactory::CreateD_Rest()
+{
+	if (d_rest)
+		return d_rest;
+	TScriptInterface<IIPlayerState> temp = NewObject<AD_REST_A>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	d_rest = temp;
+	return d_rest;
+}
+
+TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_Rest()
+{
+	if (s_rest)
+		return s_rest;
+	TScriptInterface<IIPlayerState> temp = NewObject<AS_REST_A>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	s_rest = temp;
+	return s_rest;
 }

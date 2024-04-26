@@ -42,9 +42,9 @@ void AATTACK_A::updateInput()
 	if (curAttackState == EAttackState::END)
 	{
 		ctx->StopAnimMontage();
-		ctx->StopAnimMontage();
+		//ctx->StopAnimMontage();
 		//return NewObject<AD_IDLE_A>();
-		SwitchState(factory->CreateD_IDLE());
+		SwitchState(factory->CreateD_Rest());
 	}
 }
 
@@ -93,6 +93,7 @@ void AATTACK_A::update()
 void AATTACK_A::enter()
 {
 	//DoingTime = 0;
+	ctx->SetAttack(true);
 	curAttackState = EAttackState::DOING;
 	ctx->PlayAnimMontage(ctx->GetAttackMontage(), 1.0f, "Attack_2_1");
 	changeCharge = false;
@@ -100,6 +101,7 @@ void AATTACK_A::enter()
 
 void AATTACK_A::exit()
 {
+	ctx->SetAttack(false);
 }
 
 void AATTACK_A::Destroy()

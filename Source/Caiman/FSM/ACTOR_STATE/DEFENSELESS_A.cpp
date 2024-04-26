@@ -24,7 +24,7 @@ ADEFENSELESS_A::ADEFENSELESS_A()
 
 void ADEFENSELESS_A::updateInput()
 {
-	if (ctx->GetWaitFrame() < 0)
+	if(ctx->GetDefenseLess()==true)
 	{
 		SwitchState(factory->CreateD_IDLE());
 		return;
@@ -33,7 +33,7 @@ void ADEFENSELESS_A::updateInput()
 
 void ADEFENSELESS_A::update()
 {
-	ctx->WaitFramePassing();
+	//ctx->WaitFramePassing();
 	ctx->Look(ctx->GetLookInputActionValue());
 	updateInput();
 
@@ -49,13 +49,16 @@ void ADEFENSELESS_A::enter()
 {
 	ctx->SetParring(false);
 	kwang = ctx->getAnimInstance();
-	if (kwang)
-		kwang->setDraw();
-	ctx->SetWaitFrame(20);
+	ctx->PlayAnimMontage(ctx->GetDefenseLessMontage(), 1.0f);
+	//if (kwang)
+	//	kwang->setDraw();
+	//ctx->SetWaitFrame(20);
+	ctx->SetDefenseLess(false);
 }
 
 void ADEFENSELESS_A::exit()
 {
+	ctx->SetParringEnd(false);
 }
 
 void ADEFENSELESS_A::Destroy()

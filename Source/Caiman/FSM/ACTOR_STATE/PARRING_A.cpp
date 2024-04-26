@@ -35,7 +35,6 @@ void APARRING_A::update()
 {
 	ctx->Look(ctx->GetLookInputActionValue());
 	updateInput();
-
 }
 
 //void APARRING_A::update(ACCharacterPlayer& player)
@@ -54,7 +53,8 @@ void APARRING_A::enter()
 
 void APARRING_A::exit()
 {
-	ctx->SetWaitFrame(0);
+	ctx->SetParring(false);
+	//ctx->SetWaitFrame(0);
 }
 
 void APARRING_A::Destroy()

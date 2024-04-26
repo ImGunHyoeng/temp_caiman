@@ -40,9 +40,10 @@ void AD_WALK_A::updateInput()
 	{
 		SwitchState(factory->CreateD_IDLE());
 	}
+	if (!ctx->IsAttack())
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 	{
-		ctx->SetWaitFrame(70);
+		//ctx->SetWaitFrame(70);
 		SwitchState(factory->CreateATTACK());
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))

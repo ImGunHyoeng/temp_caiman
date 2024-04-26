@@ -70,6 +70,9 @@ public:
 	FORCEINLINE UAnimMontage* GetRollMontage() { return AM_Roll; }
 	FORCEINLINE UAnimMontage* GetParringMontage() { return AM_Parring; }
 	FORCEINLINE UAnimMontage* GetChargeAttackMontage() { return AM_ChargeAttack; }
+	FORCEINLINE UAnimMontage* GetDefenseLessMontage() { return AM_DefenseLess; }
+	FORCEINLINE UAnimMontage* GetS_RestMontage() { return AM_S_Rest; }
+	FORCEINLINE UAnimMontage* GetD_RestMontage() { return AM_D_Rest; }
 
 	//FORCEINLINE UKwangAnimInstance * GetKwangAnim() { return Cast<UKwangAnimInstance>(GetMesh()->GetAnimInstance()); }
 
@@ -116,6 +119,12 @@ public:
 	FORCEINLINE void SetAttacked(bool input) { bIsAttacked = input; }
 	FORCEINLINE bool GetSheath() { return bIsSheath; }
 	FORCEINLINE void SetSheath(bool input) { bIsSheath= input; }
+
+	FORCEINLINE bool GetDefenseLess() { return bIsDefenseLess; }
+	FORCEINLINE void SetDefenseLess(bool input) { bIsDefenseLess = input; }
+
+	FORCEINLINE bool IsAttack() { return bIsAttack; }
+	FORCEINLINE void SetAttack(bool input) { bIsAttack= input; }
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetNaiagra();
 	UFUNCTION(BlueprintImplementableEvent)
@@ -166,6 +175,13 @@ protected:
 		UAnimMontage* AM_Parring;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_ChargeAttack;
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
+		UAnimMontage* AM_DefenseLess;
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
+		UAnimMontage* AM_D_Rest;
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
+		UAnimMontage* AM_S_Rest;
+
 
 	//UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	//UInputAction* JumpAction;*/
@@ -216,6 +232,8 @@ protected:
 
 		uint32 bIsParringSuccessEnd: 1;
 		uint32 bIsSheath: 1;
+		uint32 bIsAttack: 1;
+		uint32 bIsDefenseLess: 1;
 	
 
 	ACMyWeapon * Weapon;

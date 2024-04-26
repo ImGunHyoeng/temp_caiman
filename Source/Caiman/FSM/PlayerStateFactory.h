@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FSM/ACTOR_STATE/AFSMCollection.h"
 
 /**
  * 
@@ -22,7 +21,6 @@ class CAIMAN_API PlayerStateFactory
 	TScriptInterface<IIPlayerState> drawing;
 	TScriptInterface<IIPlayerState> grounded;
 	TScriptInterface<IIPlayerState> hit;
-	//TScriptInterface<IIPlayerState> drawing;
 	TScriptInterface<IIPlayerState> invincibility;
 	TScriptInterface<IIPlayerState> jump;
 	TScriptInterface<IIPlayerState> jumpattack;
@@ -35,6 +33,8 @@ class CAIMAN_API PlayerStateFactory
 	TScriptInterface<IIPlayerState> s_walk;
 	TScriptInterface<IIPlayerState> sheathing;
 	TScriptInterface<IIPlayerState> superarmor;
+	TScriptInterface<IIPlayerState> s_rest;
+	TScriptInterface<IIPlayerState> d_rest;
 
 
 	
@@ -60,5 +60,7 @@ public:
 	TScriptInterface<IIPlayerState>CreateNORMAL();
 	TScriptInterface<IIPlayerState>CreateINVINCIBILITY();
 	TScriptInterface<IIPlayerState>CreateSUPERARMOR();
+	TScriptInterface<IIPlayerState>CreateD_Rest();
+	TScriptInterface<IIPlayerState>CreateS_Rest();
 	~PlayerStateFactory();
 };

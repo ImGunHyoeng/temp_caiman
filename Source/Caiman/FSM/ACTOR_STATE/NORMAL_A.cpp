@@ -25,10 +25,13 @@ void ANORMAL_A::updateInput()
 		SwitchState(factory->CreateINVINCIBILITY());
 		return;
 	}
-	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
+	if (ctx->GetParring() == false)
 	{
-		SwitchState(factory->CreateINVINCIBILITY());
-		return;
+		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
+		{
+			SwitchState(factory->CreateINVINCIBILITY());
+			return;
+		}
 	}
 }
 

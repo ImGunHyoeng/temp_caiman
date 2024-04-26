@@ -61,12 +61,13 @@ void AD_IDLE_A::updateInput()
 			SwitchState(factory->CreateD_WALK());
 			return;
 		}
-		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-		{
-			ctx->SetWaitFrame(70);
-			SwitchState(factory->CreateATTACK());
-			return;
-		}
+		if(!ctx->IsAttack())
+			if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+			{
+				//ctx->SetWaitFrame(70);
+				SwitchState(factory->CreateATTACK());
+				return;
+			}
 	}
 }
 
