@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FSM/ACTOR_STATE/AFSMCollection.h"
 
 /**
  * 
@@ -11,6 +12,32 @@ class IIPlayerState;
 class CAIMAN_API PlayerStateFactory
 {
 	class ACCharacterPlayer* context;
+
+	//팩토리에서 변수생성해서 사용
+	TScriptInterface<IIPlayerState> attack;
+	TScriptInterface<IIPlayerState> chargeAttack;
+	TScriptInterface<IIPlayerState> d_Idle;
+	TScriptInterface<IIPlayerState> d_Walk;
+	TScriptInterface<IIPlayerState> defenseless;
+	TScriptInterface<IIPlayerState> drawing;
+	TScriptInterface<IIPlayerState> grounded;
+	TScriptInterface<IIPlayerState> hit;
+	//TScriptInterface<IIPlayerState> drawing;
+	TScriptInterface<IIPlayerState> invincibility;
+	TScriptInterface<IIPlayerState> jump;
+	TScriptInterface<IIPlayerState> jumpattack;
+	TScriptInterface<IIPlayerState> normal;
+	TScriptInterface<IIPlayerState> parring;
+	TScriptInterface<IIPlayerState> parringsuccess;
+	TScriptInterface<IIPlayerState> s_idle;
+	TScriptInterface<IIPlayerState> s_roll;
+	TScriptInterface<IIPlayerState> s_run;
+	TScriptInterface<IIPlayerState> s_walk;
+	TScriptInterface<IIPlayerState> sheathing;
+	TScriptInterface<IIPlayerState> superarmor;
+
+
+	
 public:
 	PlayerStateFactory(class ACCharacterPlayer* input);
 	TScriptInterface<IIPlayerState>CreateS_IDLE();
