@@ -379,18 +379,18 @@ void AAnimalBase::UpdateInput()
 	//}
 	if (Curstate == EAnimalState::FLEE)
 	{
-		//if (Attributes->GetHealthPercent() >= 0.6f)
-		//{
-		//	//DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::PlayerInRange);
+		if (Attributes->GetHealthPercent() >= 0.6f)
+		{
+			//DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::PlayerInRange);
 
-		//	//AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::InAttackRange);
-		//	Curstate = EAnimalState::STROLL;
-		//	targetSet = false;
-		//	player = nullptr;
-		//	//enemyaniminstance->setIsFleeEnd();
-		//	//enemyaniminstance->setStroll();
-		//	return;
-		//}
+			//AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::InAttackRange);
+			Curstate = EAnimalState::STROLL;
+			targetSet = false;
+			player = nullptr;
+			//enemyaniminstance->setIsFleeEnd();
+			//enemyaniminstance->setStroll();
+			return;
+		}
 	}
 	if (Curstate == EAnimalState::STROLL)
 	{

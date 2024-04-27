@@ -10,6 +10,7 @@
 class IIPlayerState;
 class CAIMAN_API PlayerStateFactory
 {
+	UPROPERTY()
 	class ACCharacterPlayer* context;
 
 	//팩토리에서 변수생성해서 사용

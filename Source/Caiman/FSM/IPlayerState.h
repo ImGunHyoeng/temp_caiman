@@ -52,7 +52,9 @@ protected:
 
 	void SetSubState(TScriptInterface<IIPlayerState> newSubState);
 
+	//UPROPERTY()
 	ACCharacterPlayer* ctx;
+	//UPROPERTY()
 	PlayerStateFactory* factory;
 	TScriptInterface<IIPlayerState> currentSuperstate;
 	TScriptInterface<IIPlayerState> currentSubstate;

@@ -38,6 +38,31 @@ PlayerStateFactory::PlayerStateFactory(ACCharacterPlayer* input)
 
 PlayerStateFactory::~PlayerStateFactory()
 {
+	 attack->Destroy();
+	 chargeAttack->Destroy();
+	 d_Idle->Destroy();
+	 d_Walk->Destroy();
+	 defenseless->Destroy();
+	 drawing->Destroy();
+	 grounded->Destroy();
+	 hit->Destroy();
+	 drawing->Destroy();
+	 invincibility->Destroy();
+	 jump->Destroy();
+	 jumpattack->Destroy();
+	 normal->Destroy();
+	 parring->Destroy();
+	 parringsuccess->Destroy();
+	 s_idle->Destroy();
+	 s_roll->Destroy();
+	 s_run->Destroy();
+	 s_walk->Destroy();
+	 sheathing->Destroy();
+	 superarmor->Destroy();
+	 s_rest->Destroy();
+	 d_rest->Destroy();
+	 knockback->Destroy();
+	 superchargeattack->Destroy();
 }
 
 TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_IDLE()

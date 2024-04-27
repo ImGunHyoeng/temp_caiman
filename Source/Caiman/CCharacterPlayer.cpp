@@ -54,6 +54,11 @@ ACCharacterPlayer::ACCharacterPlayer()
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+ACCharacterPlayer::~ACCharacterPlayer()
+{
+	delete stateFactory;
+}
+
 void ACCharacterPlayer::BeginPlay()
 {
 	Super::BeginPlay();
