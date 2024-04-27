@@ -67,6 +67,7 @@ public:
 	FORCEINLINE	UAnimMontage* GetDrawMontage() { return AM_Draw; }
 	FORCEINLINE UAnimMontage* GetSheathMontage() { return AM_Sheath; }
 	FORCEINLINE UAnimMontage* GetAttackMontage() { return AM_Attack; }
+	FORCEINLINE UAnimMontage* GetHittedMontage() { return AM_Hitted; }
 	FORCEINLINE UAnimMontage* GetRollMontage() { return AM_Roll; }
 	FORCEINLINE UAnimMontage* GetParringMontage() { return AM_Parring; }
 	FORCEINLINE UAnimMontage* GetChargeAttackMontage() { return AM_ChargeAttack; }

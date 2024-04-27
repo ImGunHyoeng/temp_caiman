@@ -8,7 +8,7 @@
 ADRAWING_A::ADRAWING_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -30,16 +30,14 @@ ADRAWING_A::ADRAWING_A()
 
 void ADRAWING_A::updateInput()
 {
-	if (ctx->GetWaitFrame() <= 0)
+	if (end)
 	{
 		SwitchState(factory->CreateD_IDLE());
 		return;
 	}
-	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f && ctx->GetWaitFrame() <= 6)
+	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f && canChange)
 	{
-
 		ctx->StopAnimMontage(ctx->GetDrawMontage());
-		ctx->SetWaitFrame(0);
 		SwitchState(factory->CreateD_IDLE());
 		return;
 	}
@@ -48,7 +46,6 @@ void ADRAWING_A::updateInput()
 void ADRAWING_A::update()
 {
 	ctx->Look(ctx->GetLookInputActionValue());
-	ctx->WaitFramePassing();
 	updateInput();
 
 }
@@ -61,16 +58,19 @@ void ADRAWING_A::update()
 
 void ADRAWING_A::enter()
 {
-	ctx->SetWaitFrame(8);
+	canChange = false;
+	end= false;
 }
 
 void ADRAWING_A::exit()
 {
+	canChange = false;
+	end = false;
 }
 
 void ADRAWING_A::Destroy()
 {
-	this->MarkPendingKill();
+	//this->MarkPendingKill();
 }
 
 void ADRAWING_A::InitializeSubState()

@@ -9,7 +9,7 @@
 ADEFENSELESS_A::ADEFENSELESS_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -63,7 +63,7 @@ void ADEFENSELESS_A::exit()
 
 void ADEFENSELESS_A::Destroy()
 {
-	this->MarkPendingKill();
+	//this->MarkPendingKill();
 }
 
 void ADEFENSELESS_A::InitializeSubState()

@@ -10,8 +10,7 @@
 AS_WALK_A::AS_WALK_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
+	PrimaryActorTick.bCanEverTick = false;
 }
 
 //TScriptInterface<IIPlayerState> AS_WALK_A::updateInput(ACCharacterPlayer& player)
@@ -43,6 +42,12 @@ AS_WALK_A::AS_WALK_A()
 
 void AS_WALK_A::updateInput()
 {
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		ctx->StopMove();
+		ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+		return;
+	}
 	if (ctx->getPlayerController()->IsInputKeyDown(EKeys::LeftShift))
 	{
 		SwitchState(factory->CreateS_RUN());
@@ -95,7 +100,7 @@ void AS_WALK_A::InitializeSubState()
 
 void AS_WALK_A::Destroy()
 {
-	this->MarkPendingKill();
+	//this->MarkPendingKill();
 }
 
 // Called when the game starts or when spawned

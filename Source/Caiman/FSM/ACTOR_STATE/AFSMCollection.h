@@ -23,4 +23,6 @@
 #include "FSM/ACTOR_STATE/SUPERARMOR_A.h"
 #include "FSM/ACTOR_STATE/S_REST_A.h"
 #include "FSM/ACTOR_STATE/D_REST_A.h"
+#include "FSM/ACTOR_STATE/KNOCKBACK_A.h"
+#include "FSM/ACTOR_STATE/SUPERCHARGINGATTACK_A.h"
 #include "FSM/PlayerStateFactory.h"

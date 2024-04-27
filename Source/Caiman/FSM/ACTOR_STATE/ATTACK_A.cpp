@@ -9,7 +9,7 @@
 AATTACK_A::AATTACK_A(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory):IIPlayerState(_ctx,_factory)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -35,9 +35,14 @@ void AATTACK_A::updateInput()
 {
 	if (changeCharge)
 	{
-		//player.StopAnimMontage();
-		ctx->PlayAnimMontage(ctx->GetChargeAttackMontage(), 1.0f, FName("ChargingStart"));
-		SwitchState(factory->CreateCHARGINGATTACK());
+		//super
+
+		//normal
+		{
+			ctx->PlayAnimMontage(ctx->GetChargeAttackMontage(), 1.0f, FName("ChargingStart"));
+			SwitchState(factory->CreateCHARGINGATTACK());
+		}
+	
 	}
 	if (curAttackState == EAttackState::END)
 	{

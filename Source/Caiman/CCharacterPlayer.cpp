@@ -185,7 +185,7 @@ APlayerController* ACCharacterPlayer::getPlayerController()
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	updateInput();
+	//updateInput();
 	update();
 }
 void ACCharacterPlayer::update()
@@ -303,36 +303,15 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 			return;
 		}
 	}
-	/*curState->SwitchState(stateFactory->CreateHIT());
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
-	FVector forward = GetActorForwardVector();
-	FVector hitno_z = FVector(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
-	FVector toHit = (hitno_z - GetActorLocation()).GetSafeNormal();
-	float cos = FVector::DotProduct(forward, toHit);
-	float seta = acos(cos);
-	float degree = FMath::RadiansToDegrees(seta);
-	FVector Cross = FVector::CrossProduct(forward, toHit);
-	if (Cross.Z < 0)
-		degree *= -1;
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + forward * 50, 5, FColor::Red, 15);
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + toHit * 50, 5, FColor::Green, 15);
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Cross * 50, 5, FColor::Blue, 15);
-	FName Section("Back");
-
-	if (degree >= -45.f && degree < 45.f)
+	if (Cast<AHIT_A>(curState.GetObject()))
+		return;
+	curState->SwitchState(stateFactory->CreateHIT());
+	AKNOCKBACK_A* temp = Cast<AKNOCKBACK_A>(curState->GetSubState().GetObject());
+	if (temp)
 	{
-		Section = FName("Foward");
+		temp->SetPoint(ImpactPoint);
+		temp->Start();
 	}
-	else if (degree >= -135.f && degree < -45.f)
-	{
-		Section = FName("Left");
-	}
-	else if (degree >= 45.f && degree < 135.f)
-	{
-		Section = FName("Right");
-	}
-
-	PlayAnimMontage(AM_Hitted, 1, Section);*/
 
 }
 

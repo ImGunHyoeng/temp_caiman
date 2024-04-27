@@ -21,6 +21,7 @@ public:
 	{}
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isRoll;
+	bool end;
 	//virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();
 	virtual void update();

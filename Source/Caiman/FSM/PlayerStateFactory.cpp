@@ -31,6 +31,8 @@ PlayerStateFactory::PlayerStateFactory(ACCharacterPlayer* input)
 	superarmor = NULL;
 	s_rest = NULL;
 	d_rest = NULL;
+	knockback = NULL;
+	superchargeattack = NULL;
 
 }
 
@@ -280,4 +282,26 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_Rest()
 	temp->SetRoot();
 	s_rest = temp;
 	return s_rest;
+}
+
+TScriptInterface<IIPlayerState> PlayerStateFactory::CreateKNOCKBACK()
+{
+	if (knockback)
+		return knockback;
+	TScriptInterface<IIPlayerState> temp = NewObject<AKNOCKBACK_A>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	knockback = temp;
+	return knockback;
+}
+
+TScriptInterface<IIPlayerState> PlayerStateFactory::CreateSUPERCHARGINGATTACK()
+{
+	if (superchargeattack)
+		return superchargeattack;
+	TScriptInterface<IIPlayerState> temp = NewObject<ASUPERCHARGINGATTACK_A>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	superchargeattack = temp;
+	return superchargeattack;
 }

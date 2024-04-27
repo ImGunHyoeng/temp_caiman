@@ -11,7 +11,7 @@
 APARRINGSUCCESS_A::APARRINGSUCCESS_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -24,7 +24,7 @@ APARRINGSUCCESS_A::APARRINGSUCCESS_A()
 
 void APARRINGSUCCESS_A::updateInput()
 {
-	if (ctx->GetWaitFrame() < 0)
+	if (end)
 	{
 		ctx->SetParringSuccessEnd(true);
 		return;
@@ -33,7 +33,7 @@ void APARRINGSUCCESS_A::updateInput()
 
 void APARRINGSUCCESS_A::update()
 {
-	ctx->WaitFramePassing();
+	//ctx->WaitFramePassing();
 	ctx->Look(ctx->GetLookInputActionValue());
 	updateInput();
 
@@ -51,19 +51,22 @@ void APARRINGSUCCESS_A::enter()
 	ctx->StopAnimMontage();
 	ctx->SetAttacked(true);
 	ctx->PlayAnimMontage(ctx->GetParringMontage(), 1.0f, FName("Act"));
-	ctx->SetWaitFrame(10);
+	//ctx->SetWaitFrame(10);
 	ctx->SetParring(false);
 	ctx->SetParringSuccessEnd(false);
+	end = false;
 }
 
 void APARRINGSUCCESS_A::exit()
 {
 	ctx->SetAttacked(false);
+	ctx->SetParringSuccessEnd(false);
+	end = false;
 }
 
 void APARRINGSUCCESS_A::Destroy()
 {
-	this->MarkPendingKill();
+	//this->MarkPendingKill();
 }
 
 void APARRINGSUCCESS_A::InitializeSubState()

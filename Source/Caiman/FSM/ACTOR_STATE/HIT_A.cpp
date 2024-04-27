@@ -2,12 +2,12 @@
 
 
 #include "FSM/ACTOR_STATE/HIT_A.h"
-
+#include "FSM/PlayerStateFactory.h"
 // Sets default values
 AHIT_A::AHIT_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -30,10 +30,12 @@ void AHIT_A::update()
 
 void AHIT_A::enter()
 {
+	InitializeSubState();
 }
 
 void AHIT_A::InitializeSubState()
 {
+	SetSubState(factory->CreateKNOCKBACK());
 }
 
 void AHIT_A::exit()

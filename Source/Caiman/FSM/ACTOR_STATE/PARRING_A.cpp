@@ -13,7 +13,7 @@
 APARRING_A::APARRING_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -59,7 +59,7 @@ void APARRING_A::exit()
 
 void APARRING_A::Destroy()
 {
-	this->MarkPendingKill();
+	//this->MarkPendingKill();
 }
 
 void APARRING_A::InitializeSubState()

@@ -9,7 +9,7 @@
 AD_IDLE_A::AD_IDLE_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -48,27 +48,41 @@ AD_IDLE_A::AD_IDLE_A()
 
 void AD_IDLE_A::updateInput()
 {
-	if (!ctx->GetAttacked())
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton) && ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::C))
 	{
-		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
-		{
-			ctx->Sheath();
-			SwitchState(factory->CreateSHEATHING());
-			return;
-		}
-		if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f)
-		{
-			SwitchState(factory->CreateD_WALK());
-			return;
-		}
-		if(!ctx->IsAttack())
-			if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
-			{
-				//ctx->SetWaitFrame(70);
-				SwitchState(factory->CreateATTACK());
-				return;
-			}
+		currentSuperstate->SwitchState(factory->CreateSUPERARMOR());
+		return;
 	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		ctx->StopMove();
+		ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+		return;
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
+	{
+		ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+		return;
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
+	{
+		ctx->Sheath();
+		SwitchState(factory->CreateSHEATHING());
+		return;
+	}
+	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f)
+	{
+		SwitchState(factory->CreateD_WALK());
+		return;
+	}
+	if(!ctx->IsAttack())
+		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
+		{
+			//ctx->SetWaitFrame(70);
+			SwitchState(factory->CreateATTACK());
+			return;
+		}
+	
 }
 
 void AD_IDLE_A::update()

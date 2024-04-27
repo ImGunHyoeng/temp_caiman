@@ -10,7 +10,7 @@
 AD_WALK_A::AD_WALK_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -36,11 +36,21 @@ AD_WALK_A::AD_WALK_A()
 
 void AD_WALK_A::updateInput()
 {
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
+	{
+		ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+		return;
+	}
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
+	{
+		ctx->StopMove();
+		ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+		return;
+	}
 	if (ctx->GetMoveInputActionValue().GetMagnitude() < 0.1f)
 	{
 		SwitchState(factory->CreateD_IDLE());
 	}
-	if (!ctx->IsAttack())
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 	{
 		//ctx->SetWaitFrame(70);
@@ -78,7 +88,7 @@ void AD_WALK_A::exit()
 
 void AD_WALK_A::Destroy()
 {
-	this->MarkPendingKill();
+	//this->MarkPendingKill();
 }
 
 void AD_WALK_A::InitializeSubState()

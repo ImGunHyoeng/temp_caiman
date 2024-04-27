@@ -24,6 +24,7 @@ public:
 	virtual void InitializeSubState();
 	virtual void exit();
 	virtual void Destroy();
+	bool end;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

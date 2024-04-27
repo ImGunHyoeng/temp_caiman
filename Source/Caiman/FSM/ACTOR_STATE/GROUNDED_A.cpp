@@ -9,7 +9,7 @@
 AGROUNDED_A::AGROUNDED_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -24,7 +24,12 @@ AGROUNDED_A::AGROUNDED_A()
 
 void AGROUNDED_A::updateInput()
 {
-	if (ctx->GetWaitFrame() <= 0)
+	if (end)
+	{
+		SwitchState(factory->CreateS_IDLE());
+		return;
+	}
+	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f && canChange)
 	{
 		SwitchState(factory->CreateS_IDLE());
 		return;
@@ -33,7 +38,6 @@ void AGROUNDED_A::updateInput()
 
 void AGROUNDED_A::update()
 {
-	ctx->WaitFramePassing();
 	updateInput();
 
 }
@@ -46,16 +50,19 @@ void AGROUNDED_A::update()
 void AGROUNDED_A::enter()
 {
 	kwang = ctx->getAnimInstance();
-	ctx->SetWaitFrame(3);
+	end = false;
+	canChange = false;
 }
 
 void AGROUNDED_A::exit()
 {
+	end = false;
+	canChange = false;
 }
 
 void AGROUNDED_A::Destroy()
 {
-	this->MarkPendingKill();
+	//this->MarkPendingKill();
 }
 
 void AGROUNDED_A::InitializeSubState()

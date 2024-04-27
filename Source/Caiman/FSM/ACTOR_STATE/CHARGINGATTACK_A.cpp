@@ -10,7 +10,7 @@
 ACHARGINGATTACK_A::ACHARGINGATTACK_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -68,7 +68,7 @@ void ACHARGINGATTACK_A::updateInput()
 			curstate = EChargeAttackState::START;
 			resultWaitTime = DoingTime + standardDoing;
 			instance->Montage_JumpToSection("ChargeAttackStart");
-			ctx->SetWaitFrame(resultWaitTime);
+			WaitTime=resultWaitTime;
 		}
 	}
 	break;
@@ -79,7 +79,7 @@ void ACHARGINGATTACK_A::updateInput()
 	break;
 	case EChargeAttackState::DOING:
 	{
-		if (ctx->GetWaitFrame() < 0)
+		if (WaitTime<0)
 		{
 			curstate = EChargeAttackState::DONE;
 			instance->Montage_JumpToSection("ChargeAttackEnd");
@@ -121,7 +121,7 @@ void ACHARGINGATTACK_A::update()
 	case EChargeAttackState::DOING:
 	{
 		ctx->Move(ctx->GetMoveInputActionValue());
-		ctx->WaitFramePassing();
+		WaitTime -= FApp::GetDeltaTime()*4;
 		/*	if(!player.GetMesh()->GetAnimInstance()->Montage_IsPlaying(NULL))
 				player.PlayAnimMontage(player.GetChargeAttackMontage(), 1.0f, "ChargeAttackLoop");*/
 				//이런식으로 현재 몽타주가 플레이 중인지 확인하고 값을 가져와준다.
@@ -142,47 +142,6 @@ void ACHARGINGATTACK_A::update()
 
 }
 
-//void ACHARGINGATTACK_A::update(ACCharacterPlayer& player)
-//{
-//	player.Look(player.GetLookInputActionValue());
-//	//if(player.getPlayerController()->(EKeys::LeftMouseButton))이건 노티파이
-//	switch (curstate)
-//	{
-//	case EChargeAttackState::STAY:
-//	{
-//
-//		DoingTime += FApp::GetDeltaTime() * 2;
-//		DoingTime = FMath::Clamp(DoingTime, 0, ExtraTimeLimit);
-//			
-//	}
-//		break;
-//	case EChargeAttackState::START:
-//	{
-//			
-//	}
-//		break;
-//	case EChargeAttackState::DOING:
-//	{
-//		player.Move(player.GetMoveInputActionValue());
-//		player.WaitFramePassing();
-//	/*	if(!player.GetMesh()->GetAnimInstance()->Montage_IsPlaying(NULL))
-//			player.PlayAnimMontage(player.GetChargeAttackMontage(), 1.0f, "ChargeAttackLoop");*/
-//			//이런식으로 현재 몽타주가 플레이 중인지 확인하고 값을 가져와준다.
-//			/*GetMesh()->GetAnimInstance()->Montage_IsPlaying(NULL)
-//			//UAnimMontage::isplay*/
-//		
-//	}
-//		break;
-//	case EChargeAttackState::DONE:
-//	{
-//		
-//	}
-//		break;
-//	default:
-//		break;
-//	}
-//}
-
 void ACHARGINGATTACK_A::enter()
 {
 	//player.SetNaiagra();
@@ -191,12 +150,14 @@ void ACHARGINGATTACK_A::enter()
 	ctx->PlayAnimMontage(ctx->GetChargeAttackMontage(), 1.0f, "ChargingStay");
 	DoingTime = 0;
 	changeState = false;
+	WaitTime = 0;
 }
 
 void ACHARGINGATTACK_A::exit()
 {
 	curstate = EChargeAttackState::STAY;
 	DoingTime = 0;
+	WaitTime = 0;
 	//player.DeActiveNaiagra();
 }
 

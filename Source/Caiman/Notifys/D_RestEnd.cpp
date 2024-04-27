@@ -16,7 +16,6 @@ void UD_RestEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Ani
 			if (AD_REST_A* temp = Cast<AD_REST_A>(Player->getCurState()->GetSubState().GetObject()))
 			{
 				temp->IsEnd= true;
-				//Player->SetWaitFrame(2);
 			}
 		}
 	}

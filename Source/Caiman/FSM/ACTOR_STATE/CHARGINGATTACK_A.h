@@ -37,7 +37,7 @@ public:
 	const float standardDoing = 2;
 	UPROPERTY(BlueprintReadOnly)
 	float resultWaitTime;
-
+	float WaitTime;
 	const float ExtraTimeLimit=4;
 	UPROPERTY(BlueprintReadWrite)
 	bool changeState;

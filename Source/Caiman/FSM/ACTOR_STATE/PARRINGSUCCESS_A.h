@@ -26,6 +26,7 @@ public:
 	virtual void exit();
 	virtual void Destroy();
 	virtual void InitializeSubState();
+	bool end;
 	class UKwangAnimInstance* kwang;
 protected:
 	// Called when the game starts or when spawned

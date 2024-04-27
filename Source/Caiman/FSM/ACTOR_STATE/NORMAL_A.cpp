@@ -8,7 +8,7 @@
 ANORMAL_A::ANORMAL_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -19,20 +19,6 @@ ANORMAL_A::ANORMAL_A()
 
 void ANORMAL_A::updateInput()
 {
-	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
-	{
-		ctx->StopMove();
-		SwitchState(factory->CreateINVINCIBILITY());
-		return;
-	}
-	if (ctx->GetParring() == false)
-	{
-		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
-		{
-			SwitchState(factory->CreateINVINCIBILITY());
-			return;
-		}
-	}
 }
 
 //void ANORMAL_A::update(ACCharacterPlayer& player)
@@ -66,12 +52,14 @@ void ANORMAL_A::InitializeSubState()
 	}
 	if (ctx->GetSheath())
 	{
-		SetSubState((factory->CreateS_IDLE()));
+		SetSubState((factory->CreateS_Rest()));
+		//SetSubState((factory->CreateS_IDLE()));
 		return;
 	}
 	if (ctx->GetSheath()==false)
 	{
-		SetSubState((factory->CreateD_IDLE()));
+		SetSubState((factory->CreateD_Rest()));
+		//SetSubState((factory->CreateD_IDLE()));
 		return;
 	}
 	/*if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))

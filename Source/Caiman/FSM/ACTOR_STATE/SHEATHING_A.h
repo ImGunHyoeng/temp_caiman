@@ -28,6 +28,8 @@ public:
 	virtual void InitializeSubState();
 	virtual void Destroy();
 	class UKwangAnimInstance* kwang;
+	bool canChange;
+	bool end;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

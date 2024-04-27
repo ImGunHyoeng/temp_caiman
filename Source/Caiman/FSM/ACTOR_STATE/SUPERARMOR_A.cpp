@@ -2,12 +2,13 @@
 
 
 #include "FSM/ACTOR_STATE/SUPERARMOR_A.h"
-
+#include "FSM/PlayerStateFactory.h"
+#include "CCharacterPlayer.h"
 // Sets default values
 ASUPERARMOR_A::ASUPERARMOR_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -18,6 +19,10 @@ ASUPERARMOR_A::ASUPERARMOR_A()
 
 void ASUPERARMOR_A::updateInput()
 {
+	if (end)
+	{
+		SwitchState(factory->CreateNORMAL());
+	}
 }
 
 //void ASUPERARMOR_A::update(ACCharacterPlayer& player)
@@ -26,18 +31,28 @@ void ASUPERARMOR_A::updateInput()
 
 void ASUPERARMOR_A::update()
 {
+	updateInput();
 }
 
 void ASUPERARMOR_A::enter()
 {
+	InitializeSubState();
+	end = false;
 }
 
 void ASUPERARMOR_A::InitializeSubState()
 {
+	//동시에 누르기
+	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton) && ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::C))
+	{
+		ctx->PlayAnimMontage(ctx->GetChargeAttackMontage(), 1.0f, FName("ChargingStart"));
+		SetSubState(factory->CreateSUPERCHARGINGATTACK());
+	}
 }
 
 void ASUPERARMOR_A::exit()
 {
+	end = false;
 }
 
 void ASUPERARMOR_A::Destroy()

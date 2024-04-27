@@ -11,7 +11,7 @@
 ASHEATHING_A::ASHEATHING_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -32,14 +32,13 @@ ASHEATHING_A::ASHEATHING_A()
 
 void ASHEATHING_A::updateInput()
 {
-	if (ctx->GetWaitFrame() <= 0)
+	if (end)
 	{
 		SwitchState(factory->CreateS_IDLE());
 	}
-	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f && ctx->GetWaitFrame() <= 6)
+	if (ctx->GetMoveInputActionValue().GetMagnitude() > 0.1f && canChange)
 	{
 		ctx->StopAnimMontage(ctx->GetSheathMontage());
-		ctx->SetWaitFrame(0);
 		SwitchState(factory->CreateS_IDLE());
 	}
 }
@@ -47,7 +46,6 @@ void ASHEATHING_A::updateInput()
 void ASHEATHING_A::update()
 {
 	ctx->Look(ctx->GetLookInputActionValue());
-	ctx->WaitFramePassing(); 
 	updateInput();
 }
 
@@ -60,11 +58,14 @@ void ASHEATHING_A::update()
 void ASHEATHING_A::enter()
 {
 	ctx->SetSheath(true);
-	ctx->SetWaitFrame(8);
+	canChange = false;
+	end = false;
 }
 
 void ASHEATHING_A::exit()
 {
+	canChange = false;
+	end = false;
 }
 
 void ASHEATHING_A::InitializeSubState()
@@ -74,7 +75,7 @@ void ASHEATHING_A::InitializeSubState()
 
 void ASHEATHING_A::Destroy()
 {
-	this->MarkPendingKill();
+	//this->MarkPendingKill();
 }
 
 // Called when the game starts or when spawned

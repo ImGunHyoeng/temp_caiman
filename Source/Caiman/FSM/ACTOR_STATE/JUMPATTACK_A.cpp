@@ -11,7 +11,7 @@
 AJUMPATTACK_A::AJUMPATTACK_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 //
@@ -28,7 +28,7 @@ AJUMPATTACK_A::AJUMPATTACK_A()
 
 void AJUMPATTACK_A::updateInput()
 {
-	if (ctx->GetWaitFrame() <= 0)
+	if (end)
 	{
 		if (kwang)
 			kwang->setJumpAttackEnd();
@@ -40,7 +40,6 @@ void AJUMPATTACK_A::updateInput()
 void AJUMPATTACK_A::update()
 {
 	ctx->Look(ctx->GetLookInputActionValue());
-	ctx->WaitFramePassing();
 	updateInput();
 
 }
@@ -60,15 +59,17 @@ void AJUMPATTACK_A::enter()
 		kwang->setDraw();
 		kwang->setJumpAttack();
 	}
+	end = false;
 }
 
 void AJUMPATTACK_A::exit()
 {
+	end = false;
 }
 
 void AJUMPATTACK_A::Destroy()
 {
-	this->MarkPendingKill();
+	//this->MarkPendingKill();
 }
 
 void AJUMPATTACK_A::InitializeSubState()

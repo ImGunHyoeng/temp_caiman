@@ -10,7 +10,7 @@
 AS_ROLL_A::AS_ROLL_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 	 isRoll = true;
 }
 
@@ -26,22 +26,19 @@ AS_ROLL_A::AS_ROLL_A()
 
 void AS_ROLL_A::updateInput()
 {
-	if (ctx->GetWaitFrame() < 0)
+	if (end)
 	{
 		ctx->StopAnimMontage();
-		SwitchState(factory->CreateNORMAL());
+		ctx->GetCurPlayerState()->SwitchState(factory->CreateNORMAL());
 		return;
 	}
 }
 
 void AS_ROLL_A::update()
 {
-	ctx->WaitFramePassing();
 	//ctx->Move(ctx->GetMoveInputActionValue());
 	if (isRoll)
-		ctx->AddMovementInput(ctx->GetActorForwardVector(), 3);
-	//if (!isRoll)
-	//	ctx->SetWaitFrame(4);
+		ctx->AddMovementInput(ctx->GetActorForwardVector(), 5);
 	ctx->Look(ctx->GetLookInputActionValue());
 	updateInput();
 }
@@ -62,16 +59,18 @@ void AS_ROLL_A::enter()
 	kwang = ctx->getAnimInstance();
 	isRoll = true;
 	ctx->PlayAnimMontage(ctx->GetRollMontage(), 1.0f, input);
-	ctx->SetWaitFrame(30);
+	end = false;
 }
 
 void AS_ROLL_A::exit()
 {
+	isRoll = true;
+	end = false;
 }
 
 void AS_ROLL_A::Destroy()
 {
-	this->MarkPendingKill();
+	//this->MarkPendingKill();
 }
 
 void AS_ROLL_A::InitializeSubState()

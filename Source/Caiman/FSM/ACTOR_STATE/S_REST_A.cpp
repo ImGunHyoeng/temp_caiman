@@ -9,7 +9,7 @@
 AS_REST_A::AS_REST_A()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 }
 
@@ -17,6 +17,7 @@ void AS_REST_A::updateInput()
 {
 	if (IsEnd)
 	{
+		ctx->StopAnimMontage();
 		SwitchState(factory->CreateS_IDLE());
 	}
 }
@@ -38,6 +39,7 @@ void AS_REST_A::InitializeSubState()
 
 void AS_REST_A::exit()
 {
+	IsEnd = false;
 }
 
 void AS_REST_A::Destroy()

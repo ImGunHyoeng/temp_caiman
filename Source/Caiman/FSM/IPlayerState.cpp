@@ -54,7 +54,6 @@ void IIPlayerState::UpdateStates()
 	if (currentSubstate == NULL)
 		return;
 	currentSubstate->UpdateStates();
-	
 }
 
 void IIPlayerState::EnterStates()

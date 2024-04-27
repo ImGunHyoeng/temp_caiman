@@ -35,6 +35,8 @@ class CAIMAN_API PlayerStateFactory
 	TScriptInterface<IIPlayerState> superarmor;
 	TScriptInterface<IIPlayerState> s_rest;
 	TScriptInterface<IIPlayerState> d_rest;
+	TScriptInterface<IIPlayerState> knockback;
+	TScriptInterface<IIPlayerState> superchargeattack;
 
 
 	
@@ -62,5 +64,7 @@ public:
 	TScriptInterface<IIPlayerState>CreateSUPERARMOR();
 	TScriptInterface<IIPlayerState>CreateD_Rest();
 	TScriptInterface<IIPlayerState>CreateS_Rest();
+	TScriptInterface<IIPlayerState>CreateKNOCKBACK();
+	TScriptInterface<IIPlayerState>CreateSUPERCHARGINGATTACK();
 	~PlayerStateFactory();
 };
