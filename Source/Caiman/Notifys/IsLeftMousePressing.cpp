@@ -3,8 +3,7 @@
 
 #include "Notifys/IsLeftMousePressing.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/ATTACK_A.h"
-#include "FSM\IPlayerState.h"
+#include "FSM/OBJECT_STATE/ATTACK_O.h"
 void UIsLeftMousePressing::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation, EventReference);
@@ -15,7 +14,7 @@ void UIsLeftMousePressing::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenc
 	if (!Player)
 		return;
 		
-	AATTACK_A* AT = Cast<AATTACK_A>(Player->GetCurPlayerState()->GetSubState());
+	UATTACK_O* AT = Cast<UATTACK_O>(Player->GetCurPlayerState()->GetSubState());
 	if (!AT)
 		return;
 	if (Player->getPlayerController()->IsInputKeyDown(EKeys::LeftMouseButton))

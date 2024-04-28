@@ -12,15 +12,15 @@
 #include "Components/SceneComponent.h"
 #include "InputCore.h"
 #include "TimerManager.h"
-#include "FSM/IPlayerState.h"
+#include "FSM/PlayerStateBase.h"
 //#include "FSM/OBJECT_STATE/OFSMCollection.h"
 #include "AnimInstance\KwangAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "Misc/App.h"
 //#include "FSM/S_IDLE_NEWA.h"
-#include "FSM/ACTOR_STATE/AFSMCollection.h"
 #include "NiagaraSystem.h"
 #include "FSM/PlayerStateFactory.h"
+#include "FSM/OBJECT_STATE/OFSMCollection.h"
 
 
 
@@ -132,15 +132,15 @@ const FInputActionValue ACCharacterPlayer::GetLookInputActionValue()
 	return LookActionBinding->GetValue();
 }
 
-IIPlayerState* ACCharacterPlayer::GetCurPlayerState()
+UPlayerStateBase* ACCharacterPlayer::GetCurPlayerState()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("curState class: %s"), (this->curState)->_getUObject());
-	 return curState;
+	return curState;
 }
 
 void ACCharacterPlayer::WaitFramePassing()
 {
-	 WaitFrame=WaitFrame-FApp::GetDeltaTime()*4;
+	WaitFrame = WaitFrame - FApp::GetDeltaTime() * 4;
 }
 
 UKwangAnimInstance* ACCharacterPlayer::getAnimInstance()
@@ -200,7 +200,7 @@ void ACCharacterPlayer::update()
 {
 	//curState->update(*this);
 	curState->UpdateStates();
-	
+
 	//FVector inputVector = GetLastMovementInputVector();
 	//float magnitude = inputVector.Size();
 
@@ -238,7 +238,7 @@ void ACCharacterPlayer::update()
 }
 void ACCharacterPlayer::updateInput()
 {
-	//IIPlayerState* state = curState->updateInput(*this);
+	//UPlayerStateBase* state = curState->updateInput(*this);
 	//if (state != NULL)
 	//{
 	//	curState->exit(*this);
@@ -304,17 +304,17 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	if (bIsParring)//패링시에 상태 설정해줌
 	{
-		APARRING_A * state = Cast<APARRING_A>(curState->GetSubState());
+		UPARRING_O* state = Cast<UPARRING_O>(curState->GetSubState());
 		if (state != NULL)
 		{
 			curState->GetSubState()->SwitchState(stateFactory->CreatePARRINGSUCCESS());//서브 상태에서 바꾸는 것이기에 이렇게 사용해야함.
 			return;
 		}
 	}
-	if (Cast<AHIT_A>(curState))
+	if (Cast<UHIT_O>(curState))
 		return;
 	curState->SwitchState(stateFactory->CreateHIT());
-	AKNOCKBACK_A* temp = Cast<AKNOCKBACK_A>(curState->GetSubState());
+	UKNOCKBACK_O* temp = Cast<UKNOCKBACK_O>(curState->GetSubState());
 	if (temp)
 	{
 		temp->SetPoint(ImpactPoint);

@@ -3,7 +3,7 @@
 
 #include "Notifys/ParringSuccessEnd.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/PARRINGSUCCESS_A.h"
+#include "FSM/OBJECT_STATE/PARRINGSUCCESS_O.h"
 void UParringSuccessEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation, EventReference);
@@ -12,7 +12,7 @@ void UParringSuccessEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (APARRINGSUCCESS_A* temp = Cast<APARRINGSUCCESS_A>(Player->getCurState()->GetSubState()))
+			if (UPARRINGSUCCESS_O* temp = Cast<UPARRINGSUCCESS_O>(Player->getCurState()->GetSubState()))
 			{
 				temp->end = true;
 			}

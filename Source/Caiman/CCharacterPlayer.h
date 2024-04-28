@@ -9,7 +9,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Hit\HitInterface.h"
-#include "FSM/IPlayerState.h"
+#include "FSM/PlayerStateBase.h"
 #include "CCharacterPlayer.generated.h"
 
 UENUM(BlueprintType)
@@ -57,12 +57,12 @@ public:
 	//void changeState(ECharacterState inState);
 	
 	
-	IIPlayerState* getCurState() { return curState; }
-	void setCurState(IIPlayerState* state) { curState = state; }
+	UPlayerStateBase* getCurState() { return curState; }
+	void setCurState(UPlayerStateBase* state) { curState = state; }
 	APlayerController* getPlayerController();
 	void SimulateSpaceKeyPress(const FName name);
 	void OnReleaseKey();
-	
+
 	const FInputActionValue GetMoveInputActionValue();
 	const FInputActionValue GetLookInputActionValue();
 	FORCEINLINE	UAnimMontage* GetDrawMontage() { return AM_Draw; }
@@ -79,13 +79,13 @@ public:
 	//FORCEINLINE UKwangAnimInstance * GetKwangAnim() { return Cast<UKwangAnimInstance>(GetMesh()->GetAnimInstance()); }
 
 	//UFUNCTION(BlueprintCallable)
-	IIPlayerState* GetCurPlayerState();
+	UPlayerStateBase* GetCurPlayerState();
 
 	//기다리는 시간 계산
 	FORCEINLINE	const float GetWaitFrame() { return WaitFrame; }
 	FORCEINLINE void SetWaitFrame(float input) { WaitFrame = input; }
 	void WaitFramePassing();
-	
+
 	class UKwangAnimInstance* getAnimInstance();
 	const TObjectPtr<class ACMyWeapon> GetWeapon();
 	void SetKey(FKey _key);
@@ -98,7 +98,7 @@ public:
 	void NoAnimDraw();
 	void Sheath();
 	void NoAnimSheath();
-	
+
 	//particle set
 	UParticleSystem* GetHittedParticle() { return HittedParticle; }
 	//UParticleSystem* GetJumpAttackParticle() { return JumpAttackParticle; }
@@ -109,10 +109,10 @@ public:
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
-	FORCEINLINE void SetParring(bool input) { bIsParring= input; }
-	FORCEINLINE bool GetParring() { return bIsParring;}
-	
-	FORCEINLINE bool GetParringEnd() { return bIsParringEnd;}
+	FORCEINLINE void SetParring(bool input) { bIsParring = input; }
+	FORCEINLINE bool GetParring() { return bIsParring; }
+
+	FORCEINLINE bool GetParringEnd() { return bIsParringEnd; }
 	FORCEINLINE void SetParringEnd(bool input) { bIsParringEnd = input; }
 	FORCEINLINE bool GetParringSuccessEnd() { return bIsParringSuccessEnd; }
 	FORCEINLINE void SetParringSuccessEnd(bool input) { bIsParringSuccessEnd = input; }
@@ -120,13 +120,13 @@ public:
 	FORCEINLINE bool GetAttacked() { return bIsAttacked; }
 	FORCEINLINE void SetAttacked(bool input) { bIsAttacked = input; }
 	FORCEINLINE bool GetSheath() { return bIsSheath; }
-	FORCEINLINE void SetSheath(bool input) { bIsSheath= input; }
+	FORCEINLINE void SetSheath(bool input) { bIsSheath = input; }
 
 	FORCEINLINE bool GetDefenseLess() { return bIsDefenseLess; }
 	FORCEINLINE void SetDefenseLess(bool input) { bIsDefenseLess = input; }
 
 	FORCEINLINE bool IsAttack() { return bIsAttack; }
-	FORCEINLINE void SetAttack(bool input) { bIsAttack= input; }
+	FORCEINLINE void SetAttack(bool input) { bIsAttack = input; }
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetNaiagra();
 	UFUNCTION(BlueprintImplementableEvent)
@@ -136,21 +136,21 @@ protected:
 
 	FKey key;
 	UPROPERTY(EditAnywhere, Category = Input)
-		class UInputMappingContext* PlayerContext;
+	class UInputMappingContext* PlayerContext;
 	//매핑 텍스트
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<class UInputAction> JumpAction;
+	TObjectPtr<class UInputAction> JumpAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<class UInputAction> MovementAction;
-	
+	TObjectPtr<class UInputAction> MovementAction;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, Meta = (AllowPrivateAccess = "true"))
-		TObjectPtr<class UInputAction> DrawAction;
-	
-	UPROPERTY(EditAnywhere,BluePrintReadOnly, Category = Input)
+	TObjectPtr<class UInputAction> DrawAction;
+
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	UInputAction* LookAction;
-	
+
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	UInputAction* RunAction;
 
@@ -158,38 +158,38 @@ protected:
 	UInputAction* RollAction;
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
-		TObjectPtr<class UInputAction> AttackAction;
+	TObjectPtr<class UInputAction> AttackAction;
 
 	//몽타주
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
-		UAnimMontage* AM_Draw;
+	UAnimMontage* AM_Draw;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
-		UAnimMontage* AM_Sheath;
+	UAnimMontage* AM_Sheath;
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
-		UAnimMontage* AM_Attack;
+	UAnimMontage* AM_Attack;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
-		UAnimMontage* AM_Roll;
+	UAnimMontage* AM_Roll;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
-		UAnimMontage* AM_Hitted;
+	UAnimMontage* AM_Hitted;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
-		UAnimMontage* AM_Parring;
+	UAnimMontage* AM_Parring;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
-		UAnimMontage* AM_ChargeAttack;
+	UAnimMontage* AM_ChargeAttack;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
-		UAnimMontage* AM_DefenseLess;
+	UAnimMontage* AM_DefenseLess;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
-		UAnimMontage* AM_D_Rest;
+	UAnimMontage* AM_D_Rest;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
-		UAnimMontage* AM_S_Rest;
+	UAnimMontage* AM_S_Rest;
 
 
 	//UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	//UInputAction* JumpAction;*/
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-	
+
 
 
 	//void Move(const FInputActionValue& Value);
@@ -213,42 +213,42 @@ protected:
 	//void ComboAttack();
 
 
-	
+
 
 
 	float moveSpeed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float WaitFrame;
+	float WaitFrame;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		uint32 bIsCombo : 1;
+	uint32 bIsCombo : 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		uint32 bIsAttacked: 1;
+	uint32 bIsAttacked : 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		uint32 bIsParring : 1;
+	uint32 bIsParring : 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		uint32 bIsParringEnd: 1;
+	uint32 bIsParringEnd : 1;
 
-		uint32 bIsParringSuccessEnd: 1;
-		uint32 bIsSheath: 1;
-		uint32 bIsAttack: 1;
-		uint32 bIsDefenseLess: 1;
-	
+	uint32 bIsParringSuccessEnd : 1;
+	uint32 bIsSheath : 1;
+	uint32 bIsAttack : 1;
+	uint32 bIsDefenseLess : 1;
 
-	ACMyWeapon * Weapon;
+
+	ACMyWeapon* Weapon;
 
 	TObjectPtr<class UEnhancedInputComponent> EnhancedInputComponent;
 	APlayerController* PlayerController;
 	TArray<FEnhancedActionKeyMapping> KeyMappingArray;
 
-	
-	
+
+
 	struct FEnhancedInputActionValueBinding const* MoveActionBinding;
 	struct FEnhancedInputActionValueBinding const* LookActionBinding;
-	
+
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
 	//UPROPERTY(EditAnywhere, Category = VisualEffect)
@@ -257,12 +257,12 @@ protected:
 	//UParticleSystem* NormalAttackParticle;
 	//UPROPERTY(EditAnywhere, Category = VisualEffect)
 	//UParticleSystem* AttackParticle;
-	
+
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	TSubclassOf<ACMyWeapon> MyWeapon;
 	UPlayerStateFactory* stateFactory;
 private:
 
-	IIPlayerState* curState;
+	UPlayerStateBase* curState;
 
 };

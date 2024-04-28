@@ -3,7 +3,7 @@
 
 #include "Notifys/SuperEnd.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/SUPERARMOR_A.h"
+#include "FSM/OBJECT_STATE/SUPERARMOR_O.h"
 void USuperEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation, EventReference);
@@ -12,7 +12,7 @@ void USuperEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Anim
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (ASUPERARMOR_A* temp = Cast<ASUPERARMOR_A>(Player->getCurState()))
+			if (USUPERARMOR_O* temp = Cast<USUPERARMOR_O>(Player->getCurState()))
 			{
 				temp->end = true;
 			}

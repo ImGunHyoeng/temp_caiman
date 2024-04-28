@@ -3,7 +3,7 @@
 
 #include "Notifys/JumpAttackNotify.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/JUMPATTACK_A.h"
+#include "FSM/OBJECT_STATE/JUMPATTACK_O.h"
 
 void UJumpAttackNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
@@ -13,7 +13,7 @@ void UJumpAttackNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBa
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (AJUMPATTACK_A* temp = Cast<AJUMPATTACK_A>(Player->getCurState()->GetSubState()))
+			if (UJUMPATTACK_O* temp = Cast<UJUMPATTACK_O>(Player->getCurState()->GetSubState()))
 			{
 				temp->end = true;
 			}

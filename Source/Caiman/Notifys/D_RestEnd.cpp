@@ -3,7 +3,7 @@
 
 #include "Notifys/D_RestEnd.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/D_REST_A.h"
+#include "FSM/OBJECT_STATE/D_REST_O.h"
 
 void UD_RestEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
@@ -13,7 +13,7 @@ void UD_RestEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Ani
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (AD_REST_A* temp = Cast<AD_REST_A>(Player->getCurState()->GetSubState()))
+			if (UD_REST_O* temp = Cast<UD_REST_O>(Player->getCurState()->GetSubState()))
 			{
 				temp->IsEnd= true;
 			}

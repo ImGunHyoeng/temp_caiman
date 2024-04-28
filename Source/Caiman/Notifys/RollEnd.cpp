@@ -3,7 +3,7 @@
 
 #include "Notifys/RollEnd.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/S_ROLL_A.h"
+#include "FSM/OBJECT_STATE/S_ROLL_O.h"
 
 void URollEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
@@ -13,7 +13,7 @@ void URollEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Anima
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (AS_ROLL_A* temp = Cast<AS_ROLL_A>(Player->getCurState()->GetSubState()))
+			if (US_ROLL_O* temp = Cast<US_ROLL_O>(Player->getCurState()->GetSubState()))
 			{
 				temp->isRoll = false;
 				Player->SetWaitFrame(2);

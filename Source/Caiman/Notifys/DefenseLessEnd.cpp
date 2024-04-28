@@ -3,7 +3,7 @@
 
 #include "Notifys/DefenseLessEnd.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/DEFENSELESS_A.h"
+#include "FSM/OBJECT_STATE/DEFENSELESS_O.h"
 
 void UDefenseLessEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
@@ -13,7 +13,7 @@ void UDefenseLessEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (ADEFENSELESS_A* temp = Cast<ADEFENSELESS_A>(Player->getCurState()->GetSubState()))
+			if (UDEFENSELESS_O* temp = Cast<UDEFENSELESS_O>(Player->getCurState()->GetSubState()))
 			{
 				Player->SetDefenseLess(true);
 				//Player->SetWaitFrame(2);

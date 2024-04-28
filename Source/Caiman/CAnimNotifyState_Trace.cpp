@@ -4,7 +4,6 @@
 #include "CAnimNotifyState_Trace.h"
 #include "CCharacterPlayer.h"
 #include "CTraceComponent.h"
-#include "FSM\IPlayerState.h"
 #include "CMyWeapon.h"
 
 void UCAnimNotifyState_Trace::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)

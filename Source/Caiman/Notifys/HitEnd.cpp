@@ -3,7 +3,7 @@
 
 #include "Notifys/HitEnd.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/KNOCKBACK_A.h"
+#include "FSM/OBJECT_STATE/KNOCKBACK_O.h"
 void UHitEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation, EventReference);
@@ -12,7 +12,7 @@ void UHitEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animat
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (AKNOCKBACK_A* temp = Cast<AKNOCKBACK_A>(Player->getCurState()->GetSubState()))
+			if (UKNOCKBACK_O* temp = Cast<UKNOCKBACK_O>(Player->getCurState()->GetSubState()))
 			{
 				temp->end = true;
 			}

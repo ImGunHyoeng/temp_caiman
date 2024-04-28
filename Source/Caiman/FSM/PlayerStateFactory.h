@@ -9,7 +9,7 @@
 /**
  * 
  */
-class IIPlayerState;
+class UPlayerStateBase;
 UCLASS()
 class CAIMAN_API UPlayerStateFactory : public UObject
 {
@@ -17,30 +17,54 @@ class CAIMAN_API UPlayerStateFactory : public UObject
 
 
 	//팩토리에서 변수생성해서 사용
-	IIPlayerState* attack;
-	IIPlayerState* chargeAttack;
-	IIPlayerState* d_Idle;
-	IIPlayerState* d_Walk;
-	IIPlayerState* defenseless;
-	IIPlayerState* drawing;
-	IIPlayerState* grounded;
-	IIPlayerState* hit;
-	IIPlayerState* invincibility;
-	IIPlayerState* jump;
-	IIPlayerState* jumpattack;
-	IIPlayerState* normal;
-	IIPlayerState* parring;
-	IIPlayerState* parringsuccess;
-	IIPlayerState* s_idle;
-	IIPlayerState* s_roll;
-	IIPlayerState* s_run;
-	IIPlayerState* s_walk;
-	IIPlayerState* sheathing;
-	IIPlayerState* superarmor;
-	IIPlayerState* s_rest;
-	IIPlayerState* d_rest;
-	IIPlayerState* knockback;
-	IIPlayerState* superchargeattack;
+	UPROPERTY()
+	UPlayerStateBase* attack;
+	UPROPERTY()
+	UPlayerStateBase* chargeAttack;
+	UPROPERTY()
+	UPlayerStateBase* d_Idle;
+	UPROPERTY()
+	UPlayerStateBase* d_Walk;
+	UPROPERTY()
+	UPlayerStateBase* defenseless;
+	UPROPERTY()
+	UPlayerStateBase* drawing;
+	UPROPERTY()
+	UPlayerStateBase* grounded;
+	UPROPERTY()
+	UPlayerStateBase* hit;
+	UPROPERTY()
+	UPlayerStateBase* invincibility;
+	UPROPERTY()
+	UPlayerStateBase* jump;
+	UPROPERTY()
+	UPlayerStateBase* jumpattack;
+	UPROPERTY()
+	UPlayerStateBase* normal;
+	UPROPERTY()
+	UPlayerStateBase* parring;
+	UPROPERTY()
+	UPlayerStateBase* parringsuccess;
+	UPROPERTY()
+	UPlayerStateBase* s_idle;
+	UPROPERTY()
+	UPlayerStateBase* s_roll;
+	UPROPERTY()
+	UPlayerStateBase* s_run;
+	UPROPERTY()
+	UPlayerStateBase* s_walk;
+	UPROPERTY()
+	UPlayerStateBase* sheathing;
+	UPROPERTY()
+	UPlayerStateBase* superarmor;
+	UPROPERTY()
+	UPlayerStateBase* s_rest;
+	UPROPERTY()
+	UPlayerStateBase* d_rest;
+	UPROPERTY()
+	UPlayerStateBase* knockback;
+	UPROPERTY()
+	UPlayerStateBase* superchargeattack;
 
 
 
@@ -49,29 +73,29 @@ public:
 	ACCharacterPlayer* context;
 	void Set(ACCharacterPlayer* input);
 	UPlayerStateFactory() {};
-	IIPlayerState*CreateS_IDLE();
-	IIPlayerState*CreateS_WALK();
-	IIPlayerState*CreateS_RUN();
-	IIPlayerState*CreateS_ROLL();
-	IIPlayerState*CreateSHEATHING();
-	IIPlayerState*CreatePARRINGSUCCESS();
-	IIPlayerState*CreatePARRING();
-	IIPlayerState*CreateJUMPATTACK();
-	IIPlayerState*CreateJUMP();
-	IIPlayerState*CreateGROUNDED();
-	IIPlayerState*CreateDRAWING();
-	IIPlayerState*CreateDEFENSELESS();
-	IIPlayerState*CreateD_WALK();
-	IIPlayerState*CreateD_IDLE();
-	IIPlayerState*CreateCHARGINGATTACK();
-	IIPlayerState*CreateATTACK();
-	IIPlayerState*CreateHIT();
-	IIPlayerState*CreateNORMAL();
-	IIPlayerState*CreateINVINCIBILITY();
-	IIPlayerState*CreateSUPERARMOR();
-	IIPlayerState*CreateD_Rest();
-	IIPlayerState*CreateS_Rest();
-	IIPlayerState*CreateKNOCKBACK();
-	IIPlayerState*CreateSUPERCHARGINGATTACK();
+	UPlayerStateBase* CreateS_IDLE();
+	UPlayerStateBase* CreateS_WALK();
+	UPlayerStateBase* CreateS_RUN();
+	UPlayerStateBase* CreateS_ROLL();
+	UPlayerStateBase* CreateSHEATHING();
+	UPlayerStateBase* CreatePARRINGSUCCESS();
+	UPlayerStateBase* CreatePARRING();
+	UPlayerStateBase* CreateJUMPATTACK();
+	UPlayerStateBase* CreateJUMP();
+	UPlayerStateBase* CreateGROUNDED();
+	UPlayerStateBase* CreateDRAWING();
+	UPlayerStateBase* CreateDEFENSELESS();
+	UPlayerStateBase* CreateD_WALK();
+	UPlayerStateBase* CreateD_IDLE();
+	UPlayerStateBase* CreateCHARGINGATTACK();
+	UPlayerStateBase* CreateATTACK();
+	UPlayerStateBase* CreateHIT();
+	UPlayerStateBase* CreateNORMAL();
+	UPlayerStateBase* CreateINVINCIBILITY();
+	UPlayerStateBase* CreateSUPERARMOR();
+	UPlayerStateBase* CreateD_Rest();
+	UPlayerStateBase* CreateS_Rest();
+	UPlayerStateBase* CreateKNOCKBACK();
+	UPlayerStateBase* CreateSUPERCHARGINGATTACK();
 	~UPlayerStateFactory();
 };

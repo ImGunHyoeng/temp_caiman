@@ -3,7 +3,7 @@
 
 #include "Notifys/SheathAnimState.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/SHEATHING_A.h"
+#include "FSM/OBJECT_STATE/SHEATHING_O.h"
 
 void USheathAnimState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
@@ -13,7 +13,7 @@ void USheathAnimState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequen
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			ASHEATHING_A* Sheath = Cast<ASHEATHING_A>(Player->GetCurPlayerState()->GetSubState());
+			USHEATHING_O* Sheath = Cast<USHEATHING_O>(Player->GetCurPlayerState()->GetSubState());
 
 			if (Sheath)
 				Sheath->canChange = true;
@@ -30,7 +30,7 @@ void USheathAnimState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequence
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			ASHEATHING_A* Sheath = Cast<ASHEATHING_A>(Player->GetCurPlayerState()->GetSubState());
+			USHEATHING_O* Sheath = Cast<USHEATHING_O>(Player->GetCurPlayerState()->GetSubState());
 			if (Sheath)
 				Sheath->end = true;
 

@@ -3,7 +3,7 @@
 
 #include "Notifys/ChargeStart.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/CHARGINGATTACK_A.h"
+#include "FSM/OBJECT_STATE/CHARGINGATTACK_O.h"
 void UChargeStart::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation, EventReference);
@@ -12,7 +12,7 @@ void UChargeStart::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* A
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (ACHARGINGATTACK_A* temp = Cast<ACHARGINGATTACK_A>(Player->getCurState()->GetSubState()))
+			if (UCHARGINGATTACK_O* temp = Cast<UCHARGINGATTACK_O>(Player->getCurState()->GetSubState()))
 			{
 				temp->ChangeDoing(Player);
 			}

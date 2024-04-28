@@ -3,7 +3,7 @@
 
 #include "Notifys/GroundedAnimState.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/GROUNDED_A.h"
+#include "FSM/OBJECT_STATE/GROUNDED_O.h"
 
 void UGroundedAnimState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
@@ -13,7 +13,7 @@ void UGroundedAnimState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequ
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			AGROUNDED_A* GROUNDED = Cast<AGROUNDED_A>(Player->GetCurPlayerState()->GetSubState());
+			UGROUNDED_O* GROUNDED = Cast<UGROUNDED_O>(Player->GetCurPlayerState()->GetSubState());
 
 			if (GROUNDED)
 				GROUNDED->canChange = true;
@@ -30,7 +30,7 @@ void UGroundedAnimState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequen
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			AGROUNDED_A* GROUNDED = Cast<AGROUNDED_A>(Player->GetCurPlayerState()->GetSubState());
+			UGROUNDED_O* GROUNDED = Cast<UGROUNDED_O>(Player->GetCurPlayerState()->GetSubState());
 
 			if (GROUNDED)
 				GROUNDED->end = true;

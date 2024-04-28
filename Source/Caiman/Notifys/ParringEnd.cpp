@@ -3,7 +3,7 @@
 
 #include "Notifys/ParringEnd.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/PARRING_A.h"
+#include "FSM/OBJECT_STATE/PARRING_O.h"
 
 void UParringEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
@@ -13,7 +13,7 @@ void UParringEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* An
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (APARRING_A* temp = Cast<APARRING_A>(Player->getCurState()->GetSubState()))
+			if (UPARRING_O* temp = Cast<UPARRING_O>(Player->getCurState()->GetSubState()))
 			{
 				Player->SetParringEnd(true);
 				//Player->SetWaitFrame(2);

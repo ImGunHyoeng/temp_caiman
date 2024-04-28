@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "FSM/PlayerStateFactory.h"
-#include "FSM/IPlayerState.h"
-#include "FSM/ACTOR_STATE/AFSMCollection.h"
+#include "FSM/OBJECT_STATE/OFSMCollection.h"
+#include "FSM/PlayerStateBase.h"
 #include "CCharacterPlayer.h"
 void UPlayerStateFactory::Set(ACCharacterPlayer* input)
 {
@@ -36,7 +36,7 @@ void UPlayerStateFactory::Set(ACCharacterPlayer* input)
 
 UPlayerStateFactory::~UPlayerStateFactory()
 {
-	if (attack)
+	/*if (attack)
 		attack->Destroy();
 	if (chargeAttack)
 		chargeAttack->Destroy();
@@ -85,266 +85,320 @@ UPlayerStateFactory::~UPlayerStateFactory()
 	if (knockback)
 		knockback->Destroy();
 	if (superchargeattack)
-		superchargeattack->Destroy();
+		superchargeattack->Destroy();*/
 
 }
 
-IIPlayerState* UPlayerStateFactory::CreateS_IDLE()
+UPlayerStateBase* UPlayerStateFactory::CreateS_IDLE()
 {
 	if (s_idle)
-		return s_idle;
-	s_idle = NewObject<AS_IDLE_A>();
-	s_idle->SetInitalProperty(context, this);
-	s_idle->SetRoot();
+		if (s_idle->GetName()!="None")
+			return s_idle;
+	UPlayerStateBase* temp = NewObject<US_IDLE_O>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	temp->AddToRoot();
+	s_idle = temp;
 	return s_idle;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateD_IDLE()
+UPlayerStateBase* UPlayerStateFactory::CreateD_IDLE()
 {
 	if (d_Idle)
-		return d_Idle;
-	d_Idle = NewObject<AD_IDLE_A>();
-	d_Idle->SetInitalProperty(context, this);
-	d_Idle->SetRoot();
+		if (d_Idle->GetName() != "None")
+			return d_Idle;
+	UPlayerStateBase* temp = NewObject<UD_IDLE_O>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	temp->AddToRoot();
+	d_Idle = temp;
 	return d_Idle;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateS_WALK()
+UPlayerStateBase* UPlayerStateFactory::CreateS_WALK()
 {
 	if (s_walk)
-		return s_walk;
-	s_walk = NewObject<AS_WALK_A>();
-	s_walk->SetInitalProperty(context, this);
-	s_walk->SetRoot();
+		if (s_walk->GetName() != "None")
+			return s_walk;
+	UPlayerStateBase* temp = NewObject<US_WALK_O>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	temp->AddToRoot();
+	s_walk = temp;
 	return s_walk;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateS_RUN()
+UPlayerStateBase* UPlayerStateFactory::CreateS_RUN()
 {
 	if (s_run)
-		return s_run;
-	s_run = NewObject<AS_RUN_A>();
-	s_run->SetInitalProperty(context, this);
-	s_run->SetRoot();
+		if (s_run->GetName() != "None")
+			return s_run;
+	UPlayerStateBase* temp = NewObject<US_RUN_O>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	temp->AddToRoot();
+	s_run = temp;
 	return s_run;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateS_ROLL()
+UPlayerStateBase* UPlayerStateFactory::CreateS_ROLL()
 {
 	if (s_roll)
-		return s_roll;
-	s_roll = NewObject<AS_ROLL_A>();
-	s_roll->SetInitalProperty(context, this);
-	s_roll->SetRoot();
+		if (s_roll->GetName() != "None")
+			return s_roll;
+	UPlayerStateBase* temp = NewObject<US_ROLL_O>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	temp->AddToRoot();
+	s_roll = temp;
 	return s_roll;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateSHEATHING()
+UPlayerStateBase* UPlayerStateFactory::CreateSHEATHING()
 {
 	if (sheathing)
-		return sheathing;
-	sheathing = NewObject<ASHEATHING_A>();
-	sheathing->SetInitalProperty(context, this);
-	sheathing->SetRoot();
+		if (sheathing->GetName() != "None")
+			return sheathing;
+	UPlayerStateBase* temp = NewObject<USHEATHING_O>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	temp->AddToRoot();
+	sheathing = temp;
 	return sheathing;
 }
 
-IIPlayerState* UPlayerStateFactory::CreatePARRINGSUCCESS()
+UPlayerStateBase* UPlayerStateFactory::CreatePARRINGSUCCESS()
 {
 	if (parringsuccess)
-		return parringsuccess;
-	parringsuccess = NewObject<APARRINGSUCCESS_A>();
-	parringsuccess->SetInitalProperty(context, this);
-	parringsuccess->SetRoot();
-	parringsuccess = parringsuccess;
+		if (parringsuccess->GetName() != "None")
+			return parringsuccess;
+	UPlayerStateBase* temp = NewObject<UPARRINGSUCCESS_O>();
+	temp->SetInitalProperty(context, this);
+	temp->SetRoot();
+	temp->AddToRoot();
+	parringsuccess = temp;
 	return parringsuccess;
 }
 
-IIPlayerState* UPlayerStateFactory::CreatePARRING()
+UPlayerStateBase* UPlayerStateFactory::CreatePARRING()
 {
 	if (parring)
-		return parring;
-	IIPlayerState* temp = NewObject<APARRING_A>();
+		if (parring->GetName() != "None")
+			return parring;
+	UPlayerStateBase* temp = NewObject<UPARRING_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	parring = temp;
 	return parring;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateJUMPATTACK()
+UPlayerStateBase* UPlayerStateFactory::CreateJUMPATTACK()
 {
 	if (jumpattack)
-		return jumpattack;
-	IIPlayerState* temp = NewObject<AJUMPATTACK_A>();
+		if (jumpattack->GetName() != "None")
+			return jumpattack;
+	UPlayerStateBase* temp = NewObject<UJUMPATTACK_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	jumpattack = temp;
 	return jumpattack;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateJUMP()
+UPlayerStateBase* UPlayerStateFactory::CreateJUMP()
 {
 	if (jump)
-		return jump;
-	IIPlayerState* temp = NewObject<AJUMP_A>();
+		if (jump->GetName() != "None")
+			return jump;
+	UPlayerStateBase* temp = NewObject<UJUMP_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	jump = temp;
 	return jump;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateGROUNDED()
+UPlayerStateBase* UPlayerStateFactory::CreateGROUNDED()
 {
 	if (grounded)
-		return grounded;
-	IIPlayerState* temp = NewObject<AGROUNDED_A>();
+		if (grounded->GetName() != "None")
+			return grounded;
+	UPlayerStateBase* temp = NewObject<UGROUNDED_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	grounded = temp;
 	return grounded;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateDRAWING()
+UPlayerStateBase* UPlayerStateFactory::CreateDRAWING()
 {
 	if (drawing)
-		return drawing;
-	IIPlayerState* temp = NewObject<ADRAWING_A>();
+		if (drawing->GetName() != "None")
+			return drawing;
+	UPlayerStateBase* temp = NewObject<UDRAWING_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	drawing = temp;
 	return drawing;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateDEFENSELESS()
+UPlayerStateBase* UPlayerStateFactory::CreateDEFENSELESS()
 {
 	if (defenseless)
-		return defenseless;
-	IIPlayerState* temp = NewObject<ADEFENSELESS_A>();
+		if (defenseless->GetName() != "None")
+			return defenseless;
+	UPlayerStateBase* temp = NewObject<UDEFENSELESS_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	defenseless = temp;
 	return defenseless;
 }
 
 
 
-IIPlayerState* UPlayerStateFactory::CreateD_WALK()
+UPlayerStateBase* UPlayerStateFactory::CreateD_WALK()
 {
 	if (d_Walk)
-		return d_Walk;
-	IIPlayerState* temp = NewObject<AD_WALK_A>();
+		if (d_Walk->GetName() != "None")
+			return d_Walk;
+	UPlayerStateBase* temp = NewObject<UD_WALK_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	d_Walk = temp;
 	return d_Walk;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateCHARGINGATTACK()
+UPlayerStateBase* UPlayerStateFactory::CreateCHARGINGATTACK()
 {
 	if (chargeAttack)
-		return chargeAttack;
-	IIPlayerState* temp = NewObject<ACHARGINGATTACK_A>();
+		if (chargeAttack->GetName() != "None")
+			return chargeAttack;
+	UPlayerStateBase* temp = NewObject<UCHARGINGATTACK_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	chargeAttack = temp;
 	return chargeAttack;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateATTACK()
+UPlayerStateBase* UPlayerStateFactory::CreateATTACK()
 {
 	if (attack)
-		return attack;
-	IIPlayerState* temp = NewObject<AATTACK_A>();
+		if (attack->GetName() != "None")
+			return attack;
+	UPlayerStateBase* temp = NewObject<UATTACK_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	attack = temp;
 	return attack;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateHIT()
+UPlayerStateBase* UPlayerStateFactory::CreateHIT()
 {
 	if (hit)
-		return hit;
-	IIPlayerState* temp = NewObject<AHIT_A>();
+		if (hit->GetName() != "None")
+			return hit;
+	UPlayerStateBase* temp = NewObject<UHIT_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot(true);
+	temp->AddToRoot();
 	hit = temp;
 	return hit;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateNORMAL()
+UPlayerStateBase* UPlayerStateFactory::CreateNORMAL()
 {
 	if (normal)
-		return normal;
-	IIPlayerState* temp = NewObject<ANORMAL_A>();
+		if (normal->GetName() != "None")
+			return normal;
+	UPlayerStateBase* temp = NewObject<UNORMAL_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot(true);
+	temp->AddToRoot();
 	normal = temp;
 	return normal;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateINVINCIBILITY()
+UPlayerStateBase* UPlayerStateFactory::CreateINVINCIBILITY()
 {
 	if (invincibility)
-		return invincibility;
-	IIPlayerState* temp = NewObject<AINVINCIBILITY_A>();
+		if (invincibility->GetName() != "None")
+			return invincibility;
+	UPlayerStateBase* temp = NewObject<UINVINCIBILITY_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot(true);
+	temp->AddToRoot();
 	invincibility = temp;
 	return invincibility;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateSUPERARMOR()
+UPlayerStateBase* UPlayerStateFactory::CreateSUPERARMOR()
 {
 	if (superarmor)
-		return superarmor;
-	IIPlayerState* temp = NewObject<ASUPERARMOR_A>();
+		if (superarmor->GetName() != "None")
+			return superarmor;
+	UPlayerStateBase* temp = NewObject<USUPERARMOR_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot(true);
+	temp->AddToRoot();
 	superarmor = temp;
 	return superarmor;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateD_Rest()
+UPlayerStateBase* UPlayerStateFactory::CreateD_Rest()
 {
 	if (d_rest)
-		return d_rest;
-	IIPlayerState* temp = NewObject<AD_REST_A>();
+		if (d_rest->GetName() != "None")
+			return d_rest;
+	UPlayerStateBase* temp = NewObject<UD_REST_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	d_rest = temp;
 	return d_rest;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateS_Rest()
+UPlayerStateBase* UPlayerStateFactory::CreateS_Rest()
 {
 	if (s_rest)
-		return s_rest;
-	IIPlayerState* temp = NewObject<AS_REST_A>();
+		if (s_rest->GetName() != "None")
+			return s_rest;
+	UPlayerStateBase* temp = NewObject<US_REST_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	s_rest = temp;
 	return s_rest;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateKNOCKBACK()
+UPlayerStateBase* UPlayerStateFactory::CreateKNOCKBACK()
 {
 	if (knockback)
-		return knockback;
-	IIPlayerState* temp = NewObject<AKNOCKBACK_A>();
+		if (knockback->GetName() != "None")
+			return knockback;
+	UPlayerStateBase* temp = NewObject<UKNOCKBACK_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	knockback = temp;
 	return knockback;
 }
 
-IIPlayerState* UPlayerStateFactory::CreateSUPERCHARGINGATTACK()
+UPlayerStateBase* UPlayerStateFactory::CreateSUPERCHARGINGATTACK()
 {
 	if (superchargeattack)
-		return superchargeattack;
-	IIPlayerState* temp = NewObject<ASUPERCHARGINGATTACK_A>();
+		if (superchargeattack->GetName() != "None")
+			return superchargeattack;
+	UPlayerStateBase* temp = NewObject<USUPERCHARGINGATTACK_O>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
+	temp->AddToRoot();
 	superchargeattack = temp;
 	return superchargeattack;
 }

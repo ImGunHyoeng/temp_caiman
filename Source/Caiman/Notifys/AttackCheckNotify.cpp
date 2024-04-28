@@ -4,7 +4,7 @@
 #include "Notifys/AttackCheckNotify.h"
 #include "CCharacterPlayer.h"
 //#include "FSM/OBJECT_STATE/OFSMCollection.h"
-#include "FSM/ACTOR_STATE/ATTACK_A.h"
+#include "FSM/OBJECT_STATE/ATTACK_O.h"
 
 void UAttackCheckNotify::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {
@@ -22,7 +22,7 @@ void UAttackCheckNotify::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequ
 			//}
 			//UE_LOG(LogTemp, Warning, TEXT("playerState class: %s"), (Player->GetCurPlayerState())->_getUObject());
 			//=Cast<ATTACK>(Player->GetCurPlayerState());
-			AATTACK_A* AT=Cast<AATTACK_A>(Player->GetCurPlayerState());
+			UATTACK_O* AT=Cast<UATTACK_O>(Player->GetCurPlayerState());
 			
 			if(AT)
 				AT->AttackStateDoing();
@@ -45,7 +45,7 @@ void UAttackCheckNotify::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequen
 				(AT)->AttackStateDone();
 			}*/
 			////Attack *AT=Cast<ATTACK>(Player->GetCurPlayerState());
-			AATTACK_A* AT = Cast<AATTACK_A>(Player->GetCurPlayerState());
+			UATTACK_O* AT = Cast<UATTACK_O>(Player->GetCurPlayerState());
 			if (AT)
 				AT->AttackStateDone();
 						
