@@ -15,7 +15,7 @@ AS_RUN_A::AS_RUN_A()
 
 }
 
-//TScriptInterface<IIPlayerState> AS_RUN_A::updateInput(ACCharacterPlayer& ctx->
+//IIPlayerState* AS_RUN_A::updateInput(ACCharacterPlayer& ctx->
 //{
 //	if (player.getPlayerController()->WasInputKeyJustReleased(EKeys::LeftShift))
 //	{

@@ -12,7 +12,7 @@ void UParringSuccessEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceB
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (APARRINGSUCCESS_A* temp = Cast<APARRINGSUCCESS_A>(Player->getCurState()->GetSubState().GetObject()))
+			if (APARRINGSUCCESS_A* temp = Cast<APARRINGSUCCESS_A>(Player->getCurState()->GetSubState()))
 			{
 				temp->end = true;
 			}

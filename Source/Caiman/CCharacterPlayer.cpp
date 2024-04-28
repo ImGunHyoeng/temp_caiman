@@ -132,7 +132,7 @@ const FInputActionValue ACCharacterPlayer::GetLookInputActionValue()
 	return LookActionBinding->GetValue();
 }
 
-TScriptInterface<IIPlayerState> ACCharacterPlayer::GetCurPlayerState()
+IIPlayerState* ACCharacterPlayer::GetCurPlayerState()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("curState class: %s"), (this->curState)->_getUObject());
 	 return curState;
@@ -190,11 +190,10 @@ APlayerController* ACCharacterPlayer::getPlayerController()
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (stateFactory->context == NULL)
-	{
-		stateFactory->Set(this);
-	}
-	//updateInput();
+	//if (stateFactory->context == NULL)
+	//{
+	//	stateFactory->Set(this);
+	//}
 	update();
 }
 void ACCharacterPlayer::update()
@@ -239,7 +238,7 @@ void ACCharacterPlayer::update()
 }
 void ACCharacterPlayer::updateInput()
 {
-	//TScriptInterface<IIPlayerState> state = curState->updateInput(*this);
+	//IIPlayerState* state = curState->updateInput(*this);
 	//if (state != NULL)
 	//{
 	//	curState->exit(*this);
@@ -305,17 +304,17 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	if (bIsParring)//패링시에 상태 설정해줌
 	{
-		APARRING_A * state = Cast<APARRING_A>(curState->GetSubState().GetObject());
+		APARRING_A * state = Cast<APARRING_A>(curState->GetSubState());
 		if (state != NULL)
 		{
 			curState->GetSubState()->SwitchState(stateFactory->CreatePARRINGSUCCESS());//서브 상태에서 바꾸는 것이기에 이렇게 사용해야함.
 			return;
 		}
 	}
-	if (Cast<AHIT_A>(curState.GetObject()))
+	if (Cast<AHIT_A>(curState))
 		return;
 	curState->SwitchState(stateFactory->CreateHIT());
-	AKNOCKBACK_A* temp = Cast<AKNOCKBACK_A>(curState->GetSubState().GetObject());
+	AKNOCKBACK_A* temp = Cast<AKNOCKBACK_A>(curState->GetSubState());
 	if (temp)
 	{
 		temp->SetPoint(ImpactPoint);

@@ -13,7 +13,7 @@ ADEFENSELESS_A::ADEFENSELESS_A()
 
 }
 
-//TScriptInterface<IIPlayerState> ADEFENSELESS_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* ADEFENSELESS_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (player.GetWaitFrame() < 0)
 //	{

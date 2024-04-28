@@ -12,9 +12,9 @@ ANORMAL_A::ANORMAL_A()
 
 }
 
-//TScriptInterface<IIPlayerState> ANORMAL_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* ANORMAL_A::updateInput(ACCharacterPlayer& player)
 //{
-//	return TScriptInterface<IIPlayerState>();
+//	return IIPlayerState*();
 //}
 
 void ANORMAL_A::updateInput()

@@ -13,7 +13,7 @@ AGROUNDED_A::AGROUNDED_A()
 
 }
 
-//TScriptInterface<IIPlayerState> AGROUNDED_A::updateInput()
+//IIPlayerState* AGROUNDED_A::updateInput()
 //{
 //	if (player.GetWaitFrame() <= 0)
 //	{

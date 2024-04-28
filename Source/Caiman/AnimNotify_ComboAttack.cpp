@@ -15,7 +15,7 @@ void UAnimNotify_ComboAttack::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 		{
 			//Player->AttackCheck();
 			
-			if (AATTACK_A* currentState = Cast<AATTACK_A>(Player->GetCurPlayerState()->GetSubState().GetObject()))
+			if (AATTACK_A* currentState = Cast<AATTACK_A>(Player->GetCurPlayerState()->GetSubState()))
 			{
 				currentState->AttackStateDone();
 			}

@@ -12,7 +12,7 @@ ADRAWING_A::ADRAWING_A()
 
 }
 
-//TScriptInterface<IIPlayerState> ADRAWING_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* ADRAWING_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (player.GetWaitFrame() <= 0)
 //	{

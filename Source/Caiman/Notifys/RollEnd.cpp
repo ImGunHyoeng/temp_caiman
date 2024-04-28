@@ -13,7 +13,7 @@ void URollEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Anima
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (AS_ROLL_A* temp = Cast<AS_ROLL_A>(Player->getCurState()->GetSubState().GetObject()))
+			if (AS_ROLL_A* temp = Cast<AS_ROLL_A>(Player->getCurState()->GetSubState()))
 			{
 				temp->isRoll = false;
 				Player->SetWaitFrame(2);

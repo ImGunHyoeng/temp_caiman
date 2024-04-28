@@ -14,7 +14,7 @@ ACHARGINGATTACK_A::ACHARGINGATTACK_A()
 
 }
 
-//TScriptInterface<IIPlayerState> ACHARGINGATTACK_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* ACHARGINGATTACK_A::updateInput(ACCharacterPlayer& player)
 //{
 //	switch (curstate)
 //	{

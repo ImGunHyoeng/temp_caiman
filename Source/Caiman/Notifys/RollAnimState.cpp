@@ -13,7 +13,7 @@ void URollAnimState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequence
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			AS_ROLL_A* Sheath = Cast<AS_ROLL_A>(Player->GetCurPlayerState()->GetSubState().GetObject());
+			AS_ROLL_A* Sheath = Cast<AS_ROLL_A>(Player->GetCurPlayerState()->GetSubState());
 
 			if (Sheath)
 				Sheath->isRoll = false;
@@ -30,7 +30,7 @@ void URollAnimState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBa
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			AS_ROLL_A* Sheath = Cast<AS_ROLL_A>(Player->GetCurPlayerState()->GetSubState().GetObject());
+			AS_ROLL_A* Sheath = Cast<AS_ROLL_A>(Player->GetCurPlayerState()->GetSubState());
 
 			if (Sheath)
 				Sheath->end = true;

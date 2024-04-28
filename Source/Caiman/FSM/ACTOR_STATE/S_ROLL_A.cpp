@@ -14,7 +14,7 @@ AS_ROLL_A::AS_ROLL_A()
 	 isRoll = true;
 }
 
-//TScriptInterface<IIPlayerState> AS_ROLL_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* AS_ROLL_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (player.GetWaitFrame() < 0)
 //	{

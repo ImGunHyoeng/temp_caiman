@@ -12,7 +12,7 @@ void UHitEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animat
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (AKNOCKBACK_A* temp = Cast<AKNOCKBACK_A>(Player->getCurState()->GetSubState().GetObject()))
+			if (AKNOCKBACK_A* temp = Cast<AKNOCKBACK_A>(Player->getCurState()->GetSubState()))
 			{
 				temp->end = true;
 			}

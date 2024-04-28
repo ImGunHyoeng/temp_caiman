@@ -13,7 +13,7 @@ void UDefenseLessEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (ADEFENSELESS_A* temp = Cast<ADEFENSELESS_A>(Player->getCurState()->GetSubState().GetObject()))
+			if (ADEFENSELESS_A* temp = Cast<ADEFENSELESS_A>(Player->getCurState()->GetSubState()))
 			{
 				Player->SetDefenseLess(true);
 				//Player->SetWaitFrame(2);

@@ -15,7 +15,7 @@ AS_IDLE_A::AS_IDLE_A()
 
 }
 
-//TScriptInterface<IIPlayerState> AS_IDLE_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* AS_IDLE_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 //	{

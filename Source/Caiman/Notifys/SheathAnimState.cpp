@@ -13,7 +13,7 @@ void USheathAnimState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequen
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			ASHEATHING_A* Sheath = Cast<ASHEATHING_A>(Player->GetCurPlayerState()->GetSubState().GetObject());
+			ASHEATHING_A* Sheath = Cast<ASHEATHING_A>(Player->GetCurPlayerState()->GetSubState());
 
 			if (Sheath)
 				Sheath->canChange = true;
@@ -30,7 +30,7 @@ void USheathAnimState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequence
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			ASHEATHING_A* Sheath = Cast<ASHEATHING_A>(Player->GetCurPlayerState()->GetSubState().GetObject());
+			ASHEATHING_A* Sheath = Cast<ASHEATHING_A>(Player->GetCurPlayerState()->GetSubState());
 			if (Sheath)
 				Sheath->end = true;
 

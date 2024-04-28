@@ -13,7 +13,7 @@ void UDrawAnimState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequence
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			ADRAWING_A* DRAW = Cast<ADRAWING_A>(Player->GetCurPlayerState()->GetSubState().GetObject());
+			ADRAWING_A* DRAW = Cast<ADRAWING_A>(Player->GetCurPlayerState()->GetSubState());
 
 			if (DRAW)
 				DRAW->canChange = true;
@@ -30,7 +30,7 @@ void UDrawAnimState::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimSequenceBa
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			ADRAWING_A* DRAW = Cast<ADRAWING_A>(Player->GetCurPlayerState()->GetSubState().GetObject());
+			ADRAWING_A* DRAW = Cast<ADRAWING_A>(Player->GetCurPlayerState()->GetSubState());
 			if (DRAW)
 				DRAW->end = true;
 		}

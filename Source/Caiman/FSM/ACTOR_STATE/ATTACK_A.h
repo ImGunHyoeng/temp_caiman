@@ -25,7 +25,7 @@ public:
 	// Sets default values for this actor's properties
 	AATTACK_A() :AATTACK_A(NULL, NULL) {}
 	AATTACK_A(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory);
-	//virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
+	//virtual IIPlayerState* updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();
 	virtual void update();
 	//virtual void update(class ACCharacterPlayer& player);

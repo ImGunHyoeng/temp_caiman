@@ -13,7 +13,7 @@ AATTACK_A::AATTACK_A(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory):IIP
 
 }
 
-//TScriptInterface<IIPlayerState> AATTACK_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* AATTACK_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (changeCharge)
 //	{

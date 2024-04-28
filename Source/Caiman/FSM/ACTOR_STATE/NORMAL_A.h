@@ -16,7 +16,7 @@ class CAIMAN_API ANORMAL_A : public AActor,public IIPlayerState
 public:	
 	// Sets default values for this actor's properties
 	ANORMAL_A();
-	//virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
+	//virtual IIPlayerState* updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();
 	//virtual void update(class ACCharacterPlayer& player);
 	virtual void update();

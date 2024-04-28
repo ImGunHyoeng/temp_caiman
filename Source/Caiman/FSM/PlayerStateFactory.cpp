@@ -89,7 +89,7 @@ UPlayerStateFactory::~UPlayerStateFactory()
 
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_IDLE()
+IIPlayerState* UPlayerStateFactory::CreateS_IDLE()
 {
 	if (s_idle)
 		return s_idle;
@@ -99,7 +99,7 @@ TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_IDLE()
 	return s_idle;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateD_IDLE()
+IIPlayerState* UPlayerStateFactory::CreateD_IDLE()
 {
 	if (d_Idle)
 		return d_Idle;
@@ -109,7 +109,7 @@ TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateD_IDLE()
 	return d_Idle;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_WALK()
+IIPlayerState* UPlayerStateFactory::CreateS_WALK()
 {
 	if (s_walk)
 		return s_walk;
@@ -119,7 +119,7 @@ TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_WALK()
 	return s_walk;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_RUN()
+IIPlayerState* UPlayerStateFactory::CreateS_RUN()
 {
 	if (s_run)
 		return s_run;
@@ -129,7 +129,7 @@ TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_RUN()
 	return s_run;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_ROLL()
+IIPlayerState* UPlayerStateFactory::CreateS_ROLL()
 {
 	if (s_roll)
 		return s_roll;
@@ -139,7 +139,7 @@ TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_ROLL()
 	return s_roll;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateSHEATHING()
+IIPlayerState* UPlayerStateFactory::CreateSHEATHING()
 {
 	if (sheathing)
 		return sheathing;
@@ -149,7 +149,7 @@ TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateSHEATHING()
 	return sheathing;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreatePARRINGSUCCESS()
+IIPlayerState* UPlayerStateFactory::CreatePARRINGSUCCESS()
 {
 	if (parringsuccess)
 		return parringsuccess;
@@ -160,66 +160,66 @@ TScriptInterface<IIPlayerState> UPlayerStateFactory::CreatePARRINGSUCCESS()
 	return parringsuccess;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreatePARRING()
+IIPlayerState* UPlayerStateFactory::CreatePARRING()
 {
 	if (parring)
 		return parring;
-	TScriptInterface<IIPlayerState> temp = NewObject<APARRING_A>();
+	IIPlayerState* temp = NewObject<APARRING_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	parring = temp;
 	return parring;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateJUMPATTACK()
+IIPlayerState* UPlayerStateFactory::CreateJUMPATTACK()
 {
 	if (jumpattack)
 		return jumpattack;
-	TScriptInterface<IIPlayerState> temp = NewObject<AJUMPATTACK_A>();
+	IIPlayerState* temp = NewObject<AJUMPATTACK_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	jumpattack = temp;
 	return jumpattack;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateJUMP()
+IIPlayerState* UPlayerStateFactory::CreateJUMP()
 {
 	if (jump)
 		return jump;
-	TScriptInterface<IIPlayerState> temp = NewObject<AJUMP_A>();
+	IIPlayerState* temp = NewObject<AJUMP_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	jump = temp;
 	return jump;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateGROUNDED()
+IIPlayerState* UPlayerStateFactory::CreateGROUNDED()
 {
 	if (grounded)
 		return grounded;
-	TScriptInterface<IIPlayerState> temp = NewObject<AGROUNDED_A>();
+	IIPlayerState* temp = NewObject<AGROUNDED_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	grounded = temp;
 	return grounded;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateDRAWING()
+IIPlayerState* UPlayerStateFactory::CreateDRAWING()
 {
 	if (drawing)
 		return drawing;
-	TScriptInterface<IIPlayerState> temp = NewObject<ADRAWING_A>();
+	IIPlayerState* temp = NewObject<ADRAWING_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	drawing = temp;
 	return drawing;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateDEFENSELESS()
+IIPlayerState* UPlayerStateFactory::CreateDEFENSELESS()
 {
 	if (defenseless)
 		return defenseless;
-	TScriptInterface<IIPlayerState> temp = NewObject<ADEFENSELESS_A>();
+	IIPlayerState* temp = NewObject<ADEFENSELESS_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	defenseless = temp;
@@ -228,121 +228,121 @@ TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateDEFENSELESS()
 
 
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateD_WALK()
+IIPlayerState* UPlayerStateFactory::CreateD_WALK()
 {
 	if (d_Walk)
 		return d_Walk;
-	TScriptInterface<IIPlayerState> temp = NewObject<AD_WALK_A>();
+	IIPlayerState* temp = NewObject<AD_WALK_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	d_Walk = temp;
 	return d_Walk;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateCHARGINGATTACK()
+IIPlayerState* UPlayerStateFactory::CreateCHARGINGATTACK()
 {
 	if (chargeAttack)
 		return chargeAttack;
-	TScriptInterface<IIPlayerState> temp = NewObject<ACHARGINGATTACK_A>();
+	IIPlayerState* temp = NewObject<ACHARGINGATTACK_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	chargeAttack = temp;
 	return chargeAttack;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateATTACK()
+IIPlayerState* UPlayerStateFactory::CreateATTACK()
 {
 	if (attack)
 		return attack;
-	TScriptInterface<IIPlayerState> temp = NewObject<AATTACK_A>();
+	IIPlayerState* temp = NewObject<AATTACK_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	attack = temp;
 	return attack;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateHIT()
+IIPlayerState* UPlayerStateFactory::CreateHIT()
 {
 	if (hit)
 		return hit;
-	TScriptInterface<IIPlayerState> temp = NewObject<AHIT_A>();
+	IIPlayerState* temp = NewObject<AHIT_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot(true);
 	hit = temp;
 	return hit;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateNORMAL()
+IIPlayerState* UPlayerStateFactory::CreateNORMAL()
 {
 	if (normal)
 		return normal;
-	TScriptInterface<IIPlayerState> temp = NewObject<ANORMAL_A>();
+	IIPlayerState* temp = NewObject<ANORMAL_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot(true);
 	normal = temp;
 	return normal;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateINVINCIBILITY()
+IIPlayerState* UPlayerStateFactory::CreateINVINCIBILITY()
 {
 	if (invincibility)
 		return invincibility;
-	TScriptInterface<IIPlayerState> temp = NewObject<AINVINCIBILITY_A>();
+	IIPlayerState* temp = NewObject<AINVINCIBILITY_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot(true);
 	invincibility = temp;
 	return invincibility;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateSUPERARMOR()
+IIPlayerState* UPlayerStateFactory::CreateSUPERARMOR()
 {
 	if (superarmor)
 		return superarmor;
-	TScriptInterface<IIPlayerState> temp = NewObject<ASUPERARMOR_A>();
+	IIPlayerState* temp = NewObject<ASUPERARMOR_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot(true);
 	superarmor = temp;
 	return superarmor;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateD_Rest()
+IIPlayerState* UPlayerStateFactory::CreateD_Rest()
 {
 	if (d_rest)
 		return d_rest;
-	TScriptInterface<IIPlayerState> temp = NewObject<AD_REST_A>();
+	IIPlayerState* temp = NewObject<AD_REST_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	d_rest = temp;
 	return d_rest;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_Rest()
+IIPlayerState* UPlayerStateFactory::CreateS_Rest()
 {
 	if (s_rest)
 		return s_rest;
-	TScriptInterface<IIPlayerState> temp = NewObject<AS_REST_A>();
+	IIPlayerState* temp = NewObject<AS_REST_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	s_rest = temp;
 	return s_rest;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateKNOCKBACK()
+IIPlayerState* UPlayerStateFactory::CreateKNOCKBACK()
 {
 	if (knockback)
 		return knockback;
-	TScriptInterface<IIPlayerState> temp = NewObject<AKNOCKBACK_A>();
+	IIPlayerState* temp = NewObject<AKNOCKBACK_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	knockback = temp;
 	return knockback;
 }
 
-TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateSUPERCHARGINGATTACK()
+IIPlayerState* UPlayerStateFactory::CreateSUPERCHARGINGATTACK()
 {
 	if (superchargeattack)
 		return superchargeattack;
-	TScriptInterface<IIPlayerState> temp = NewObject<ASUPERCHARGINGATTACK_A>();
+	IIPlayerState* temp = NewObject<ASUPERCHARGINGATTACK_A>();
 	temp->SetInitalProperty(context, this);
 	temp->SetRoot();
 	superchargeattack = temp;

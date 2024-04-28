@@ -15,9 +15,9 @@ AINVINCIBILITY_A::AINVINCIBILITY_A()
 
 }
 
-//TScriptInterface<IIPlayerState> AINVINCIBILITY_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* AINVINCIBILITY_A::updateInput(ACCharacterPlayer& player)
 //{
-//	return TScriptInterface<IIPlayerState>();
+//	return IIPlayerState*();
 //}
 
 void AINVINCIBILITY_A::updateInput()

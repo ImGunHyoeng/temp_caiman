@@ -13,7 +13,7 @@ AD_IDLE_A::AD_IDLE_A()
 
 }
 
-//TScriptInterface<IIPlayerState> AD_IDLE_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* AD_IDLE_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (!player.GetAttacked())
 //	{

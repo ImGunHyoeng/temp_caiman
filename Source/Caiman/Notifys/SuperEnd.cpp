@@ -12,7 +12,7 @@ void USuperEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Anim
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (ASUPERARMOR_A* temp = Cast<ASUPERARMOR_A>(Player->getCurState().GetObject()))
+			if (ASUPERARMOR_A* temp = Cast<ASUPERARMOR_A>(Player->getCurState()))
 			{
 				temp->end = true;
 			}

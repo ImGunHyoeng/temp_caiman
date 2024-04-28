@@ -13,7 +13,7 @@ void UParringEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* An
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (APARRING_A* temp = Cast<APARRING_A>(Player->getCurState()->GetSubState().GetObject()))
+			if (APARRING_A* temp = Cast<APARRING_A>(Player->getCurState()->GetSubState()))
 			{
 				Player->SetParringEnd(true);
 				//Player->SetWaitFrame(2);

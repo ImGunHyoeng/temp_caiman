@@ -13,7 +13,7 @@ AS_WALK_A::AS_WALK_A()
 	PrimaryActorTick.bCanEverTick = false;
 }
 
-//TScriptInterface<IIPlayerState> AS_WALK_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* AS_WALK_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (player.getPlayerController()->IsInputKeyDown(EKeys::LeftShift))
 //	{

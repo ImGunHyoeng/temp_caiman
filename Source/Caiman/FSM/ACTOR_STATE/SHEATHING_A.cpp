@@ -15,7 +15,7 @@ ASHEATHING_A::ASHEATHING_A()
 
 }
 
-//TScriptInterface<IIPlayerState> ASHEATHING_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* ASHEATHING_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (player.GetWaitFrame() <= 0)
 //	{

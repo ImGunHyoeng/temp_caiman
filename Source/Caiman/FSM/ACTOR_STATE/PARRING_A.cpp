@@ -17,7 +17,7 @@ APARRING_A::APARRING_A()
 
 }
 
-//TScriptInterface<IIPlayerState> APARRING_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* APARRING_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (player.GetParringEnd() == true)
 //	{

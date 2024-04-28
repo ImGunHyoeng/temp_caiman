@@ -12,9 +12,9 @@ ASUPERARMOR_A::ASUPERARMOR_A()
 
 }
 
-//TScriptInterface<IIPlayerState> ASUPERARMOR_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* ASUPERARMOR_A::updateInput(ACCharacterPlayer& player)
 //{
-//	return TScriptInterface<IIPlayerState>();
+//	return IIPlayerState*();
 //}
 
 void ASUPERARMOR_A::updateInput()

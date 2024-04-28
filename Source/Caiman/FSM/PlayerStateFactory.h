@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include "CCharacterPlayer.h"
 #include "PlayerStateFactory.generated.h"
 
 /**
@@ -17,61 +17,61 @@ class CAIMAN_API UPlayerStateFactory : public UObject
 
 
 	//팩토리에서 변수생성해서 사용
-	TScriptInterface<IIPlayerState> attack;
-	TScriptInterface<IIPlayerState> chargeAttack;
-	TScriptInterface<IIPlayerState> d_Idle;
-	TScriptInterface<IIPlayerState> d_Walk;
-	TScriptInterface<IIPlayerState> defenseless;
-	TScriptInterface<IIPlayerState> drawing;
-	TScriptInterface<IIPlayerState> grounded;
-	TScriptInterface<IIPlayerState> hit;
-	TScriptInterface<IIPlayerState> invincibility;
-	TScriptInterface<IIPlayerState> jump;
-	TScriptInterface<IIPlayerState> jumpattack;
-	TScriptInterface<IIPlayerState> normal;
-	TScriptInterface<IIPlayerState> parring;
-	TScriptInterface<IIPlayerState> parringsuccess;
-	TScriptInterface<IIPlayerState> s_idle;
-	TScriptInterface<IIPlayerState> s_roll;
-	TScriptInterface<IIPlayerState> s_run;
-	TScriptInterface<IIPlayerState> s_walk;
-	TScriptInterface<IIPlayerState> sheathing;
-	TScriptInterface<IIPlayerState> superarmor;
-	TScriptInterface<IIPlayerState> s_rest;
-	TScriptInterface<IIPlayerState> d_rest;
-	TScriptInterface<IIPlayerState> knockback;
-	TScriptInterface<IIPlayerState> superchargeattack;
+	IIPlayerState* attack;
+	IIPlayerState* chargeAttack;
+	IIPlayerState* d_Idle;
+	IIPlayerState* d_Walk;
+	IIPlayerState* defenseless;
+	IIPlayerState* drawing;
+	IIPlayerState* grounded;
+	IIPlayerState* hit;
+	IIPlayerState* invincibility;
+	IIPlayerState* jump;
+	IIPlayerState* jumpattack;
+	IIPlayerState* normal;
+	IIPlayerState* parring;
+	IIPlayerState* parringsuccess;
+	IIPlayerState* s_idle;
+	IIPlayerState* s_roll;
+	IIPlayerState* s_run;
+	IIPlayerState* s_walk;
+	IIPlayerState* sheathing;
+	IIPlayerState* superarmor;
+	IIPlayerState* s_rest;
+	IIPlayerState* d_rest;
+	IIPlayerState* knockback;
+	IIPlayerState* superchargeattack;
 
 
 
 public:
 	UPROPERTY()
-	class ACCharacterPlayer* context;
-	void Set(class ACCharacterPlayer* input);
+	ACCharacterPlayer* context;
+	void Set(ACCharacterPlayer* input);
 	UPlayerStateFactory() {};
-	TScriptInterface<IIPlayerState>CreateS_IDLE();
-	TScriptInterface<IIPlayerState>CreateS_WALK();
-	TScriptInterface<IIPlayerState>CreateS_RUN();
-	TScriptInterface<IIPlayerState>CreateS_ROLL();
-	TScriptInterface<IIPlayerState>CreateSHEATHING();
-	TScriptInterface<IIPlayerState>CreatePARRINGSUCCESS();
-	TScriptInterface<IIPlayerState>CreatePARRING();
-	TScriptInterface<IIPlayerState>CreateJUMPATTACK();
-	TScriptInterface<IIPlayerState>CreateJUMP();
-	TScriptInterface<IIPlayerState>CreateGROUNDED();
-	TScriptInterface<IIPlayerState>CreateDRAWING();
-	TScriptInterface<IIPlayerState>CreateDEFENSELESS();
-	TScriptInterface<IIPlayerState>CreateD_WALK();
-	TScriptInterface<IIPlayerState>CreateD_IDLE();
-	TScriptInterface<IIPlayerState>CreateCHARGINGATTACK();
-	TScriptInterface<IIPlayerState>CreateATTACK();
-	TScriptInterface<IIPlayerState>CreateHIT();
-	TScriptInterface<IIPlayerState>CreateNORMAL();
-	TScriptInterface<IIPlayerState>CreateINVINCIBILITY();
-	TScriptInterface<IIPlayerState>CreateSUPERARMOR();
-	TScriptInterface<IIPlayerState>CreateD_Rest();
-	TScriptInterface<IIPlayerState>CreateS_Rest();
-	TScriptInterface<IIPlayerState>CreateKNOCKBACK();
-	TScriptInterface<IIPlayerState>CreateSUPERCHARGINGATTACK();
+	IIPlayerState*CreateS_IDLE();
+	IIPlayerState*CreateS_WALK();
+	IIPlayerState*CreateS_RUN();
+	IIPlayerState*CreateS_ROLL();
+	IIPlayerState*CreateSHEATHING();
+	IIPlayerState*CreatePARRINGSUCCESS();
+	IIPlayerState*CreatePARRING();
+	IIPlayerState*CreateJUMPATTACK();
+	IIPlayerState*CreateJUMP();
+	IIPlayerState*CreateGROUNDED();
+	IIPlayerState*CreateDRAWING();
+	IIPlayerState*CreateDEFENSELESS();
+	IIPlayerState*CreateD_WALK();
+	IIPlayerState*CreateD_IDLE();
+	IIPlayerState*CreateCHARGINGATTACK();
+	IIPlayerState*CreateATTACK();
+	IIPlayerState*CreateHIT();
+	IIPlayerState*CreateNORMAL();
+	IIPlayerState*CreateINVINCIBILITY();
+	IIPlayerState*CreateSUPERARMOR();
+	IIPlayerState*CreateD_Rest();
+	IIPlayerState*CreateS_Rest();
+	IIPlayerState*CreateKNOCKBACK();
+	IIPlayerState*CreateSUPERCHARGINGATTACK();
 	~UPlayerStateFactory();
 };

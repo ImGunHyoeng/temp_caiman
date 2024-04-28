@@ -13,7 +13,7 @@ void US_RestEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Ani
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (AS_REST_A* temp = Cast<AS_REST_A>(Player->getCurState()->GetSubState().GetObject()))
+			if (AS_REST_A* temp = Cast<AS_REST_A>(Player->getCurState()->GetSubState()))
 			{
 				temp->IsEnd = true;
 				//Player->SetWaitFrame(2);

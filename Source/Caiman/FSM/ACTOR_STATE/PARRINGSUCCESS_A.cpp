@@ -15,7 +15,7 @@ APARRINGSUCCESS_A::APARRINGSUCCESS_A()
 
 }
 
-//TScriptInterface<IIPlayerState> APARRINGSUCCESS_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* APARRINGSUCCESS_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (player.GetWaitFrame() < 0)
 //		return NewObject<AD_IDLE_A>();

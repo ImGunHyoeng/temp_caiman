@@ -22,7 +22,7 @@ class CAIMAN_API IIPlayerState
 {
 	GENERATED_BODY()
 public:
-	//virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player) = 0;	
+	//virtual IIPlayerState* updateInput(class ACCharacterPlayer& player) = 0;	
 	virtual void updateInput() {};
 	//virtual void update(class ACCharacterPlayer& player) = 0;
 	virtual void update() {};
@@ -34,29 +34,29 @@ public:
 	void EnterStates();
 	void ExitStates();
 
-	IIPlayerState():IIPlayerState(NULL,NULL) {}
-	IIPlayerState(ACCharacterPlayer *_ctx,UPlayerStateFactory*_factory) 
+	IIPlayerState() :IIPlayerState(NULL, NULL) {}
+	IIPlayerState(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory)
 	{
 		ctx = _ctx;
 		factory = _factory;
 	}
-	
-	void SetInitalProperty(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory);
+
+	void SetInitalProperty( ACCharacterPlayer* _ctx,  UPlayerStateFactory* _factory);
 
 	void SetRoot(bool _input = false);
 
-	void SwitchState(TScriptInterface<IIPlayerState> newState);
-	TScriptInterface<IIPlayerState> GetSubState();
+	void SwitchState(IIPlayerState* newState);
+	IIPlayerState* GetSubState();
 protected:
-	void SetSuperState(TScriptInterface<IIPlayerState> newSuperState);
+	void SetSuperState(IIPlayerState* newSuperState);
 
-	void SetSubState(TScriptInterface<IIPlayerState> newSubState);
+	void SetSubState(IIPlayerState* newSubState);
 
 	//UPROPERTY()
 	ACCharacterPlayer* ctx;
 	//UPROPERTY()
 	UPlayerStateFactory* factory;
-	TScriptInterface<IIPlayerState> currentSuperstate;
-	TScriptInterface<IIPlayerState> currentSubstate;
+	IIPlayerState* currentSuperstate;
+	IIPlayerState* currentSubstate;
 	bool isRootState;
 };

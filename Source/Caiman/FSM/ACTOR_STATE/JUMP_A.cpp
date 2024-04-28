@@ -14,7 +14,7 @@ AJUMP_A::AJUMP_A()
 
 }
 
-//TScriptInterface<IIPlayerState> AJUMP_A::updateInput(ACCharacterPlayer& ctx->
+//IIPlayerState* AJUMP_A::updateInput(ACCharacterPlayer& ctx->
 //{
 //	if (player.getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 //	{

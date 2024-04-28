@@ -12,7 +12,7 @@ void UChargeStart::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* A
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (ACHARGINGATTACK_A* temp = Cast<ACHARGINGATTACK_A>(Player->getCurState()->GetSubState().GetObject()))
+			if (ACHARGINGATTACK_A* temp = Cast<ACHARGINGATTACK_A>(Player->getCurState()->GetSubState()))
 			{
 				temp->ChangeDoing(Player);
 			}

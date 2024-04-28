@@ -11,9 +11,9 @@ AHIT_A::AHIT_A()
 
 }
 
-//TScriptInterface<IIPlayerState> AHIT_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* AHIT_A::updateInput(ACCharacterPlayer& player)
 //{
-//	return TScriptInterface<IIPlayerState>();
+//	return IIPlayerState*();
 //}
 
 void AHIT_A::updateInput()

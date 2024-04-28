@@ -14,7 +14,7 @@ AD_WALK_A::AD_WALK_A()
 
 }
 
-//TScriptInterface<IIPlayerState> AD_WALK_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* AD_WALK_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (player.GetMoveInputActionValue().GetMagnitude() < 0.1f)
 //	{

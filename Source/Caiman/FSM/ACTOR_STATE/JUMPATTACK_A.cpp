@@ -15,7 +15,7 @@ AJUMPATTACK_A::AJUMPATTACK_A()
 
 }
 //
-//TScriptInterface<IIPlayerState> AJUMPATTACK_A::updateInput(ACCharacterPlayer& player)
+//IIPlayerState* AJUMPATTACK_A::updateInput(ACCharacterPlayer& player)
 //{
 //	if (player.GetWaitFrame() <= 0)
 //	{

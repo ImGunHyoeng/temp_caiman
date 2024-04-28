@@ -57,8 +57,8 @@ public:
 	//void changeState(ECharacterState inState);
 	
 	
-	TScriptInterface<IIPlayerState> getCurState() { return curState; }
-	void setCurState(TScriptInterface<IIPlayerState> state) { curState = state; }
+	IIPlayerState* getCurState() { return curState; }
+	void setCurState(IIPlayerState* state) { curState = state; }
 	APlayerController* getPlayerController();
 	void SimulateSpaceKeyPress(const FName name);
 	void OnReleaseKey();
@@ -79,7 +79,7 @@ public:
 	//FORCEINLINE UKwangAnimInstance * GetKwangAnim() { return Cast<UKwangAnimInstance>(GetMesh()->GetAnimInstance()); }
 
 	//UFUNCTION(BlueprintCallable)
-	TScriptInterface<IIPlayerState> GetCurPlayerState();
+	IIPlayerState* GetCurPlayerState();
 
 	//기다리는 시간 계산
 	FORCEINLINE	const float GetWaitFrame() { return WaitFrame; }
@@ -262,7 +262,7 @@ protected:
 	TSubclassOf<ACMyWeapon> MyWeapon;
 	UPlayerStateFactory* stateFactory;
 private:
-	UPROPERTY(BlueprintReadOnly, Meta = (AllowPrivateAccess = "true"))
-	TScriptInterface<IIPlayerState> curState;
+
+	IIPlayerState* curState;
 
 };

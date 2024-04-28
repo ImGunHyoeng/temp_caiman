@@ -13,7 +13,7 @@ void UJumpAttackNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBa
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			if (AJUMPATTACK_A* temp = Cast<AJUMPATTACK_A>(Player->getCurState()->GetSubState().GetObject()))
+			if (AJUMPATTACK_A* temp = Cast<AJUMPATTACK_A>(Player->getCurState()->GetSubState()))
 			{
 				temp->end = true;
 			}

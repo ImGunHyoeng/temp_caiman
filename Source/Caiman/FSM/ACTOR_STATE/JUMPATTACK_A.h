@@ -19,7 +19,7 @@ public:
 	AJUMPATTACK_A
 	(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory) :IIPlayerState(_ctx, _factory)
 	{}
-	//virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
+	//virtual IIPlayerState* updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();
 	virtual void update();
 //	virtual void update(class ACCharacterPlayer& player);
