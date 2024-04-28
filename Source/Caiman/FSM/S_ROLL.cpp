@@ -24,7 +24,7 @@ void S_ROLL::update( ACCharacterPlayer& player)
 void S_ROLL::enter(ACCharacterPlayer& player)
 {
 	kwang = player.getAnimInstance();
-	player.PlayAnimMontage(player.GetRollMontage(), 1.0f, input);
+	player.PlayAnimMontage(player.GetRollMontage(), 1.0f);
 	player.SetWaitFrame(5);
 }
 
