@@ -7,7 +7,7 @@
 #include "FSM/IPlayerState.h"
 #include "PARRINGSUCCESS_A.generated.h"
 class ACCharacterPlayer;
-class PlayerStateFactory;
+class UPlayerStateFactory;
 UCLASS()
 class CAIMAN_API APARRINGSUCCESS_A : public AActor,public IIPlayerState
 {
@@ -16,7 +16,7 @@ class CAIMAN_API APARRINGSUCCESS_A : public AActor,public IIPlayerState
 public:	
 	// Sets default values for this actor's properties
 	APARRINGSUCCESS_A();
-	APARRINGSUCCESS_A(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory) :IIPlayerState(_ctx, _factory)
+	APARRINGSUCCESS_A(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory) :IIPlayerState(_ctx, _factory)
 	{}
 	//virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();

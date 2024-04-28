@@ -3,7 +3,7 @@
 
 #include "Notifys/DrawAnimState.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/AFSMCollection.h"
+#include "FSM/ACTOR_STATE/DRAWING_A.h"
 
 void UDrawAnimState::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {

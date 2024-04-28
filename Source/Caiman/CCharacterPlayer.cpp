@@ -56,7 +56,6 @@ ACCharacterPlayer::ACCharacterPlayer()
 
 ACCharacterPlayer::~ACCharacterPlayer()
 {
-	delete stateFactory;
 }
 
 void ACCharacterPlayer::BeginPlay()
@@ -94,7 +93,8 @@ void ACCharacterPlayer::BeginPlay()
 	//new S_IDLE()
 	//curState = NewObject<AS_IDLE_A>();
 	bIsSheath = true;
-	stateFactory = new PlayerStateFactory(this);
+	stateFactory = NewObject<UPlayerStateFactory>();
+	stateFactory->Set(this);
 	curState = stateFactory->CreateNORMAL();
 	curState->EnterStates();
 	
@@ -190,6 +190,10 @@ APlayerController* ACCharacterPlayer::getPlayerController()
 void ACCharacterPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (stateFactory->context == NULL)
+	{
+		stateFactory->Set(this);
+	}
 	//updateInput();
 	update();
 }

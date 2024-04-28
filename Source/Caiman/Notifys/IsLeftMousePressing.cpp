@@ -3,7 +3,7 @@
 
 #include "Notifys/IsLeftMousePressing.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/AFSMCollection.h"
+#include "FSM/ACTOR_STATE/ATTACK_A.h"
 #include "FSM\IPlayerState.h"
 void UIsLeftMousePressing::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {

@@ -6,7 +6,7 @@
 #include "AFSMCollection.h"
 #include "FSM/PlayerStateFactory.h"
 // Sets default values
-AATTACK_A::AATTACK_A(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory):IIPlayerState(_ctx,_factory)
+AATTACK_A::AATTACK_A(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory):IIPlayerState(_ctx,_factory)
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;

@@ -3,7 +3,7 @@
 
 #include "Notifys/DefenseLessEnd.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/AFSMCollection.h"
+#include "FSM/ACTOR_STATE/DEFENSELESS_A.h"
 
 void UDefenseLessEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {

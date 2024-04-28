@@ -3,7 +3,7 @@
 
 #include "Notifys/ParringEnd.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/AFSMCollection.h"
+#include "FSM/ACTOR_STATE/PARRING_A.h"
 
 void UParringEnd::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {

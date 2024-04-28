@@ -4,7 +4,7 @@
 #include "Notifys/AttackCheckNotify.h"
 #include "CCharacterPlayer.h"
 //#include "FSM/OBJECT_STATE/OFSMCollection.h"
-#include "FSM/ACTOR_STATE/AFSMCollection.h"
+#include "FSM/ACTOR_STATE/ATTACK_A.h"
 
 void UAttackCheckNotify::NotifyBegin(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, float TotalDuration, const FAnimNotifyEventReference& EventReference)
 {

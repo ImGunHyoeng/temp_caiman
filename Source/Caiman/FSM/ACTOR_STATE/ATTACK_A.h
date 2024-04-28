@@ -15,7 +15,7 @@ enum class EAttackState :uint8
 	, DOING
 };
 class ACCharacterPlayer;
-class PlayerStateFactory;
+class UPlayerStateFactory;
 UCLASS()
 class CAIMAN_API AATTACK_A : public AActor,public IIPlayerState
 {
@@ -24,7 +24,7 @@ class CAIMAN_API AATTACK_A : public AActor,public IIPlayerState
 public:	
 	// Sets default values for this actor's properties
 	AATTACK_A() :AATTACK_A(NULL, NULL) {}
-	AATTACK_A(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory);
+	AATTACK_A(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory);
 	//virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();
 	virtual void update();

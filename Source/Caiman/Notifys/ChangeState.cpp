@@ -3,7 +3,7 @@
 
 #include "Notifys/ChangeState.h"
 #include "CCharacterPlayer.h"
-#include "FSM/ACTOR_STATE/AFSMCollection.h"
+#include "FSM/ACTOR_STATE/CHARGINGATTACK_A.h"
 
 void UChangeState::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {

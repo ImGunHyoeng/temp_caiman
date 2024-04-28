@@ -17,7 +17,7 @@ class UIPlayerState : public UInterface
  * 
  */
 class ACCharacterPlayer;
-class PlayerStateFactory;
+class UPlayerStateFactory;
 class CAIMAN_API IIPlayerState
 {
 	GENERATED_BODY()
@@ -35,13 +35,13 @@ public:
 	void ExitStates();
 
 	IIPlayerState():IIPlayerState(NULL,NULL) {}
-	IIPlayerState(ACCharacterPlayer *_ctx,PlayerStateFactory*_factory) 
+	IIPlayerState(ACCharacterPlayer *_ctx,UPlayerStateFactory*_factory) 
 	{
 		ctx = _ctx;
 		factory = _factory;
 	}
 	
-	void SetInitalProperty(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory);
+	void SetInitalProperty(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory);
 
 	void SetRoot(bool _input = false);
 
@@ -55,7 +55,7 @@ protected:
 	//UPROPERTY()
 	ACCharacterPlayer* ctx;
 	//UPROPERTY()
-	PlayerStateFactory* factory;
+	UPlayerStateFactory* factory;
 	TScriptInterface<IIPlayerState> currentSuperstate;
 	TScriptInterface<IIPlayerState> currentSubstate;
 	bool isRootState;

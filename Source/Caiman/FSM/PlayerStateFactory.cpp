@@ -1,11 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "FSM/PlayerStateFactory.h"
 #include "FSM/IPlayerState.h"
 #include "FSM/ACTOR_STATE/AFSMCollection.h"
 #include "CCharacterPlayer.h"
-PlayerStateFactory::PlayerStateFactory(ACCharacterPlayer* input)
+void UPlayerStateFactory::Set(ACCharacterPlayer* input)
 {
 	context = input;
 	attack = NULL;
@@ -36,113 +34,133 @@ PlayerStateFactory::PlayerStateFactory(ACCharacterPlayer* input)
 
 }
 
-PlayerStateFactory::~PlayerStateFactory()
+UPlayerStateFactory::~UPlayerStateFactory()
 {
-	 attack->Destroy();
-	 chargeAttack->Destroy();
-	 d_Idle->Destroy();
-	 d_Walk->Destroy();
-	 defenseless->Destroy();
-	 drawing->Destroy();
-	 grounded->Destroy();
-	 hit->Destroy();
-	 drawing->Destroy();
-	 invincibility->Destroy();
-	 jump->Destroy();
-	 jumpattack->Destroy();
-	 normal->Destroy();
-	 parring->Destroy();
-	 parringsuccess->Destroy();
-	 s_idle->Destroy();
-	 s_roll->Destroy();
-	 s_run->Destroy();
-	 s_walk->Destroy();
-	 sheathing->Destroy();
-	 superarmor->Destroy();
-	 s_rest->Destroy();
-	 d_rest->Destroy();
-	 knockback->Destroy();
-	 superchargeattack->Destroy();
+	if (attack)
+		attack->Destroy();
+	if (chargeAttack)
+		chargeAttack->Destroy();
+	if (d_Idle)
+		d_Idle->Destroy();
+	if (d_Walk)
+		d_Walk->Destroy();
+	if (defenseless)
+		defenseless->Destroy();
+	if (drawing)
+		drawing->Destroy();
+	if (grounded)
+		grounded->Destroy();
+	if (hit)
+		hit->Destroy();
+	if (drawing)
+		drawing->Destroy();
+	if (invincibility)
+		invincibility->Destroy();
+	if (jump)
+		jump->Destroy();
+	if (jumpattack)
+		jumpattack->Destroy();
+	if (normal)
+		normal->Destroy();
+	if (parring)
+		parring->Destroy();
+	if (parringsuccess)
+		parringsuccess->Destroy();
+	if (s_idle)
+		s_idle->Destroy();
+	if (s_roll)
+		s_roll->Destroy();
+	if (s_run)
+		s_run->Destroy();
+	if (s_walk)
+		s_walk->Destroy();
+	if (sheathing)
+		sheathing->Destroy();
+	if (superarmor)
+		superarmor->Destroy();
+	if (s_rest)
+		s_rest->Destroy();
+	if (d_rest)
+		d_rest->Destroy();
+	if (knockback)
+		knockback->Destroy();
+	if (superchargeattack)
+		superchargeattack->Destroy();
+
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_IDLE()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_IDLE()
 {
 	if (s_idle)
 		return s_idle;
-	TScriptInterface<IIPlayerState> temp = NewObject<AS_IDLE_A>();
-	temp->SetInitalProperty(context, this);
-	temp->SetRoot();
-	s_idle = temp;
+	s_idle = NewObject<AS_IDLE_A>();
+	s_idle->SetInitalProperty(context, this);
+	s_idle->SetRoot();
 	return s_idle;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateD_IDLE()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateD_IDLE()
 {
 	if (d_Idle)
 		return d_Idle;
-	TScriptInterface<IIPlayerState> temp = NewObject<AD_IDLE_A>();
-	temp->SetInitalProperty(context, this);
-	temp->SetRoot();
-	d_Idle = temp;
+	d_Idle = NewObject<AD_IDLE_A>();
+	d_Idle->SetInitalProperty(context, this);
+	d_Idle->SetRoot();
 	return d_Idle;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_WALK()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_WALK()
 {
 	if (s_walk)
 		return s_walk;
-	TScriptInterface<IIPlayerState> temp = NewObject<AS_WALK_A>();
-	temp->SetInitalProperty(context, this);
-	temp->SetRoot();
-	s_walk = temp;
+	s_walk = NewObject<AS_WALK_A>();
+	s_walk->SetInitalProperty(context, this);
+	s_walk->SetRoot();
 	return s_walk;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_RUN()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_RUN()
 {
 	if (s_run)
 		return s_run;
-	TScriptInterface<IIPlayerState> temp = NewObject<AS_RUN_A>();
-	temp->SetInitalProperty(context, this);
-	temp->SetRoot();
-	s_run = temp;
+	s_run = NewObject<AS_RUN_A>();
+	s_run->SetInitalProperty(context, this);
+	s_run->SetRoot();
 	return s_run;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_ROLL()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_ROLL()
 {
 	if (s_roll)
 		return s_roll;
-	TScriptInterface<IIPlayerState> temp = NewObject<AS_ROLL_A>();
-	temp->SetInitalProperty(context, this);
-	temp->SetRoot();
-	s_roll = temp;
+	s_roll = NewObject<AS_ROLL_A>();
+	s_roll->SetInitalProperty(context, this);
+	s_roll->SetRoot();
 	return s_roll;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateSHEATHING()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateSHEATHING()
 {
 	if (sheathing)
 		return sheathing;
-	TScriptInterface<IIPlayerState> temp = NewObject<ASHEATHING_A>();
-	temp->SetInitalProperty(context, this);
-	temp->SetRoot();
-	sheathing = temp;
+	sheathing = NewObject<ASHEATHING_A>();
+	sheathing->SetInitalProperty(context, this);
+	sheathing->SetRoot();
 	return sheathing;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreatePARRINGSUCCESS()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreatePARRINGSUCCESS()
 {
 	if (parringsuccess)
 		return parringsuccess;
-	TScriptInterface<IIPlayerState> temp = NewObject<APARRINGSUCCESS_A>();
-	temp->SetInitalProperty(context, this);
-	temp->SetRoot();
-	parringsuccess = temp;
+	parringsuccess = NewObject<APARRINGSUCCESS_A>();
+	parringsuccess->SetInitalProperty(context, this);
+	parringsuccess->SetRoot();
+	parringsuccess = parringsuccess;
 	return parringsuccess;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreatePARRING()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreatePARRING()
 {
 	if (parring)
 		return parring;
@@ -153,7 +171,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreatePARRING()
 	return parring;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateJUMPATTACK()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateJUMPATTACK()
 {
 	if (jumpattack)
 		return jumpattack;
@@ -164,7 +182,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateJUMPATTACK()
 	return jumpattack;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateJUMP()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateJUMP()
 {
 	if (jump)
 		return jump;
@@ -175,7 +193,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateJUMP()
 	return jump;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateGROUNDED()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateGROUNDED()
 {
 	if (grounded)
 		return grounded;
@@ -186,7 +204,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateGROUNDED()
 	return grounded;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateDRAWING()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateDRAWING()
 {
 	if (drawing)
 		return drawing;
@@ -197,7 +215,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateDRAWING()
 	return drawing;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateDEFENSELESS()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateDEFENSELESS()
 {
 	if (defenseless)
 		return defenseless;
@@ -210,7 +228,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateDEFENSELESS()
 
 
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateD_WALK()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateD_WALK()
 {
 	if (d_Walk)
 		return d_Walk;
@@ -221,7 +239,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateD_WALK()
 	return d_Walk;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateCHARGINGATTACK()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateCHARGINGATTACK()
 {
 	if (chargeAttack)
 		return chargeAttack;
@@ -232,7 +250,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateCHARGINGATTACK()
 	return chargeAttack;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateATTACK()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateATTACK()
 {
 	if (attack)
 		return attack;
@@ -243,7 +261,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateATTACK()
 	return attack;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateHIT()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateHIT()
 {
 	if (hit)
 		return hit;
@@ -254,7 +272,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateHIT()
 	return hit;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateNORMAL()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateNORMAL()
 {
 	if (normal)
 		return normal;
@@ -265,7 +283,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateNORMAL()
 	return normal;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateINVINCIBILITY()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateINVINCIBILITY()
 {
 	if (invincibility)
 		return invincibility;
@@ -276,7 +294,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateINVINCIBILITY()
 	return invincibility;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateSUPERARMOR()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateSUPERARMOR()
 {
 	if (superarmor)
 		return superarmor;
@@ -287,7 +305,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateSUPERARMOR()
 	return superarmor;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateD_Rest()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateD_Rest()
 {
 	if (d_rest)
 		return d_rest;
@@ -298,7 +316,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateD_Rest()
 	return d_rest;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_Rest()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateS_Rest()
 {
 	if (s_rest)
 		return s_rest;
@@ -309,7 +327,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateS_Rest()
 	return s_rest;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateKNOCKBACK()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateKNOCKBACK()
 {
 	if (knockback)
 		return knockback;
@@ -320,7 +338,7 @@ TScriptInterface<IIPlayerState> PlayerStateFactory::CreateKNOCKBACK()
 	return knockback;
 }
 
-TScriptInterface<IIPlayerState> PlayerStateFactory::CreateSUPERCHARGINGATTACK()
+TScriptInterface<IIPlayerState> UPlayerStateFactory::CreateSUPERCHARGINGATTACK()
 {
 	if (superchargeattack)
 		return superchargeattack;

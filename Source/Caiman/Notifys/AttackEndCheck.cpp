@@ -4,7 +4,7 @@
 #include "Notifys/AttackEndCheck.h"
 #include "CCharacterPlayer.h"
 //#include "FSM/OBJECT_STATE/ATTACK_O.h"
-#include "FSM/ACTOR_STATE/AFSMCollection.h"
+#include "FSM/ACTOR_STATE/ATTACK_A.h"
 #include "FSM\IPlayerState.h"
 void UAttackEndCheck::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {

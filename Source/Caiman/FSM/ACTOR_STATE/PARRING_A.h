@@ -7,7 +7,7 @@
 #include "FSM/IPlayerState.h"
 #include "PARRING_A.generated.h"
 class ACCharacterPlayer;
-class PlayerStateFactory;
+class UPlayerStateFactory;
 
 UCLASS()
 class CAIMAN_API APARRING_A : public AActor,public IIPlayerState
@@ -17,7 +17,7 @@ class CAIMAN_API APARRING_A : public AActor,public IIPlayerState
 public:	
 	// Sets default values for this actor's properties
 	APARRING_A();
-	APARRING_A(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory) :IIPlayerState(_ctx, _factory)
+	APARRING_A(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory) :IIPlayerState(_ctx, _factory)
 	{}
 	//virtual TScriptInterface<IIPlayerState> updateInput(class ACCharacterPlayer& player);
 	virtual void updateInput();

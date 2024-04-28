@@ -5,7 +5,7 @@
 #include "CCharacterPlayer.h"
 // Add default functionality here for any IIPlayerState functions that are not pure virtual.
 
-void IIPlayerState::SetInitalProperty(ACCharacterPlayer* _ctx, PlayerStateFactory* _factory)
+void IIPlayerState::SetInitalProperty(ACCharacterPlayer* _ctx, UPlayerStateFactory* _factory)
 {
 	
 	ctx = _ctx;
@@ -50,6 +50,11 @@ void IIPlayerState::SetSubState(TScriptInterface<IIPlayerState> newSubState)
 
 void IIPlayerState::UpdateStates()
 {
+	if (this==NULL)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Null"));
+		return;
+	}
 	update();
 	if (currentSubstate == NULL)
 		return;
@@ -58,6 +63,11 @@ void IIPlayerState::UpdateStates()
 
 void IIPlayerState::EnterStates()
 {
+	if (this == NULL)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Null"));
+		return;
+	}
 	enter();
 	if (currentSubstate == NULL)
 		return;
@@ -66,6 +76,11 @@ void IIPlayerState::EnterStates()
 
 void IIPlayerState::ExitStates()
 {
+	if (this == NULL)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Null"));
+		return;
+	}
 	exit();
 	if (currentSubstate == NULL)
 		return;

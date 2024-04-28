@@ -3,15 +3,18 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UObject/NoExportTypes.h"
+#include "PlayerStateFactory.generated.h"
 
 /**
  * 
  */
 class IIPlayerState;
-class CAIMAN_API PlayerStateFactory
+UCLASS()
+class CAIMAN_API UPlayerStateFactory : public UObject
 {
-	UPROPERTY()
-	class ACCharacterPlayer* context;
+	GENERATED_BODY()
+
 
 	//팩토리에서 변수생성해서 사용
 	TScriptInterface<IIPlayerState> attack;
@@ -40,9 +43,12 @@ class CAIMAN_API PlayerStateFactory
 	TScriptInterface<IIPlayerState> superchargeattack;
 
 
-	
+
 public:
-	PlayerStateFactory(class ACCharacterPlayer* input);
+	UPROPERTY()
+	class ACCharacterPlayer* context;
+	void Set(class ACCharacterPlayer* input);
+	UPlayerStateFactory() {};
 	TScriptInterface<IIPlayerState>CreateS_IDLE();
 	TScriptInterface<IIPlayerState>CreateS_WALK();
 	TScriptInterface<IIPlayerState>CreateS_RUN();
@@ -67,5 +73,5 @@ public:
 	TScriptInterface<IIPlayerState>CreateS_Rest();
 	TScriptInterface<IIPlayerState>CreateKNOCKBACK();
 	TScriptInterface<IIPlayerState>CreateSUPERCHARGINGATTACK();
-	~PlayerStateFactory();
+	~UPlayerStateFactory();
 };
