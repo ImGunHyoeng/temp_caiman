@@ -6,6 +6,9 @@
 #include "AnimInstance\KwangAnimInstance.h"
 #include "Kismet/GameplayStatics.h"
 #include "FSM/PlayerStateFactory.h"
+#include "Components/AttributeComponent.h"
+#include "HUD/PlayerHUD.h"
+#include "HUD/PlayerOverlay.h"
 
 void UJUMPATTACK_O::updateInput()
 {
@@ -35,10 +38,15 @@ void UJUMPATTACK_O::enter()
 		kwang->setJumpAttack();
 	}
 	end = false;
+	ctx->SetUsingStamina(true);
+	ctx->GetAttribute()->UseStamina(ctx->GetAttribute()->GetAttackCost());
+	ctx->GetHUD()->SetStaminaBarPercent(ctx->GetAttribute()->GetStaminaPercent());
 }
 
 void UJUMPATTACK_O::exit()
 {
+	ctx->SetUsingStamina(false);
+	kwang->setJumpAttackEnd();
 	end = false;
 }
 

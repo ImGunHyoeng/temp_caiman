@@ -118,7 +118,7 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		//UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),player)
 		if (Hit)
 		{
-			Hit->Execute_GetHit(result.GetActor(), result.ImpactPoint);
+			Hit->Execute_GetHit(result.GetActor(), result.ImpactPoint, GetOwner());
 		}
 	}
 	//

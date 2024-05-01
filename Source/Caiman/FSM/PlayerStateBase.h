@@ -42,9 +42,7 @@ protected:
 
 	void SetSubState(UPlayerStateBase* newSubState);
 
-	//UPROPERTY()
 	ACCharacterPlayer* ctx;
-	//UPROPERTY()
 	UPlayerStateFactory* factory;
 	UPlayerStateBase* currentSuperstate;
 	UPlayerStateBase* currentSubstate;

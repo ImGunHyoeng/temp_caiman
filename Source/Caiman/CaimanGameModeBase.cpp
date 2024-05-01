@@ -2,6 +2,7 @@
 
 
 #include "CaimanGameModeBase.h"
+#include "GameFramework/HUD.h"
 
 ACaimanGameModeBase::ACaimanGameModeBase()
 {
@@ -15,6 +16,12 @@ ACaimanGameModeBase::ACaimanGameModeBase()
 	if (PlayerControllerClassRef.Class)
 	{
 		PlayerControllerClass = PlayerControllerClassRef.Class;
+	}
+
+	static ConstructorHelpers::FClassFinder<AHUD> HUDClassRef(TEXT("/Game/HUD/BP_PlayerHUD.BP_PlayerHUD_C"));
+	if (HUDClassRef.Class)
+	{
+		HUDClass = HUDClassRef.Class;
 	}
 
 	

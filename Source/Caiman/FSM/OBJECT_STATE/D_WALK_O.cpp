@@ -5,6 +5,7 @@
 #include "CCharacterPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "FSM/PlayerStateFactory.h"
+#include "Components/AttributeComponent.h"
 
 void UD_WALK_O::updateInput()
 {
@@ -15,23 +16,35 @@ void UD_WALK_O::updateInput()
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
 	{
-		ctx->StopMove();
-		ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+		if (ctx->HasEnoughStamina(ctx->GetAttribute()->GetRollCost()))
+		{
+			ctx->StopMove();
+			ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+			
+		}
 		return;
 	}
 	if (ctx->GetMoveInputActionValue().GetMagnitude() < 0.1f)
 	{
 		SwitchState(factory->CreateD_IDLE());
+		return;
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 	{
-		//ctx->SetWaitFrame(70);
-		SwitchState(factory->CreateATTACK());
+
+		if (ctx->HasEnoughStamina(ctx->GetAttribute()->GetAttackCost()))
+		{
+
+			//ctx->SetWaitFrame(70);
+			SwitchState(factory->CreateATTACK());
+		}
+		return;
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{
 		ctx->Sheath();
 		SwitchState(factory->CreateSHEATHING());
+		return;
 	}
 }
 

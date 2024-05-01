@@ -34,6 +34,9 @@ enum class ECharacterState :uint8
  */
 class UPlayerStateFactory;
 class ACMyWeapon;
+class UAttributeComponent;
+class UHealthBarComponent;
+class UPlayerOverlay;
 UCLASS()
 class CAIMAN_API ACCharacterPlayer : public ACCharacterBase,public IHitInterface
 {
@@ -93,6 +96,7 @@ public:
 	//공통적인 행동(보고,움직이고,칼 빼기)
 	void Look(const FInputActionValue& Value);
 	void Move(const FInputActionValue& Value);
+	void QuickRotate(const FInputActionValue& Value);
 	void StopMove();
 	void Draw();
 	void NoAnimDraw();
@@ -106,8 +110,10 @@ public:
 	//UParticleSystem* GetNormalAttackParticle() { return NormalAttackParticle; }
 	//void SetAttackParticle(UParticleSystem* set) { AttackParticle = set; }
 
-	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint,AActor* Offense) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	void SetRagdollPhysics();
 
 	FORCEINLINE void SetParring(bool input) { bIsParring = input; }
 	FORCEINLINE bool GetParring() { return bIsParring; }
@@ -127,6 +133,14 @@ public:
 
 	FORCEINLINE bool IsAttack() { return bIsAttack; }
 	FORCEINLINE void SetAttack(bool input) { bIsAttack = input; }
+
+
+	//속성
+	FORCEINLINE UAttributeComponent *GetAttribute() { return Attributes; }
+	FORCEINLINE UPlayerOverlay *GetHUD() { return PlayerOverlay; }
+	FORCEINLINE void SetUsingStamina(bool input) { bIsUsingStamina = input; }
+	
+	bool HasEnoughStamina(float Cost);
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetNaiagra();
 	UFUNCTION(BlueprintImplementableEvent)
@@ -188,6 +202,7 @@ protected:
 	//UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	//UInputAction* JumpAction;*/
 	virtual void BeginPlay() override;
+
 	virtual void Tick(float DeltaTime) override;
 
 
@@ -236,6 +251,7 @@ protected:
 	uint32 bIsSheath : 1;
 	uint32 bIsAttack : 1;
 	uint32 bIsDefenseLess : 1;
+	uint32 bIsUsingStamina : 1;
 
 
 	ACMyWeapon* Weapon;
@@ -264,5 +280,11 @@ protected:
 private:
 
 	UPlayerStateBase* curState;
-
+	UPROPERTY(VisibleAnywhere)
+	UAttributeComponent* Attributes;
+	UPROPERTY(VisibleAnywhere)
+	UHealthBarComponent* HealthBarWidget;
+	UPROPERTY()
+	UPlayerOverlay* PlayerOverlay;
+	void InitializePlayerOverlay();
 };

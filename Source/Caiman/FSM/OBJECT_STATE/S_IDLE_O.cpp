@@ -5,13 +5,17 @@
 #include "CCharacterPlayer.h"
 #include "AnimInstance\KwangAnimInstance.h"
 #include "FSM/PlayerStateFactory.h"
+#include "Components/AttributeComponent.h"
 
 void US_IDLE_O::updateInput()
 {
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
 	{
-		ctx->StopMove();
-		ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+		if (ctx->HasEnoughStamina(ctx->GetAttribute()->GetRollCost()))
+		{
+			ctx->StopMove();
+			ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+		}
 		return;
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))

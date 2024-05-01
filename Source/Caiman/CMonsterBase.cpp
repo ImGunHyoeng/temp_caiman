@@ -7,6 +7,9 @@
 #include "Camera/CameraComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/AttributeComponent.h"
+#include "Components/WidgetComponent.h"
+#include "Components/HealthBarComponent.h"
 
 // Sets default values
 ACMonsterBase::ACMonsterBase()
@@ -38,6 +41,9 @@ ACMonsterBase::ACMonsterBase()
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;//걷는 최대 속도
 	GetCharacterMovement()->MinAnalogWalkSpeed = 20.0f;
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.0f;//걷기 완화 속도
+	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attribute"));
+	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
+	HealthBarWidget->SetupAttachment(RootComponent);
 
 }
 
@@ -60,6 +66,7 @@ void ACMonsterBase::BeginPlay()
 	bIsRunAwayDone = false;
 	attackType = 0;
 	healcount = 0;
+	HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
 }
 
 // Called every frame
@@ -76,7 +83,7 @@ void ACMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	
 }
 
-void ACMonsterBase::GetHit_Implementation(const FVector& ImpactPoint)
+void ACMonsterBase::GetHit_Implementation(const FVector& ImpactPoint, AActor* Offense)
 {
 	DrawDebugSphere(GetWorld(), ImpactPoint, 20, 32, FColor::Red, true);
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
@@ -90,8 +97,9 @@ float ACMonsterBase::InternalTakePointDamage(float Damage, FPointDamageEvent con
 	if (bIsAlredyDie)
 		return damage;
 	UAnimMontage* animSelction=nullptr;
-	hp-=damage;
-	bIsLive = hp > 0.0f;
+	Attributes->ReceiveDamage(damage);
+	bIsLive = Attributes->IsAlive();
+	HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
 	animSelction = bIsLive ? AM_Hited : AM_Dead;
 	PlayAnimMontage(animSelction);
 

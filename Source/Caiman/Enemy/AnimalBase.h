@@ -94,7 +94,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
 	//int hp;
-	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Offense) override;
 	
 	FVector  spawnpoint;
 	FVector  targetLocation;

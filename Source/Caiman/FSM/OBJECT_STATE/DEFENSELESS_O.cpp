@@ -10,7 +10,7 @@ void UDEFENSELESS_O::updateInput()
 {
 	if (ctx->GetDefenseLess() == true)
 	{
-		SwitchState(factory->CreateD_IDLE());
+		ctx->GetCurPlayerState()->SwitchState(factory->CreateNORMAL());
 		return;
 	}
 }

@@ -17,8 +17,10 @@ public:
 	virtual void updateInput() override;
 	virtual void update() override;
 	virtual void enter() override;
+	void RunTimerEnd();
 	virtual void exit() override;
 	virtual void Destroy() override;
 	virtual void InitializeSubState() override;
+	FTimerHandle runTimer;
 
 };

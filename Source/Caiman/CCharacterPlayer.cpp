@@ -21,8 +21,10 @@
 #include "NiagaraSystem.h"
 #include "FSM/PlayerStateFactory.h"
 #include "FSM/OBJECT_STATE/OFSMCollection.h"
-
-
+#include "Components/AttributeComponent.h"
+#include "Components/HealthBarComponent.h"
+#include "HUD/PlayerHUD.h"
+#include "HUD/PlayerOverlay.h"
 
 
 
@@ -52,6 +54,10 @@ ACCharacterPlayer::ACCharacterPlayer()
 	WaitFrame = 0;
 	//bTrigger = false;
 	PrimaryActorTick.bCanEverTick = true;
+	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attribute"));
+	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
+	HealthBarWidget->SetupAttachment(RootComponent);
+
 }
 
 ACCharacterPlayer::~ACCharacterPlayer()
@@ -62,6 +68,7 @@ void ACCharacterPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	//player키 입력
+	InitializePlayerOverlay();
 	
 	//KeyMappingArray = PlayerContext->GetMappings();
 	FName WeaponSocket(TEXT("S_Sheath"));
@@ -75,7 +82,7 @@ void ACCharacterPlayer::BeginPlay()
 		Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponSocket);
 	}
 
-	PlayerController = CastChecked<APlayerController>(GetController());
+	
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(PlayerContext, 0);
@@ -88,19 +95,35 @@ void ACCharacterPlayer::BeginPlay()
 	MoveActionBinding = &EnhancedInputComponent->BindActionValue(MovementAction);
 	LookActionBinding = &EnhancedInputComponent->BindActionValue(LookAction);
 	
-	//AS_IDLE_NEWA* d = new (EInternal::New)AS_IDLE_NEWA(); //new US_IDLE_NEW();
-	//curState =NewObject<US_IDLE_NEW>();//new S_IDLE();
-	//new S_IDLE()
-	//curState = NewObject<AS_IDLE_A>();
 	bIsSheath = true;
 	stateFactory = NewObject<UPlayerStateFactory>();
 	stateFactory->Set(this);
+	stateFactory->AddToRoot();
 	curState = stateFactory->CreateNORMAL();
 	curState->EnterStates();
 	
 	//curState = stateFactory->CreateS_IDLE();
 	//curState = NewObject<AS_IDLE_NEWA>();
 	//new S_IDLE();
+}
+
+void ACCharacterPlayer::InitializePlayerOverlay()
+{
+	PlayerController = CastChecked<APlayerController>(GetController());
+	if (PlayerController)
+	{
+		APlayerHUD* PlayerHUD = Cast<APlayerHUD>(PlayerController->GetHUD());
+		if (PlayerHUD)
+		{
+			PlayerOverlay = PlayerHUD->GetPlayerOverlay();
+			if (PlayerOverlay)
+			{
+				PlayerOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());
+				PlayerOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());
+			}
+		}
+
+	}
 }
 
 
@@ -194,6 +217,14 @@ void ACCharacterPlayer::Tick(float DeltaTime)
 	//{
 	//	stateFactory->Set(this);
 	//}
+	if (Attributes)
+	{
+		if (!bIsUsingStamina)
+		{
+			Attributes->RegenStamina(DeltaTime);
+			PlayerOverlay->SetStaminaBarPercent(Attributes->GetStaminaPercent());
+		}
+	}
 	update();
 }
 void ACCharacterPlayer::update()
@@ -266,6 +297,24 @@ void ACCharacterPlayer::Move(const FInputActionValue& Value)
 	
 }
 
+void ACCharacterPlayer::QuickRotate(const FInputActionValue& Value)
+{
+
+	FVector2D MovementVector = Value.Get<FVector2D>();
+
+
+	const FRotator Rotation = Controller->GetControlRotation();
+	const FRotator YawRotation(0, Rotation.Yaw, 0);
+
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+
+	AddMovementInput(ForwardDirection, MovementVector.X * moveSpeed);
+	AddMovementInput(RightDirection, MovementVector.Y * moveSpeed);
+
+}
+
 void ACCharacterPlayer::StopMove()
 {
 	AddMovementInput(FVector::ZeroVector, 0.0f);
@@ -300,7 +349,7 @@ void ACCharacterPlayer::NoAnimSheath()
 	Weapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("S_Sheath"));
 }
 
-void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
+void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint, AActor* Offense)
 {
 	if (bIsParring)//패링시에 상태 설정해줌
 	{
@@ -311,13 +360,17 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 			return;
 		}
 	}
+	if (Cast<USUPERARMOR_O>(curState))
+		return;
+	if (Cast<UINVINCIBILITY_O>(curState))
+		return;
 	if (Cast<UHIT_O>(curState))
 		return;
 	curState->SwitchState(stateFactory->CreateHIT());
 	UKNOCKBACK_O* temp = Cast<UKNOCKBACK_O>(curState->GetSubState());
 	if (temp)
 	{
-		temp->SetPoint(ImpactPoint);
+		temp->SetPoint(Offense->GetTransform().GetLocation());
 		temp->Start();
 	}
 
@@ -326,7 +379,64 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint)
 float ACCharacterPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	if (Cast<UNORMAL_O>(curState))
+	{
+		Attributes->ReceiveDamage(Damage);
+		if (Attributes->IsAlive())
+			PlayerOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());
+		else
+			SetRagdollPhysics();
+	}
 	return Damage;
+}
+void ACCharacterPlayer::SetRagdollPhysics()
+{
+	bool bInRagdoll;
+	USkeletalMeshComponent* Mesh3P = GetMesh();
+
+	if (!IsValid(this))
+	{
+		bInRagdoll = false;
+	}
+	else if (!Mesh3P || !Mesh3P->GetPhysicsAsset())
+	{
+		bInRagdoll = false;
+	}
+	else
+	{
+		Mesh3P->SetAllBodiesSimulatePhysics(true);
+		Mesh3P->SetSimulatePhysics(true);
+		Mesh3P->WakeAllRigidBodies();
+		Mesh3P->bBlendPhysics = true;
+
+		bInRagdoll = true;
+	}
+
+	UCharacterMovementComponent* CharacterComp = Cast<UCharacterMovementComponent>(GetMovementComponent());
+	if (CharacterComp)
+	{
+		CharacterComp->StopMovementImmediately();
+		CharacterComp->DisableMovement();
+		CharacterComp->SetComponentTickEnabled(false);
+	}
+
+	if (!bInRagdoll)
+	{
+		// Immediately hide the pawn
+		TurnOff();
+		SetActorHiddenInGame(true);
+		SetLifeSpan(1.0f);
+	}
+	else
+	{
+		SetLifeSpan(10.0f);
+	}
+}
+
+
+bool ACCharacterPlayer::HasEnoughStamina(float Cost)
+{
+	return Attributes->GetStaminaPercent() > (Cost/Attributes->GetMaxStamina());
 }
 
 

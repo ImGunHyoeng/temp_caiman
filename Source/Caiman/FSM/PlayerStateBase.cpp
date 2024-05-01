@@ -62,6 +62,7 @@ void UPlayerStateBase::SwitchState(UPlayerStateBase* newState)
 {
 	ExitStates();
 	newState->EnterStates();
+	UE_LOG(LogTemp, Warning, TEXT("Switch Call"));
 	if (isRootState)
 		ctx->setCurState(newState);
 	else if (currentSuperstate != NULL)

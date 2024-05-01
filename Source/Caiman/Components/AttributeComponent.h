@@ -24,9 +24,17 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void ReceiveDamage(float Damage);
+	void UseStamina(float StaminaCost);
 
 	float GetHealthPercent();
+	float GetStaminaPercent();
+	void RegenStamina(float DeltaTime);
 	bool IsAlive();
+
+	FORCEINLINE float GetRollCost()const { return RollCost; }
+	FORCEINLINE float GetRunCost()const { return RunCost; }
+	FORCEINLINE float GetAttackCost()const { return AttackCost; }
+	FORCEINLINE float GetMaxStamina()const { return MaxStamina; }
 private:
 	UPROPERTY(EditAnywhere,Category="Attributes")
 	float Health;
@@ -34,6 +42,21 @@ private:
 	UPROPERTY(EditAnywhere,Category="Attributes")
 	float MaxHealth;
 	
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	float Stamina;
 
-		
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	float MaxStamina;
+
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	float RollCost=16;
+
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	float AttackCost = 8;
+
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	float RunCost = 5;
+
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	float StaminaRegenRate = 6;
 };

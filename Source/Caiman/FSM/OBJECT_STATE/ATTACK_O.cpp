@@ -4,6 +4,9 @@
 #include "FSM/OBJECT_STATE/ATTACK_O.h"
 #include "CCharacterPlayer.h"
 #include "FSM/PlayerStateFactory.h"
+#include "Components/AttributeComponent.h"
+#include "HUD/PlayerHUD.h"
+#include "HUD/PlayerOverlay.h"
 
 UATTACK_O::UATTACK_O()
 {
@@ -43,10 +46,15 @@ void UATTACK_O::update()
 	{
 		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 		{
-			curAttackState = EAttackState::DOING;
-			//DoingTime = 100;
-			//ctx->SetWaitFrame(60);
-			ctx->PlayAnimMontage(ctx->GetAttackMontage(), 1.0f, "Attack_2_2");
+			if (ctx->HasEnoughStamina(ctx->GetAttribute()->GetAttackCost()))
+			{
+				ctx->GetAttribute()->UseStamina(ctx->GetAttribute()->GetAttackCost());
+				ctx->GetHUD()->SetStaminaBarPercent(ctx->GetAttribute()->GetStaminaPercent());
+				curAttackState = EAttackState::DOING;
+				//DoingTime = 100;
+				//ctx->SetWaitFrame(60);
+				ctx->PlayAnimMontage(ctx->GetAttackMontage(), 1.0f, "Attack_2_2");
+			}
 		}
 	}
 	updateInput();
@@ -58,11 +66,15 @@ void UATTACK_O::enter()
 	curAttackState = EAttackState::DOING;
 	ctx->PlayAnimMontage(ctx->GetAttackMontage(), 1.0f, "Attack_2_1");
 	changeCharge = false;
+	ctx->GetAttribute()->UseStamina(ctx->GetAttribute()->GetAttackCost());
+	ctx->GetHUD()->SetStaminaBarPercent(ctx->GetAttribute()->GetStaminaPercent());
+	ctx->SetUsingStamina(true);
 }
 
 void UATTACK_O::exit()
 {
 	ctx->SetAttack(false);
+	ctx->SetUsingStamina(false);
 }
 
 void UATTACK_O::Destroy()

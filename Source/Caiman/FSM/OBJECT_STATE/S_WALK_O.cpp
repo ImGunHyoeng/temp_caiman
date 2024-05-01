@@ -5,19 +5,25 @@
 #include "CCharacterPlayer.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "FSM/PlayerStateFactory.h"
-
+#include "Components/AttributeComponent.h"
 
 void US_WALK_O::updateInput()
 {
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
 	{
-		ctx->StopMove();
-		ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+		if (ctx->HasEnoughStamina(ctx->GetAttribute()->GetRollCost()))
+		{
+			ctx->StopMove();
+			ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+		}
 		return;
 	}
 	if (ctx->getPlayerController()->IsInputKeyDown(EKeys::LeftShift))
 	{
-		SwitchState(factory->CreateS_RUN());
+		if (ctx->HasEnoughStamina(ctx->GetAttribute()->GetRunCost()))
+		{
+			SwitchState(factory->CreateS_RUN());
+		}
 		return;
 	}
 	if (ctx->GetMoveInputActionValue().GetMagnitude() < 0.1f)

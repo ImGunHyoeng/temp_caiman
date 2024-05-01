@@ -6,6 +6,9 @@
 #include "CCharacterPlayer.h"
 #include "OFSMCollection.h"
 #include "FSM/PlayerStateFactory.h"
+#include "Components/AttributeComponent.h"
+#include "HUD/PlayerHUD.h"
+#include "HUD/PlayerOverlay.h"
 
 void US_ROLL_O::updateInput()
 {
@@ -31,12 +34,16 @@ void US_ROLL_O::enter()
 	isRoll = true;
 	ctx->PlayAnimMontage(ctx->GetRollMontage(), 1.0f, input);
 	end = false;
+	ctx->GetAttribute()->UseStamina(ctx->GetAttribute()->GetRollCost());
+	ctx->GetHUD()->SetStaminaBarPercent(ctx->GetAttribute()->GetStaminaPercent());
+	ctx->SetUsingStamina(true);
 }
 
 void US_ROLL_O::exit()
 {
 	isRoll = true;
 	end = false;
+	ctx->SetUsingStamina(false);
 }
 
 void US_ROLL_O::Destroy()

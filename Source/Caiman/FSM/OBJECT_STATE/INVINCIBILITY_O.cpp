@@ -5,6 +5,7 @@
 #include "AnimInstance\KwangAnimInstance.h"
 #include "CCharacterPlayer.h"
 #include "FSM/PlayerStateFactory.h"
+#include "Components/AttributeComponent.h"
 
 void UINVINCIBILITY_O::updateInput()
 {
@@ -35,6 +36,7 @@ void UINVINCIBILITY_O::InitializeSubState()
 {
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
 	{
+		
 		ctx->StopMove();
 		SetSubState(factory->CreateS_ROLL());
 		return;

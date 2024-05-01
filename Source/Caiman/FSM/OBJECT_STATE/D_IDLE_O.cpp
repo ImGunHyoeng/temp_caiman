@@ -5,6 +5,7 @@
 #include "FSM/PlayerStateFactory.h"
 #include "CCharacterPlayer.h"
 #include "AnimInstance\KwangAnimInstance.h"
+#include "Components/AttributeComponent.h"
 
 void UD_IDLE_O::updateInput()
 {
@@ -15,9 +16,13 @@ void UD_IDLE_O::updateInput()
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftControl))
 	{
-		ctx->StopMove();
-		ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
-		return;
+		if (ctx->HasEnoughStamina(ctx->GetAttribute()->GetRollCost()))
+		{
+			
+			ctx->StopMove();
+			ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+			return;
+		}
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
 	{
@@ -37,8 +42,11 @@ void UD_IDLE_O::updateInput()
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 	{
-		//ctx->SetWaitFrame(70);
-		SwitchState(factory->CreateATTACK());
+		if (ctx->HasEnoughStamina(ctx->GetAttribute()->GetAttackCost()))
+		{
+			//ctx->SetWaitFrame(70);
+			SwitchState(factory->CreateATTACK());
+		}
 		return;
 	}
 }

@@ -6,14 +6,19 @@
 #include "GameFramework\CharacterMovementComponent.h"
 #include "AnimInstance/KwangAnimInstance.h"
 #include "FSM/PlayerStateFactory.h"
+#include "Components/AttributeComponent.h"
 
 void UJUMP_O::updateInput()
 {
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
 	{
-		ctx->NoAnimDraw();
-		//return NewObject<AJUMPATTACK_A>();
-		SwitchState(factory->CreateJUMPATTACK());
+
+		if (ctx->HasEnoughStamina(ctx->GetAttribute()->GetAttackCost()))
+		{
+			ctx->NoAnimDraw();
+			//return NewObject<AJUMPATTACK_A>();
+			SwitchState(factory->CreateJUMPATTACK());
+		}
 		return;
 	}
 	if (!(ctx->GetCharacterMovement()->IsFalling()))

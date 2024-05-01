@@ -23,6 +23,7 @@ public:
 	virtual void Destroy() override;
 	virtual void InitializeSubState() override;
 	bool end;
+	bool can;
 	FVector ParticlePoint;
 	void SetPoint(const FVector& ImpactPoint);
 	void Start();

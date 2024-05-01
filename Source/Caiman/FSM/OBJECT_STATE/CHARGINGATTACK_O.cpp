@@ -69,13 +69,6 @@ void UCHARGINGATTACK_O::update()
 	{
 		ctx->Move(ctx->GetMoveInputActionValue());
 		WaitTime -= FApp::GetDeltaTime() * 4;
-		/*	if(!player.GetMesh()->GetAnimInstance()->Montage_IsPlaying(
-		))
-				player.PlayAnimMontage(player.GetChargeAttackMontage(), 1.0f, "ChargeAttackLoop");*/
-				//이런식으로 현재 몽타주가 플레이 중인지 확인하고 값을 가져와준다.
-				/*GetMesh()->GetAnimInstance()->Montage_IsPlaying(NULL)
-				//UAnimMontage::isplay*/
-
 	}
 	break;
 	case EChargeAttackState::DONE:

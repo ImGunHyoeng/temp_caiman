@@ -7,6 +7,8 @@
 #include "Hit\HitInterface.h"
 #include "CMonsterBase.generated.h"
 
+class UAttributeComponent;
+class UHealthBarComponent;
 UCLASS()
 class CAIMAN_API ACMonsterBase : public ACharacter,public IHitInterface
 {
@@ -14,6 +16,10 @@ class CAIMAN_API ACMonsterBase : public ACharacter,public IHitInterface
 	
 		uint32 bIsAlredyDie : 1;
 		float hp;
+	UPROPERTY(VisibleAnywhere)
+	UAttributeComponent* Attributes;
+	UPROPERTY(VisibleAnywhere)
+	UHealthBarComponent* HealthBarWidget;
 public:
 	// Sets default values for this character's properties
 	ACMonsterBase();
@@ -35,7 +41,7 @@ public:
 	uint32 bIsLive : 1;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	uint32 bIsHeal : 1;
-	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
+	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Offense) override;
 	
 	UParticleSystem* GetParticle() { return HittedParticle; }
 	UPROPERTY(EditAnywhere, Category = VisualEffect)

@@ -443,15 +443,15 @@ float AAnimalBase::GetDegree(FVector dir)
 	return result;
 }
 
-void AAnimalBase::GetHit_Implementation(const FVector& ImpactPoint)
+void AAnimalBase::GetHit_Implementation(const FVector& ImpactPoint, AActor* Offense)
 {
 	//DrawDebugSphere(GetWorld(), ImpactPoint, 20, 32, FColor::Red, true);
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
 	//hp -= 10;
 	if (Attributes->IsAlive())
-		HitReact(ImpactPoint);
+		HitReact(Offense->GetTransform().GetLocation());
 	else
-		DeadReact(ImpactPoint);
+		DeadReact(Offense->GetTransform().GetLocation());
 
 	//PlayAnimMontage(AM_Hitted, 1, Section);
 }
