@@ -37,6 +37,7 @@ class ACMyWeapon;
 class UAttributeComponent;
 class UHealthBarComponent;
 class UPlayerOverlay;
+class UInventoryComponent;
 UCLASS()
 class CAIMAN_API ACCharacterPlayer : public ACCharacterBase,public IHitInterface
 {
@@ -170,6 +171,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	UInputAction* RollAction;
+	
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
+	UInputAction* InventoryAction;
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	TObjectPtr<class UInputAction> AttackAction;
@@ -282,6 +286,8 @@ private:
 	UPlayerStateBase* curState;
 	UPROPERTY(VisibleAnywhere)
 	UAttributeComponent* Attributes;
+	UPROPERTY(VisibleAnywhere)
+	UInventoryComponent* InventoryWidget;
 	UPROPERTY(VisibleAnywhere)
 	UHealthBarComponent* HealthBarWidget;
 	UPROPERTY()

@@ -4,7 +4,7 @@
 #include "CTraceComponent.h"
 #include "CMonsterBase.h"
 #include "Kismet/GameplayStatics.h"
-#include "CMyWeapon.h"
+#include "Item/CMyWeapon.h"
 #include "EngineUtils.h"
 #include "Hit/HitInterface.h"
 #include "CCharacterPlayer.h"
@@ -51,6 +51,7 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		attackObj.Reset();
 		return;
 	}
+	attackObj.Add(GetOwner()->GetOwner());
 	start = WeaponMesh->GetSocketLocation(FName("Start"));
 	end = WeaponMesh->GetSocketLocation(FName("End"));
 	dir = end - start;
@@ -113,7 +114,7 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		if (attackObj.Contains<AActor*>(result.GetActor()))
 			return;
 		attackObj.Add(result.GetActor());
-		UGameplayStatics::ApplyPointDamage(result.GetActor(), temp->getDamage(), result.ImpactNormal, result, GetWorld()->GetFirstPlayerController(), GetOwner(), nullptr);
+		UGameplayStatics::ApplyPointDamage(result.GetActor(), temp->getPower(), result.ImpactNormal, result, GetWorld()->GetFirstPlayerController(), GetOwner(), nullptr);
 		IHitInterface* Hit=Cast<IHitInterface>(result.GetActor());
 		//UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),player)
 		if (Hit)

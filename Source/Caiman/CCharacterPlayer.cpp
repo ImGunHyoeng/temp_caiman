@@ -8,7 +8,7 @@
 #include "InputMappingContext.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Math/UnrealMathUtility.h"
-#include "CMyWeapon.h"
+#include "Item/CMyWeapon.h"
 #include "Components/SceneComponent.h"
 #include "InputCore.h"
 #include "TimerManager.h"
@@ -25,6 +25,8 @@
 #include "Components/HealthBarComponent.h"
 #include "HUD/PlayerHUD.h"
 #include "HUD/PlayerOverlay.h"
+#include "Components/InventoryComponent.h"
+
 
 
 
@@ -55,6 +57,7 @@ ACCharacterPlayer::ACCharacterPlayer()
 	//bTrigger = false;
 	PrimaryActorTick.bCanEverTick = true;
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attribute"));
+	InventoryWidget = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(RootComponent);
 
@@ -75,6 +78,7 @@ void ACCharacterPlayer::BeginPlay()
 	if (MyWeapon)
 	{
 		Weapon = GetWorld()->SpawnActor<ACMyWeapon>(MyWeapon, FVector::ZeroVector, FRotator::ZeroRotator);
+		Weapon->SetOwner(this);
 	}
 	//무기 손에 붙이기
 	if (Weapon)
@@ -456,10 +460,10 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	// InputAction과 InputMappingContext를 연결
 	EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
+	EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Triggered, InventoryWidget, &UInventoryComponent::ShowInventory);
 
 	//EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	//기본 움직임 가능
-	//EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Look);
 
 	//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
 
