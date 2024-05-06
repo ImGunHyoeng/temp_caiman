@@ -16,17 +16,16 @@ public:
 	// Sets default values for this actor's properties
 	AItemBase();
 
-	UPROPERTY(VisibleAnywhere, Category = Mesh)
-	USkeletalMeshComponent* Mesh;
-	UPROPERTY(VisibleAnywhere, Category = Values)
+	UPROPERTY(BlueprintReadWrite,EditAnywhere, Category = Mesh)
+	UStaticMeshComponent* Mesh;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Values)
 	float Power;
-	UFUNCTION(BlueprintPure)
-	float getPower() const { return Power; }
 
-	UFUNCTION(BlueprintCallable)
-	void setPower(float input) { Power = input; }
-	UPROPERTY(EditAnywhere, Category = Data)
-	FItemSlot Item;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = Data)
+	FItemSlot  Item;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UDataTable* Items;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

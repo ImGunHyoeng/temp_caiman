@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "InputActionValue.h"
+#include "DataBase/ItemData.h"
 #include "InventoryComponent.generated.h"
 
 
@@ -16,17 +17,35 @@ class CAIMAN_API UInventoryComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UInventoryComponent();
-	UPROPERTY(EditAnywhere, Category = Input)
+	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputMappingContext* PlayerContext;
 
-	UPROPERTY(EditAnywhere, Category =Money)
+	UPROPERTY(EditAnywhere, Category ="Money")
 	int MoneyAmount;
 
 	UPROPERTY(EditAnywhere, Category = "Widget")
 	TSubclassOf<UUserWidget> ItemWidgetClass;
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<UUserWidget> InteractionClass;
 	UPROPERTY()
 	class UItemWidget* ItemWidget;
+	UPROPERTY()
+	class UItemWidget* InteractionWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
+	FAllItem allitem ;
+	//TSharedPtr<class UItemWidget> ItemWidgetPtr;
 	void ShowInventory(const FInputActionValue& Value);
+	bool TraceItemToPickUp();
+	bool AddToInventory(class AItemBase *input);
+	void InteractionKeyDown(const FInputActionValue& Value);
+	APlayerController* Controller;
+	ACharacter* Character;
+	TArray<FHitResult> outResults;
+	FCollisionShape mySphere;
+	class AItemBase* item;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UDataTable* Items;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

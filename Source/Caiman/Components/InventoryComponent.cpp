@@ -4,29 +4,106 @@
 #include "Components/InventoryComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "HUD/ItemWidget.h"
+#include "Item/ItemBase.h"
+#include "GameFramework/Character.h"
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
+	static ConstructorHelpers::FObjectFinder<UDataTable> ItemDataObject(TEXT("/Game/DATABASE/DT_ItemTable.DT_ItemTable"));
+	if (ItemDataObject.Succeeded())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("DataTable Succeed!"));
+		Items = ItemDataObject.Object;
+	}
 	// ...
 }
 
 void UInventoryComponent::ShowInventory(const FInputActionValue& Value)
 {
-	UWorld* World = GetWorld();
-	if (World)
+	if (Controller)
 	{
-		APlayerController* Controller = World->GetFirstPlayerController();
-		if (Controller)
-		{
-			//PlayerOverlay = CreateWidget<UPlayerOverlay>(Controller, PlayerOverlayClass);
-			ItemWidget->AddToViewport();
-			Controller->SetShowMouseCursor(true);
-		}
+		ItemWidget->AddToViewport();
+		Controller->SetShowMouseCursor(true);
+		FInputModeGameAndUI InputMode;
+		InputMode.SetWidgetToFocus(ItemWidget->GetCachedWidget());
+		Controller->SetInputMode(InputMode);
+	}
+}
 
+bool UInventoryComponent::TraceItemToPickUp()
+{
+	FVector start= Character->GetActorLocation() - FVector(0, 0, 60);
+	FVector end = (Character->GetActorLocation() - FVector(0, 0, 60))+ Character->GetActorForwardVector() * 200;
+	mySphere = FCollisionShape::MakeSphere(30);
+	//DrawDebugCapsule(GetWorld(),(start+end)/2,15)
+	GetWorld()->SweepMultiByChannel(outResults, start, end, FQuat::Identity, ECollisionChannel::ECC_PhysicsBody, mySphere);
+	for (const auto& result : outResults)
+	{
+		item = Cast<AItemBase>(result.GetActor());
+		if (item)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Item name: %s"), *item->Item.ItemID.RowName.ToString());
+			return true;
+		}	
+	}
+	return false;
+	
+	
+}
+
+bool UInventoryComponent::AddToInventory(AItemBase* input)
+{
+	switch (item->Item.type)
+	{
+	case EItemTypes::Item:
+	{
+		for (auto & index : allitem.Items)
+		{
+			//배열상에 해당하는 아이템이 이미 존재하는가
+			if (index.ItemID.RowName == input->Item.ItemID.RowName)
+			{
+				
+				FItemDataBase* ItemData = Items->FindRow<FItemDataBase>(input->Item.ItemID.RowName, FString(""));
+				if (ItemData)
+				{
+					if (ItemData->StackSize >= index.Quantity + input->Item.Quantity)
+					{
+						index.ItemID = input->Item.ItemID;
+						index.type = input->Item.type;
+						index.Quantity += input->Item.Quantity;
+					}
+				}
+				return true;
+			}
+		}
+		for (auto& index : allitem.Items)
+		{
+			if (index.Quantity == 0)
+			{
+				index.ItemID = input->Item.ItemID;
+				index.type = input->Item.type;
+				index.Quantity += input->Item.Quantity;
+				return true;
+			}
+		}
+		return false;
+		
+		//index.Quantity += input->Item.Quantity;
+	}
+	default:
+		return false;
+	}
+}
+
+void UInventoryComponent::InteractionKeyDown(const FInputActionValue& Value)
+{
+	if (TraceItemToPickUp())
+	{
+		if(AddToInventory(item))
+			item->Destroy();
 	}
 }
 
@@ -39,7 +116,24 @@ void UInventoryComponent::BeginPlay()
 	{
 		Subsystem->AddMappingContext(PlayerContext, 1);
 	}
-	ItemWidget=Cast<UItemWidget>(CreateWidget(GetWorld(), ItemWidgetClass));
+	ItemWidget = CreateWidget<UItemWidget>(GetWorld(), ItemWidgetClass);
+	InteractionWidget = CreateWidget<UItemWidget>(GetWorld(), InteractionClass);
+	
+	UWorld* World = GetWorld();
+	if (World)
+	{
+		Controller = World->GetFirstPlayerController();
+	}
+	if (Controller)
+	{
+		Character = Controller->GetCharacter();
+	}
+	allitem.Armors.SetNum(5);
+	allitem.Swords.SetNum(3);//Reserve(3);
+	allitem.Items.SetNum(15);
+		
+
+	//ItemWidget=Cast<UItemWidget>(CreateWidget(GetWorld(), ItemWidgetClass));
 	
 }
 
@@ -55,7 +149,13 @@ void UInventoryComponent::BeginPlay()
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
+	if (!TraceItemToPickUp())
+	{
+		InteractionWidget->RemoveFromParent();
+		return;
+	}
+	
+	InteractionWidget->AddToViewport();
 	// ...
 }
 

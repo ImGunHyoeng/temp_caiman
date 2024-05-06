@@ -176,6 +176,9 @@ protected:
 	UInputAction* InventoryAction;
 
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
+	UInputAction* InteractionAction;
+
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Input)
 	TObjectPtr<class UInputAction> AttackAction;
 
 	//몽타주

@@ -11,7 +11,7 @@ UENUM(BlueprintType)
 enum class EItemTypes : uint8 
 { Weapon UMETA(DisplayName = "Weapon"),
   Armor UMETA(DisplayName = "Armor"), 
-  Eatable UMETA(DisplayName = "Eatable") };
+  Item UMETA(DisplayName = "Item") };
 
 USTRUCT(BlueprintType)
 struct FItemDataBase : public FTableRowBase
@@ -24,6 +24,9 @@ struct FItemDataBase : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	FString Description;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	UTexture2D * Thumbnail;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	int StackSize;
@@ -43,14 +46,27 @@ struct FItemSlot : public FTableRowBase
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	FDataTableRowHandle Name;
+	FDataTableRowHandle ItemID;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	int Quantity;
+	int Quantity=0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	EItemTypes type;
 
+};
+
+USTRUCT(BlueprintType)
+struct FAllItem : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TArray<FItemSlot> Swords;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TArray<FItemSlot> Armors;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	TArray<FItemSlot> Items;
 };
 UCLASS()
 class CAIMAN_API AItemData : public AActor

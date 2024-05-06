@@ -22,7 +22,8 @@ public class Caiman : ModuleRules
 			"EnhancedInput",
 			"Niagara",
 			"AIModule", 
-			"GameplayTasks"
+			"GameplayTasks",
+			"UMG"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

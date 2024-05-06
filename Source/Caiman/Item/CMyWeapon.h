@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Item/ItemBase.h"
+#include "GameFramework/Actor.h"
 #include "CMyWeapon.generated.h"
 
 class UCTraceComponent;
 UCLASS()
-class CAIMAN_API ACMyWeapon : public AItemBase
+class CAIMAN_API ACMyWeapon : public AActor
 {
 	GENERATED_BODY()
 	
@@ -26,8 +26,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(VisibleAnywhere, Category = Mesh)
+	USkeletalMeshComponent* Mesh;
+	UPROPERTY(VisibleAnywhere, Category = Values)
+	float Power;
+	UFUNCTION(BlueprintPure)
+	float getPower() const { return Power; }
 
-
+	UFUNCTION(BlueprintCallable)
+	void setPower(float input) { Power = input; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UCTraceComponent* trace;
