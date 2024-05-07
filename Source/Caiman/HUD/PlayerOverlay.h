@@ -15,6 +15,7 @@ class CAIMAN_API UPlayerOverlay : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	UFUNCTION(BlueprintCallable)
 	void SetHealthBarPercent(float Percent);
 	void SetStaminaBarPercent(float Percent);
 private:

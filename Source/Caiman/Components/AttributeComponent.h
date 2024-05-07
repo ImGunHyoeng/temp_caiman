@@ -23,10 +23,14 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	UFUNCTION(BlueprintCallable)
 	void ReceiveDamage(float Damage);
+	UFUNCTION(BlueprintCallable)
 	void UseStamina(float StaminaCost);
 
+	UFUNCTION(BlueprintCallable)
 	float GetHealthPercent();
+	UFUNCTION(BlueprintCallable)
 	float GetStaminaPercent();
 	void RegenStamina(float DeltaTime);
 	bool IsAlive();

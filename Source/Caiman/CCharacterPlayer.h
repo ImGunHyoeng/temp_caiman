@@ -147,6 +147,7 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void DeActiveNaiagra();
 
+
 protected:
 
 	FKey key;
@@ -284,16 +285,19 @@ protected:
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	TSubclassOf<ACMyWeapon> MyWeapon;
 	UPlayerStateFactory* stateFactory;
-private:
 
-	UPlayerStateBase* curState;
-	UPROPERTY(VisibleAnywhere)
+
+private:
+	//컴포넌트
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	UAttributeComponent* Attributes;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	UInventoryComponent* InventoryWidget;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	UHealthBarComponent* HealthBarWidget;
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Meta = (AllowPrivateAccess = true))
 	UPlayerOverlay* PlayerOverlay;
+	UPlayerStateBase* curState;
+
 	void InitializePlayerOverlay();
 };

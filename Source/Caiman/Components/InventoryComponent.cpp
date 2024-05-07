@@ -6,6 +6,7 @@
 #include "HUD/ItemWidget.h"
 #include "Item/ItemBase.h"
 #include "GameFramework/Character.h"
+#include "Misc/OutputDeviceNull.h"
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
@@ -21,7 +22,7 @@ UInventoryComponent::UInventoryComponent()
 	// ...
 }
 
-void UInventoryComponent::ShowInventory(const FInputActionValue& Value)
+void UInventoryComponent::ShowInventory()
 {
 	if (Controller)
 	{
@@ -98,12 +99,17 @@ bool UInventoryComponent::AddToInventory(AItemBase* input)
 	}
 }
 
-void UInventoryComponent::InteractionKeyDown(const FInputActionValue& Value)
+
+void UInventoryComponent::InteractionKeyDown_Implementation()
 {
 	if (TraceItemToPickUp())
 	{
-		if(AddToInventory(item))
+		if (AddToInventory(item))
+		{
 			item->Destroy();
+			/*FOutputDeviceNull Ar;
+			CallFunctionByNameWithArguments(TEXT("UpdateItemsInventoryUI"), Ar, nullptr, true);*/
+		}
 	}
 }
 
@@ -131,7 +137,7 @@ void UInventoryComponent::BeginPlay()
 	allitem.Armors.SetNum(5);
 	allitem.Swords.SetNum(3);//Reserve(3);
 	allitem.Items.SetNum(15);
-		
+	ShowInventory();
 
 	//ItemWidget=Cast<UItemWidget>(CreateWidget(GetWorld(), ItemWidgetClass));
 	

@@ -27,17 +27,20 @@ public:
 	TSubclassOf<UUserWidget> ItemWidgetClass;
 	UPROPERTY(EditAnywhere, Category = "Widget")
 	TSubclassOf<UUserWidget> InteractionClass;
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, Category = "Widget")
 	class UItemWidget* ItemWidget;
-	UPROPERTY()
+	UPROPERTY(BlueprintReadOnly, Category = "Widget")
 	class UItemWidget* InteractionWidget;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
 	FAllItem allitem ;
 	//TSharedPtr<class UItemWidget> ItemWidgetPtr;
-	void ShowInventory(const FInputActionValue& Value);
+	void ShowInventory();
 	bool TraceItemToPickUp();
 	bool AddToInventory(class AItemBase *input);
-	void InteractionKeyDown(const FInputActionValue& Value);
+	
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Function")
+	void InteractionKeyDown();
+	//void InteractionKeyDown(const FInputActionValue& Value);
 	APlayerController* Controller;
 	ACharacter* Character;
 	TArray<FHitResult> outResults;

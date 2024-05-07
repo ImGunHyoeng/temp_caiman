@@ -461,7 +461,7 @@ void ACCharacterPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	// InputAction과 InputMappingContext를 연결
 	EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	EnhancedInputComponent->BindAction(InventoryAction, ETriggerEvent::Triggered, InventoryWidget, &UInventoryComponent::ShowInventory);
-	EnhancedInputComponent->BindAction(InteractionAction, ETriggerEvent::Triggered, InventoryWidget, &UInventoryComponent::InteractionKeyDown);
+	//EnhancedInputComponent->BindAction(InteractionAction, ETriggerEvent::Triggered, InventoryWidget, &UInventoryComponent::InteractionKeyDown);
 	//EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ACCharacterPlayer::Jump);
 	//EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent);
 	//기본 움직임 가능
