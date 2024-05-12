@@ -20,9 +20,10 @@ void UKNOCKBACK_O::updateInput()
 			{
 				ctx->StopAnimMontage();
 				currentSuperstate->SwitchState(factory->CreateINVINCIBILITY());
+				return;
 			}
 		}
-		return;
+		
 	}
 	if (end)
 	{

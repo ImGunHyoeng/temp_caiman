@@ -23,6 +23,12 @@ void UD_IDLE_O::updateInput()
 			ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
 			return;
 		}
+		if (!ctx->HasEnoughStamina(ctx->GetAttribute()->GetRollCost()))
+		{
+			ctx->StopMove();
+			SwitchState(factory->CreateDEFENSELESS());
+			return;
+		}
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
 	{
@@ -46,8 +52,15 @@ void UD_IDLE_O::updateInput()
 		{
 			//ctx->SetWaitFrame(70);
 			SwitchState(factory->CreateATTACK());
+			return;
 		}
-		return;
+		if (!ctx->HasEnoughStamina(ctx->GetAttribute()->GetAttackCost()))
+		{
+			ctx->StopMove();
+			SwitchState(factory->CreateDEFENSELESS());
+			return;
+		}
+		
 	}
 }
 

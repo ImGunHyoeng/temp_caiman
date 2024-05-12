@@ -19,10 +19,10 @@ public:
 	void SetHealthBarPercent(float Percent);
 	void SetStaminaBarPercent(float Percent);
 private:
-	UPROPERTY(meta=(BindWidget))
+	UPROPERTY(BlueprintReadOnly,meta=(BindWidget, AllowPrivateAccess = true))
 	UProgressBar* HealthBar;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly,meta = (BindWidget, AllowPrivateAccess = true))
 	UProgressBar* StaminaBar;
 	
 };

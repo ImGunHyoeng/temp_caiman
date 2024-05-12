@@ -15,8 +15,15 @@ void US_IDLE_O::updateInput()
 		{
 			ctx->StopMove();
 			ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
+			return;
 		}
-		return;
+		
+		if (!ctx->HasEnoughStamina(ctx->GetAttribute()->GetRollCost()))
+		{
+			ctx->StopMove();
+			SwitchState(factory->CreateDEFENSELESS());
+			return;
+		}
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::SpaceBar))
 	{

@@ -20,9 +20,15 @@ void UD_WALK_O::updateInput()
 		{
 			ctx->StopMove();
 			ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());
-			
+			return;
 		}
-		return;
+		
+		if (!ctx->HasEnoughStamina(ctx->GetAttribute()->GetRollCost()))
+		{
+			ctx->StopMove();
+			SwitchState(factory->CreateDEFENSELESS());
+			return;
+		}
 	}
 	if (ctx->GetMoveInputActionValue().GetMagnitude() < 0.1f)
 	{
@@ -37,8 +43,15 @@ void UD_WALK_O::updateInput()
 
 			//ctx->SetWaitFrame(70);
 			SwitchState(factory->CreateATTACK());
+			return;
 		}
-		return;
+		if (!ctx->HasEnoughStamina(ctx->GetAttribute()->GetAttackCost()))
+		{
+			ctx->StopMove();
+			SwitchState(factory->CreateDEFENSELESS());
+			return;
+		}
+		
 	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::R))
 	{

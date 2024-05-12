@@ -37,8 +37,8 @@ void UInventoryComponent::ShowInventory()
 bool UInventoryComponent::TraceItemToPickUp()
 {
 	FVector start= Character->GetActorLocation() - FVector(0, 0, 60);
-	FVector end = (Character->GetActorLocation() - FVector(0, 0, 60))+ Character->GetActorForwardVector() * 200;
-	mySphere = FCollisionShape::MakeSphere(30);
+	FVector end = (Character->GetActorLocation() - FVector(0, 0, 60))+ Character->GetActorForwardVector() * 300;
+	mySphere = FCollisionShape::MakeSphere(40);
 	//DrawDebugCapsule(GetWorld(),(start+end)/2,15)
 	GetWorld()->SweepMultiByChannel(outResults, start, end, FQuat::Identity, ECollisionChannel::ECC_PhysicsBody, mySphere);
 	for (const auto& result : outResults)
@@ -136,7 +136,7 @@ void UInventoryComponent::BeginPlay()
 	}
 	allitem.Armors.SetNum(5);
 	allitem.Swords.SetNum(3);//Reserve(3);
-	allitem.Items.SetNum(15);
+	allitem.Items.SetNum(24);
 	ShowInventory();
 
 	//ItemWidget=Cast<UItemWidget>(CreateWidget(GetWorld(), ItemWidgetClass));

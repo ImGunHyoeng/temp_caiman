@@ -36,9 +36,6 @@ struct FItemDataBase : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 	float Power;
-
-
-
 };
 USTRUCT(BlueprintType)
 struct FItemSlot : public FTableRowBase

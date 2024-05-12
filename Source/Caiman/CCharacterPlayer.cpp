@@ -389,7 +389,10 @@ float ACCharacterPlayer::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 		if (Attributes->IsAlive())
 			PlayerOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());
 		else
+		{
+			PlayerOverlay->SetHealthBarPercent(0);
 			SetRagdollPhysics();
+		}
 	}
 	return Damage;
 }
