@@ -5,6 +5,7 @@
 #include "GameFramework\CharacterMovementComponent.h"
 #include "CCharacterPlayer.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/Actor.h"
 
 void UKwangAnimInstance::NativeBeginPlay()
 {
@@ -28,6 +29,9 @@ void UKwangAnimInstance::NativeUpdateAnimation(float DeltaTime)
 	{
 		Velocity = UKismetMathLibrary::VSizeXY(PlayerMovement->Velocity);
 		MaxSpeed = PlayerMovement->GetMaxSpeed();
+		PlayerMovement->IsJumpAllowed();
 		IsFalling=PlayerMovement->IsFalling();
 	}
 }
+
+

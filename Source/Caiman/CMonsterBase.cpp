@@ -10,6 +10,7 @@
 #include "Components/AttributeComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/HealthBarComponent.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values
 ACMonsterBase::ACMonsterBase()
@@ -44,12 +45,17 @@ ACMonsterBase::ACMonsterBase()
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attribute"));
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(RootComponent);
-
+	DetectRange = CreateDefaultSubobject<USphereComponent>(TEXT("DetectRange"));
+	
+	DetectRange->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	DetectRange->SetupAttachment(RootComponent);
+	DetectRange->InitSphereRadius(2000.0f);
 }
 
 // Called when the game starts or when spawned
 void ACMonsterBase::BeginPlay()
 {
+
 	Super::BeginPlay();
 	hp = 100;
 	bIsLive = true;
@@ -67,6 +73,12 @@ void ACMonsterBase::BeginPlay()
 	attackType = 0;
 	healcount = 0;
 	HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+	HealthBarWidget->SetVisibility(false);
+	if (DetectRange)
+	{
+		DetectRange->OnComponentBeginOverlap.AddDynamic(this, &ACMonsterBase::InDetectRange);
+		DetectRange->OnComponentEndOverlap.AddDynamic(this, &ACMonsterBase::OutDetectRange);
+	}
 }
 
 // Called every frame
@@ -86,6 +98,10 @@ void ACMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 void ACMonsterBase::GetHit_Implementation(const FVector& ImpactPoint, AActor* Offense)
 {
 	DrawDebugSphere(GetWorld(), ImpactPoint, 20, 32, FColor::Red, true);
+	/*if(HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(true);
+	}*/
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
 }
 
@@ -122,6 +138,20 @@ float ACMonsterBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEv
 	UE_LOG(LogClass, Warning, TEXT("Damage : %f"), Damage);
 	return Damage;
 	// 여기에서는 데미지가 잘 안들어오는 오류가 있는건지 아닌지 모르겠음
+}
+void ACMonsterBase::InDetectRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(true);
+	}
+}
+void ACMonsterBase::OutDetectRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(false);
+	}
 }
 //
 //void ACMonsterBase::ReceivePointDamage(float Damage, const UDamageType* DamageType, FVector HitLocation, FVector HitNormal, UPrimitiveComponent* HitComponent, FName BoneName, FVector ShotFromDirection, AController* InstigatedBy, AActor* DamageCauser)

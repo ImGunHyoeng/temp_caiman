@@ -9,6 +9,11 @@
 
 void UD_WALK_O::updateInput()
 {
+	if (ctx->getPlayerController()->IsInputKeyDown(EKeys::LeftMouseButton) && ctx->getPlayerController()->IsInputKeyDown(EKeys::C))
+	{
+		currentSuperstate->SwitchState(factory->CreateSUPERARMOR());
+		return;
+	}
 	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::Q))
 	{
 		ctx->GetCurPlayerState()->SwitchState(factory->CreateINVINCIBILITY());

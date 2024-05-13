@@ -26,7 +26,7 @@
 #include "HUD/PlayerHUD.h"
 #include "HUD/PlayerOverlay.h"
 #include "Components/InventoryComponent.h"
-
+#include "Components/CapsuleComponent.h"
 
 
 
@@ -391,6 +391,7 @@ float ACCharacterPlayer::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 		else
 		{
 			PlayerOverlay->SetHealthBarPercent(0);
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			SetRagdollPhysics();
 		}
 	}
