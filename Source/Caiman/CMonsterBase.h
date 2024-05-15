@@ -29,9 +29,11 @@ protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
 	void setHp(float _hp) { hp = _hp; }
-	
+	UFUNCTION(BlueprintCallable)
+	void SetWidgetVisible(bool input);
 public:	
 	// Called every frame
+
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintCallable)
 	float getHp() { return hp; }

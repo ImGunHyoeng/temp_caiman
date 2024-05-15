@@ -30,7 +30,7 @@ void USUPERARMOR_O::enter()
 
 void USUPERARMOR_O::InitializeSubState()
 {//동시에 누르기
-	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton) && ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::C))
+	if (ctx->getPlayerController()->IsInputKeyDown(EKeys::LeftMouseButton) && ctx->getPlayerController()->IsInputKeyDown(EKeys::C))
 	{
 		ctx->PlayAnimMontage(ctx->GetChargeAttackMontage(), 1.0f, FName("ChargingStart"));
 		SetSubState(factory->CreateSUPERCHARGINGATTACK());

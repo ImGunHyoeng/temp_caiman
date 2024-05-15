@@ -9,7 +9,7 @@
 
 void UD_IDLE_O::updateInput()
 {
-	if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton) && ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::C))
+	if (ctx->getPlayerController()->IsInputKeyDown(EKeys::LeftMouseButton) && ctx->getPlayerController()->IsInputKeyDown(EKeys::C))
 	{
 		currentSuperstate->SwitchState(factory->CreateSUPERARMOR());
 		return;

@@ -46,6 +46,7 @@ public:
 
 
 	int DoingTime;
+	bool keepPress;
 private:
 	bool changeCharge;
 };

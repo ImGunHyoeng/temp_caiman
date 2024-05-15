@@ -42,6 +42,8 @@ void UATTACK_O::update()
 	//	DoingTime = 0;
 
 
+	if (ctx->getPlayerController()->WasInputKeyJustReleased(EKeys::LeftMouseButton))
+		keepPress = false;
 	if (curAttackState == EAttackState::DONE)
 	{
 		if (ctx->getPlayerController()->WasInputKeyJustPressed(EKeys::LeftMouseButton))
@@ -69,10 +71,12 @@ void UATTACK_O::enter()
 	ctx->GetAttribute()->UseStamina(ctx->GetAttribute()->GetAttackCost());
 	ctx->GetHUD()->SetStaminaBarPercent(ctx->GetAttribute()->GetStaminaPercent());
 	ctx->SetUsingStamina(true);
+	keepPress = true;
 }
 
 void UATTACK_O::exit()
 {
+	keepPress = false;
 	ctx->SetAttack(false);
 	ctx->SetUsingStamina(false);
 }

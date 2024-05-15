@@ -275,6 +275,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
+	UPROPERTY(EditAnywhere, Category = HittedSound)
+	class USoundBase* HittedSound;
 	//UPROPERTY(EditAnywhere, Category = VisualEffect)
 	//UParticleSystem* JumpAttackParticle;
 	//UPROPERTY(EditAnywhere, Category = VisualEffect)

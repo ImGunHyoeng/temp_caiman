@@ -67,6 +67,15 @@ void ACMonsterBase::BeginPlay()
 	attackType = 0;
 	healcount = 0;
 	HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+	HealthBarWidget->SetVisibility(false);
+}
+
+void ACMonsterBase::SetWidgetVisible(bool input)
+{
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(input);
+	}
 }
 
 // Called every frame
