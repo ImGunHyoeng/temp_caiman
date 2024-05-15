@@ -105,11 +105,18 @@ public:
 	float RotationSpeed;
 	bool targetSet;
 
+	FVector redirection;
+	FVector redirection_L;
+	FVector redirection_R;
+	bool isredirection;
 	UPROPERTY(EditAnyWhere, Category = "Montage")
 	UAnimMontage* AM_HitReact;
 	UPROPERTY(EditAnywhere, Category = "Montage")
 	UAnimMontage* AM_DeadReact;
+	void SpawnItem();
 	
+	UPROPERTY(EditAnywhere, Category = Item)
+	TSubclassOf<class AItemBase> Items[4];
 private:
 	void HitReact(const FVector& ImpactPoint);
 	void DeadReact(const FVector& ImpactPoint);

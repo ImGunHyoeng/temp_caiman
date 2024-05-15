@@ -374,7 +374,7 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint, AActor
 	UKNOCKBACK_O* temp = Cast<UKNOCKBACK_O>(curState->GetSubState());
 	if (temp)
 	{
-		UGameplayStatics::PlaySound2D(this, HittedSound);
+		UGameplayStatics::PlaySound2D(this, HittedSound,1,1,0.3);
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
 		temp->SetPoint(Offense->GetTransform().GetLocation());
 		temp->Start();

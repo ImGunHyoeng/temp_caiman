@@ -16,10 +16,7 @@ void UCAnimNotifyState_Trace::NotifyBegin(USkeletalMeshComponent* MeshComp, UAni
 		ACCharacterPlayer* Player = Cast<ACCharacterPlayer>(MeshComp->GetOwner());
 		if (Player)
 		{
-			//UActorComponent* ActorComp = Player->GetComponentByClass(UCTraceComponent::StaticClass());
-			//UCTraceComponent* Tracecomp = Cast<UCTraceComponent>(ActorComp);
-			Player->GetWeapon()->getTrace()->TsetActive();
-			
+			Player->GetWeapon()->getTrace()->TsetActive();	
 		}
 	}
 }
@@ -35,23 +32,6 @@ void UCAnimNotifyState_Trace::NotifyEnd(USkeletalMeshComponent* MeshComp, UAnimS
 		if (Player)
 		{
 			Player->GetWeapon()->getTrace()->TsetActive(false);
-			/*UActorComponent* ActorComp = Player->GetComponentByClass(UCTraceComponent::StaticClass());
-			UCTraceComponent* Tracecomp = Cast<UCTraceComponent>(ActorComp);
-			Tracecomp->TsetActive(false);*/
-			if (Player)
-			{
-				//if (IIPlayerState* currentState = Player->GetCurPlayerState())
-				//{
-				//	ATTACK* attack = Cast<ATTACK>(currentState);
-				//	if (attack)
-				//	{
-				//		attack->AttackStateReady();
-				//	}
-				//}
-				//Cast<ATTACK>(Player->GetCurPlayerState())->AttackStateReady();
-				//Player->AttackCheck();
-
-			}
 		}
 	}
 

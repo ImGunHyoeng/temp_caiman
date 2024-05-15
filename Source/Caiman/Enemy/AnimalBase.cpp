@@ -15,6 +15,7 @@
 #include "Components/WidgetComponent.h"
 #include "Components/HealthBarComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Item/ItemBase.h"
 
 // Sets default values
 AAnimalBase::AAnimalBase()
@@ -184,7 +185,9 @@ float AAnimalBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEven
 		Attributes->ReceiveDamage(DamageAmount);
 		if (Attributes->GetHealthPercent() == 0)
 		{
+			HealthBarWidget->SetHealthPercent(0);
 			Curstate = EAnimalState::DEAD;
+			SpawnItem();
 			return 0;
 		}
 		if (HealthBarWidget)
@@ -260,7 +263,7 @@ void AAnimalBase::Update()
 		//체력회복하는 것이 보이도록
 		if (Attributes)
 		{
-			Attributes->ReceiveDamage(-(FApp::GetDeltaTime() * 2));
+			Attributes->ReceiveDamage(-(FApp::GetDeltaTime()));
 			if (HealthBarWidget)
 			{
 				HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
@@ -273,12 +276,70 @@ void AAnimalBase::Update()
 			direction = GetActorLocation() - player->GetActorLocation();
 			direction.Z = 0;
 			FVector PlayerForwardVector = player->GetActorForwardVector();
+
+			FHitResult HitResult;
+			FCollisionQueryParams QueryParams;
+			QueryParams.AddIgnoredActor(Bone->GetOwner());
+
+			DrawDebugLine(GetWorld(), GetActorLocation() + GetActorUpVector() * 20, GetActorLocation() + GetActorUpVector() * 20 + direction * 4, FColor::Blue, false, 6.f);
+			if (GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation()+GetActorUpVector()*20, GetActorLocation() + GetActorUpVector() * 20 + direction * 4, ECC_Visibility, QueryParams))
+			{
+				targetSet = false;
+				redirection_L = direction;
+				redirection_R = direction;
+				isredirection = false;
+			}
+			else
+			{
+				targetSet = true;
+			}
+
 			UPawnMovementComponent* MovementComponent = Cast<UPawnMovementComponent>(GetMovementComponent());
 			if (MovementComponent)
 			{
-				DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + direction * 100, FColor::Blue, false, 2.1f);
-				SetActorRotation(direction.Rotation());
-				MovementComponent->AddInputVector(direction * 1);//단위벡터 값 넣어주기
+				if (targetSet)
+				{
+					DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + direction * 100, FColor::Blue, false, 2.1f);
+					SetActorRotation(direction.Rotation());
+					MovementComponent->AddInputVector(direction * 0.4);//단위벡터 값 넣어주기
+				}
+				else
+				{
+					float Yaw_L=0;
+					float Yaw_R=0;
+					while(!isredirection)
+					{
+
+						FTransform RotationMatrix;
+						RotationMatrix.SetRotation(FRotator(0, Yaw_L, 0).Quaternion());
+						redirection_L = RotationMatrix.TransformVector(redirection_L);
+						RotationMatrix.SetRotation(FRotator(0, Yaw_R, 0).Quaternion());
+						redirection_R = RotationMatrix.TransformVector(redirection_R);
+
+						if (GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation(), GetActorLocation() + redirection_L * 4, ECC_Visibility, QueryParams))
+						{
+							Yaw_L++;
+						}
+						else
+						{
+							redirection = redirection_L;
+							isredirection = true;
+							continue;
+						}
+						if (GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation(), GetActorLocation() + redirection_R * 4, ECC_Visibility, QueryParams))
+						{
+							Yaw_R--;
+						}
+						else
+						{
+							redirection = redirection_R;
+							isredirection = true;
+							continue;
+						}
+					}
+					SetActorRotation(redirection.Rotation());
+					MovementComponent->AddInputVector(redirection * 0.4);//단위벡터 값 넣어주기
+				}
 			}
 		}
 		GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("FLee"));
@@ -325,24 +386,25 @@ void AAnimalBase::Update()
 		}
 		if ((FVector(GetActorLocation().X, GetActorLocation().Y, 0) - FVector(targetLocation.X, targetLocation.Y, 0)).Size() <= 20)
 		{
-			sumDeltaTime = 0;
+			//sumDeltaTime = 0;
 			targetSet = false;
 			return;
 		}
 		targetLocation.Z = GetActorLocation().Z;
 		UPawnMovementComponent* MovementComponent = Cast<UPawnMovementComponent>(GetMovementComponent());
-		//MovementComponent->SetMaxWalkSpeed(NewMaxWalkSpeed);
 		if (MovementComponent)
 		{
-			//sumDeltaTime += FApp::GetDeltaTime();
-			////sumDeltaTime *= RotationSpeed;
-			//sumDeltaTime = FMath::Min(sumDeltaTime, 1.0f);
-
-			//SetActorRotation(direction.Rotation());
-			//FMath::RInterpTo(predirection.Rotation(), direction.Rotation(), sumDeltaTime, RotationSpeed);
 			SetActorRotation(FMath::RInterpTo(GetActorForwardVector().Rotation(), direction.Rotation(), FApp::GetDeltaTime(), RotationSpeed));
+			FHitResult HitResult;
+			FCollisionQueryParams QueryParams;
+			QueryParams.AddIgnoredActor(this);
 
+			
 			MovementComponent->AddInputVector(direction * 0.5f);//단위벡터 값 넣어주기
+			if (GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation(), GetActorLocation() + direction * 4, ECC_Visibility, QueryParams))
+			{
+				targetSet = false;
+			}
 			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Red, false, 10.f, 0, 10.0f);
 			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + direction * 100, FColor::Blue, false, 2.1f, 0, 15);
 		}
@@ -454,6 +516,13 @@ void AAnimalBase::GetHit_Implementation(const FVector& ImpactPoint, AActor* Offe
 		DeadReact(Offense->GetTransform().GetLocation());
 
 	//PlayAnimMontage(AM_Hitted, 1, Section);
+}
+
+void AAnimalBase::SpawnItem()
+{
+	int value = FMath::RandRange(0, 4);
+	FRotator rotator;
+	GetWorld()->SpawnActor<AItemBase>(Items[value], GetActorLocation(),rotator);
 }
 
 void AAnimalBase::HitReact(const FVector& ImpactPoint)
