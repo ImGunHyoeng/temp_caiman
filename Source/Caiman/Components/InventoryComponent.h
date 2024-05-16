@@ -35,9 +35,9 @@ public:
 	FAllItem allitem ;
 	//TSharedPtr<class UItemWidget> ItemWidgetPtr;
 	void ShowInventory();
-	bool TraceItemToPickUp();
+	void TraceItemToPickUp();
 	bool AddToInventory(class AItemBase *input);
-	
+	bool canPickup;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "Function")
 	void InteractionKeyDown();
 	//void InteractionKeyDown(const FInputActionValue& Value);
@@ -49,6 +49,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	class UDataTable* Items;
+	FTimerHandle TraceTimerhandle;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

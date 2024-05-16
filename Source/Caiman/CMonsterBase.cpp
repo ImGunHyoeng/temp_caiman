@@ -85,6 +85,15 @@ void ACMonsterBase::Tick(float DeltaTime)
 	//UE_LOG(LogTemp, Warning, TEXT("Monster HP:%f"),hp);
 }
 
+float ACMonsterBase::getHp()
+{
+	if (Attributes)
+	{
+		return Attributes->GetHealthPercent();
+	}
+	return 0;
+}
+
 // Called to bind functionality to input
 void ACMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

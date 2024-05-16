@@ -16,6 +16,7 @@
 #include "Components/HealthBarComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Item/ItemBase.h"
+#include "GameFramework/FloatingPawnMovement.h"
 
 // Sets default values
 AAnimalBase::AAnimalBase()
@@ -79,8 +80,8 @@ void AAnimalBase::BeginPlay()
 	//충돌처리하는 것과 엮어주는 기능
 
 
-	//DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::PlayerInRange);
-
+	FleeStartRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::FLEEInRange);
+	FleeEndRange->OnComponentEndOverlap.AddDynamic(this, &AAnimalBase::FLEEOutRange);
 	//AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::InAttackRange);
 
 	targetSet = false;
@@ -95,6 +96,8 @@ void AAnimalBase::BeginPlay()
 	//targetSet = true;
 	HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
 	animInstance = Bone->GetAnimInstance();
+	moveSpeed = 1;
+	HealthBarWidget->SetVisibility(false);
 }
 
 //void AAnimalBase::InAttackRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -172,10 +175,22 @@ void AAnimalBase::BeginPlay()
 
 void AAnimalBase::FLEEInRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(true);
+	}
+
 }
 
 void AAnimalBase::FLEEOutRange(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(false);
+	}
+	Curstate = EAnimalState::STROLL;
+	targetSet = false;
+	player = nullptr;
 }
 
 float AAnimalBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -183,11 +198,20 @@ float AAnimalBase::TakeDamage(float DamageAmount, FDamageEvent const& DamageEven
 	if (Attributes)
 	{
 		Attributes->ReceiveDamage(DamageAmount);
+		moveSpeed = Attributes->GetHealthPercent();
 		if (Attributes->GetHealthPercent() == 0)
 		{
 			HealthBarWidget->SetHealthPercent(0);
 			Curstate = EAnimalState::DEAD;
 			SpawnItem();
+			Body->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			Bone->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			UFloatingPawnMovement* FloatingPawnMovement = Cast<UFloatingPawnMovement>(Bone->GetOwner()->GetComponentByClass(UFloatingPawnMovement::StaticClass()));
+			if (FloatingPawnMovement)
+				FloatingPawnMovement->DestroyComponent();
+			SetLifeSpan(5.0f);
+			HealthBarWidget->SetVisibility(false);
+			
 			return 0;
 		}
 		if (HealthBarWidget)
@@ -263,7 +287,7 @@ void AAnimalBase::Update()
 		//체력회복하는 것이 보이도록
 		if (Attributes)
 		{
-			Attributes->ReceiveDamage(-(FApp::GetDeltaTime()));
+			//Attributes->ReceiveDamage(-(FApp::GetDeltaTime()));
 			if (HealthBarWidget)
 			{
 				HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
@@ -281,7 +305,7 @@ void AAnimalBase::Update()
 			FCollisionQueryParams QueryParams;
 			QueryParams.AddIgnoredActor(Bone->GetOwner());
 
-			DrawDebugLine(GetWorld(), GetActorLocation() + GetActorUpVector() * 20, GetActorLocation() + GetActorUpVector() * 20 + direction * 4, FColor::Blue, false, 6.f);
+			//DrawDebugLine(GetWorld(), GetActorLocation() + GetActorUpVector() * 20, GetActorLocation() + GetActorUpVector() * 20 + direction * 4, FColor::Blue, false, 6.f);
 			if (GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation()+GetActorUpVector()*20, GetActorLocation() + GetActorUpVector() * 20 + direction * 4, ECC_Visibility, QueryParams))
 			{
 				targetSet = false;
@@ -299,9 +323,9 @@ void AAnimalBase::Update()
 			{
 				if (targetSet)
 				{
-					DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + direction * 100, FColor::Blue, false, 2.1f);
+					//DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + direction * 100, FColor::Blue, false, 2.1f);
 					SetActorRotation(direction.Rotation());
-					MovementComponent->AddInputVector(direction * 0.4);//단위벡터 값 넣어주기
+					MovementComponent->AddInputVector(direction * moveSpeed);//단위벡터 값 넣어주기
 				}
 				else
 				{
@@ -338,7 +362,7 @@ void AAnimalBase::Update()
 						}
 					}
 					SetActorRotation(redirection.Rotation());
-					MovementComponent->AddInputVector(redirection * 0.4);//단위벡터 값 넣어주기
+					MovementComponent->AddInputVector(redirection * moveSpeed);//단위벡터 값 넣어주기
 				}
 			}
 		}
@@ -355,11 +379,11 @@ void AAnimalBase::Update()
 			predirection = GetActorForwardVector();
 			targetLocation = spawnpoint;
 			targetLocation.Z = GetActorLocation().Z;
-			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Black, false, 10.f, 0, 10.0f);
+			//DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Black, false, 10.f, 0, 10.0f);
 			direction = (targetLocation - GetActorLocation()).GetSafeNormal();
 			//float yaw = GetDegree(direction);
 
-			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Red, false, 10.f, 0, 10.0f);
+			//DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Red, false, 10.f, 0, 10.0f);
 			UE_LOG(LogTemp, Warning, TEXT("Body %f"), Body->GetComponentRotation().Yaw);
 			UE_LOG(LogTemp, Warning, TEXT("Bone %f"), Bone->GetComponentRotation().Yaw);
 			UE_LOG(LogTemp, Warning, TEXT("Forward %f"), GetActorForwardVector().Rotation().Yaw);
@@ -374,7 +398,8 @@ void AAnimalBase::Update()
 			targetLocation.Z = GetActorLocation().Z;
 			direction = (targetLocation - GetActorLocation()).GetSafeNormal();
 			//float yaw = GetDegree(direction);
-			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Black, false, 10.f, 0, 10.0f);
+			
+			//DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Black, false, 10.f, 0, 10.0f);
 
 			//RootComponent->SetWorldRotation((FRotator(0, yaw, 0)));
 			targetSet = true;
@@ -399,14 +424,14 @@ void AAnimalBase::Update()
 			FCollisionQueryParams QueryParams;
 			QueryParams.AddIgnoredActor(this);
 
-			
-			MovementComponent->AddInputVector(direction * 0.5f);//단위벡터 값 넣어주기
 			if (GetWorld()->LineTraceSingleByChannel(HitResult, GetActorLocation(), GetActorLocation() + direction * 4, ECC_Visibility, QueryParams))
 			{
 				targetSet = false;
 			}
-			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Red, false, 10.f, 0, 10.0f);
-			DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + direction * 100, FColor::Blue, false, 2.1f, 0, 15);
+			MovementComponent->AddInputVector(direction * 0.5f);//단위벡터 값 넣어주기
+
+			//DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + GetActorForwardVector() * 100, FColor::Red, false, 10.f, 0, 10.0f);
+			//DrawDebugLine(GetWorld(), GetActorLocation(), GetActorLocation() + direction * 100, FColor::Blue, false, 2.1f, 0, 15);
 		}
 
 
@@ -441,18 +466,18 @@ void AAnimalBase::UpdateInput()
 	//}
 	if (Curstate == EAnimalState::FLEE)
 	{
-		if (Attributes->GetHealthPercent() >= 0.6f)
-		{
-			//DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::PlayerInRange);
+		//if (Attributes->GetHealthPercent() >= 0.6f)
+		//{
+		//	//DetectStartRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::PlayerInRange);
 
-			//AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::InAttackRange);
-			Curstate = EAnimalState::STROLL;
-			targetSet = false;
-			player = nullptr;
-			//enemyaniminstance->setIsFleeEnd();
-			//enemyaniminstance->setStroll();
-			return;
-		}
+		//	//AttackStatrRange->OnComponentBeginOverlap.AddDynamic(this, &AAnimalBase::InAttackRange);
+		//	Curstate = EAnimalState::STROLL;
+		//	targetSet = false;
+		//	player = nullptr;
+		//	//enemyaniminstance->setIsFleeEnd();
+		//	//enemyaniminstance->setStroll();
+		//	return;
+		//}
 	}
 	if (Curstate == EAnimalState::STROLL)
 	{
@@ -520,9 +545,9 @@ void AAnimalBase::GetHit_Implementation(const FVector& ImpactPoint, AActor* Offe
 
 void AAnimalBase::SpawnItem()
 {
-	int value = FMath::RandRange(0, 4);
+	int value = FMath::RandRange(0, 3);
 	FRotator rotator;
-	GetWorld()->SpawnActor<AItemBase>(Items[value], GetActorLocation(),rotator);
+	GetWorld()->SpawnActor<AItemBase>(Items[value], GetActorLocation()+(0,0,20), rotator);
 }
 
 void AAnimalBase::HitReact(const FVector& ImpactPoint)
@@ -536,9 +561,9 @@ void AAnimalBase::HitReact(const FVector& ImpactPoint)
 	FVector Cross = FVector::CrossProduct(forward, toHit);
 	if (Cross.Z < 0)
 		degree *= -1;
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + forward * 50, 5, FColor::Red, 15);
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + toHit * 50, 5, FColor::Green, 15);
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Cross * 50, 5, FColor::Blue, 15);
+	//UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + forward * 50, 5, FColor::Red, 15);
+	//UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + toHit * 50, 5, FColor::Green, 15);
+	//UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Cross * 50, 5, FColor::Blue, 15);
 	FName Section("Back");
 
 	if (degree >= -45.f && degree < 45.f)
@@ -568,9 +593,9 @@ void AAnimalBase::DeadReact(const FVector& ImpactPoint)
 	FVector Cross = FVector::CrossProduct(forward, toHit);
 	if (Cross.Z < 0)
 		degree *= -1;
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + forward * 50, 5, FColor::Red, 15);
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + toHit * 50, 5, FColor::Green, 15);
-	UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Cross * 50, 5, FColor::Blue, 15);
+	//UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + forward * 50, 5, FColor::Red, 15);
+	//UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + toHit * 50, 5, FColor::Green, 15);
+	//UKismetSystemLibrary::DrawDebugArrow(this, GetActorLocation(), GetActorLocation() + Cross * 50, 5, FColor::Blue, 15);
 	FName Section("Back");
 
 	if (degree >= -45.f && degree < 45.f)

@@ -365,7 +365,11 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint, AActor
 		}
 	}
 	if (Cast<USUPERARMOR_O>(curState))
+	{
+		UGameplayStatics::PlaySound2D(this, HittedSound, 1, 1, 0.3);
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
 		return;
+	}
 	if (Cast<UINVINCIBILITY_O>(curState))
 		return;
 	if (Cast<UHIT_O>(curState))
@@ -385,7 +389,7 @@ void ACCharacterPlayer::GetHit_Implementation(const FVector& ImpactPoint, AActor
 float ACCharacterPlayer::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	float Damage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-	if (Cast<UNORMAL_O>(curState))
+	if (Cast<UNORMAL_O>(curState)|| Cast<USUPERARMOR_O>(curState))
 	{
 		Attributes->ReceiveDamage(Damage);
 		if (Attributes->IsAlive())

@@ -7,6 +7,7 @@
 #include "Item/ItemBase.h"
 #include "GameFramework/Character.h"
 #include "Misc/OutputDeviceNull.h"
+#include "GameFramework/Actor.h"
 // Sets default values for this component's properties
 UInventoryComponent::UInventoryComponent()
 {
@@ -34,12 +35,23 @@ void UInventoryComponent::ShowInventory()
 	}
 }
 
-bool UInventoryComponent::TraceItemToPickUp()
+void UInventoryComponent::TraceItemToPickUp()
 {
-	FVector start= Character->GetActorLocation() - FVector(0, 0, 60);
-	FVector end = (Character->GetActorLocation() - FVector(0, 0, 60))+ Character->GetActorForwardVector() * 300;
-	mySphere = FCollisionShape::MakeSphere(40);
-	//DrawDebugCapsule(GetWorld(),(start+end)/2,15)
+	FVector start= Character->GetActorLocation() - FVector(0, 0, 40);
+	FVector end = (Character->GetActorLocation() - FVector(0, 0, 40))+ Character->GetActorForwardVector() * 40;
+	mySphere = FCollisionShape::MakeSphere(90);
+	
+	FVector capsuleCenter = (start + end) / 2; // 벡터 중심 계산
+	float capsuleRadius = capsuleCenter.Length(); // 벡터 길이로 반지름 계산
+	//FQuat capsuleOrientation = FQuat::Identity();
+	FRotator rotate=GetOwner()->GetActorRotation();
+	rotate += FRotator(90, 0, 0);
+	//FRotator rotate(90, 0, Character->GetActorForwardVector());// Create an identity quaternion
+	//DrawDebugCapsule(GetWorld(), capsuleCenter, capsuleRadius, 90.f, rotate.Quaternion(), FColor::Red, false, 2, 3);
+
+	//DrawDebugCapsule(GetWorld(), capsuleCenter, capsuleRadius, 40.f, FQuat::Identity(), FColor::Red, false, 6.f, 2, 3);
+
+	//DrawDebugCapsule(GetWorld(), (start + end) / 2, (start + end) / 2, 40.f, FQuat::Identity(), FColor::Red,false,6.f,2,3);
 	GetWorld()->SweepMultiByChannel(outResults, start, end, FQuat::Identity, ECollisionChannel::ECC_PhysicsBody, mySphere);
 	for (const auto& result : outResults)
 	{
@@ -47,10 +59,15 @@ bool UInventoryComponent::TraceItemToPickUp()
 		if (item)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Item name: %s"), *item->Item.ItemID.RowName.ToString());
-			return true;
+			canPickup = true;	
+			InteractionWidget->AddToViewport();
+			return;
+			//return true;
 		}	
 	}
-	return false;
+	InteractionWidget->RemoveFromParent();
+	canPickup = false;
+	//return false;
 	
 	
 }
@@ -102,7 +119,7 @@ bool UInventoryComponent::AddToInventory(AItemBase* input)
 
 void UInventoryComponent::InteractionKeyDown_Implementation()
 {
-	if (TraceItemToPickUp())
+	if (canPickup)
 	{
 		if (AddToInventory(item))
 		{
@@ -117,7 +134,7 @@ void UInventoryComponent::InteractionKeyDown_Implementation()
 void UInventoryComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	canPickup = false;
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetWorld()->GetFirstPlayerController()->GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(PlayerContext, 1);
@@ -138,7 +155,7 @@ void UInventoryComponent::BeginPlay()
 	allitem.Swords.SetNum(3);//Reserve(3);
 	allitem.Items.SetNum(24);
 	ShowInventory();
-
+	GetWorld()->GetTimerManager().SetTimer(TraceTimerhandle, this, &UInventoryComponent::TraceItemToPickUp,0.5f, true,0.f);
 	//ItemWidget=Cast<UItemWidget>(CreateWidget(GetWorld(), ItemWidgetClass));
 	
 }
@@ -155,13 +172,13 @@ void UInventoryComponent::BeginPlay()
 void UInventoryComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	if (!TraceItemToPickUp())
+	/*if (!TraceItemToPickUp())
 	{
 		InteractionWidget->RemoveFromParent();
 		return;
 	}
 	
-	InteractionWidget->AddToViewport();
+	InteractionWidget->AddToViewport();*/
 	// ...
 }
 

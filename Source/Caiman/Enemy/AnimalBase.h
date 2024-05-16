@@ -105,6 +105,7 @@ public:
 	float RotationSpeed;
 	bool targetSet;
 
+	float moveSpeed;
 	FVector redirection;
 	FVector redirection_L;
 	FVector redirection_R;

@@ -36,7 +36,7 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintCallable)
-	float getHp() { return hp; }
+	float getHp();
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
