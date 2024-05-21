@@ -9,7 +9,7 @@
 #include "Components/AttributeComponent.h"
 #include "HUD/PlayerHUD.h"
 #include "HUD/PlayerOverlay.h"
-
+#include "Components/AttributeComponent.h"
 void UJUMPATTACK_O::updateInput()
 {
 	if (end)
@@ -30,6 +30,7 @@ void UJUMPATTACK_O::update()
 
 void UJUMPATTACK_O::enter()
 {
+	ctx->GetAttribute()->SetPower(20);
 	ctx->SetSheath(false);
 	kwang = ctx->getAnimInstance();
 	if (kwang)
@@ -45,6 +46,7 @@ void UJUMPATTACK_O::enter()
 
 void UJUMPATTACK_O::exit()
 {
+	ctx->GetAttribute()->SetPower();
 	ctx->SetUsingStamina(false);
 	kwang->setJumpAttackEnd();
 	end = false;

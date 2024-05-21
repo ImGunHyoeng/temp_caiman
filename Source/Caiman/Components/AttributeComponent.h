@@ -39,6 +39,9 @@ public:
 	FORCEINLINE float GetRunCost()const { return RunCost; }
 	FORCEINLINE float GetAttackCost()const { return AttackCost; }
 	FORCEINLINE float GetMaxStamina()const { return MaxStamina; }
+	
+	FORCEINLINE float GetPower()const { return Power; }
+	FORCEINLINE void SetPower(float input=10) { Power = input; }
 private:
 	UPROPERTY(EditAnywhere,Category="Attributes")
 	float Health;
@@ -63,4 +66,6 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 	float StaminaRegenRate = 6;
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	float Power = 10;
 };

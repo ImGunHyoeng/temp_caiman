@@ -36,6 +36,7 @@ public:
 	FCollisionShape mySphere;
 	FColor color;
 	void TsetActive(bool condition = true) { IsActive = condition; };
-
-
+	class ACCharacterPlayer* player;
+	class ACMyWeapon* Weapon;
+	class UAttributeComponent* Attributes;
 };

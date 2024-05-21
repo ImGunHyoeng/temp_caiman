@@ -3,7 +3,7 @@
 
 #include "FSM/OBJECT_STATE/SUPERCHARGINGATTACK_O.h"
 #include "CCharacterPlayer.h"
-
+#include "Components/AttributeComponent.h"
 void USUPERCHARGINGATTACK_O::updateInput()
 {
 	Super::updateInput();
@@ -17,12 +17,14 @@ void USUPERCHARGINGATTACK_O::update()
 void USUPERCHARGINGATTACK_O::enter()
 {
 	Super::enter();
+	ctx->GetAttribute()->SetPower(5);
 	ctx->SetNaiagra();
 }
 
 void USUPERCHARGINGATTACK_O::exit()
 {
 	Super::exit();
+	ctx->GetAttribute()->SetPower();
 	ctx->DeActiveNaiagra();
 }
 

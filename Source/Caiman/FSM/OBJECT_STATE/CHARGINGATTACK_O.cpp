@@ -4,6 +4,7 @@
 #include "FSM/OBJECT_STATE/CHARGINGATTACK_O.h"
 #include "FSM/PlayerStateFactory.h"
 #include "CCharacterPlayer.h"
+#include "Components/AttributeComponent.h"
 void UCHARGINGATTACK_O::updateInput()
 {
 	switch (curstate)
@@ -85,6 +86,7 @@ void UCHARGINGATTACK_O::update()
 void UCHARGINGATTACK_O::enter()
 {
 	//player.SetNaiagra();
+	ctx->GetAttribute()->SetPower(6);
 	instance = ctx->GetMesh()->GetAnimInstance();
 	curstate = EChargeAttackState::STAY;
 	ctx->PlayAnimMontage(ctx->GetChargeAttackMontage(), 1.0f, "ChargingStay");
@@ -95,6 +97,7 @@ void UCHARGINGATTACK_O::enter()
 
 void UCHARGINGATTACK_O::exit()
 {
+	ctx->GetAttribute()->SetPower();
 	curstate = EChargeAttackState::STAY;
 	DoingTime = 0;
 	WaitTime = 0;

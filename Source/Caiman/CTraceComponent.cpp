@@ -10,6 +10,7 @@
 #include "CCharacterPlayer.h"
 #include "Particalble\ParticableBase.h"
 #include "Hit/HitInterface.h"
+#include "Components/AttributeComponent.h"
 // Sets default values for this component's properties
 UCTraceComponent::UCTraceComponent()
 {
@@ -35,13 +36,23 @@ void UCTraceComponent::InitializeComponent()
 void UCTraceComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	Weapon = Cast<ACMyWeapon>(GetOwner());
+	player= Cast<ACCharacterPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+	Attributes = player->GetAttribute();
 }
 
 // Called every frame
 void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
+	//if (Weapon)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("Weapon"));
+	//}
+	//if (player)
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("PlayerYes"));
+	//}
 	if (!WeaponMesh)
 		return;
 	if (!IsActive)
@@ -74,19 +85,19 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	{
 		if (Cast<AParticableBase>(result.GetActor()))
 		{
-			ACCharacterPlayer* player = Cast<ACCharacterPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
+			//ACCharacterPlayer* player = Cast<ACCharacterPlayer>(UGameplayStatics::GetPlayerCharacter(GetWorld(),0));
 			if (player)
 			{
-				ACMyWeapon* weapon = Cast<ACMyWeapon>(WeaponMesh->GetOwner());
-				if (weapon&& weapon->GetWorld())
+				//ACMyWeapon* Weapon = Cast<ACMyWeapon>(WeaponMesh->GetOwner());
+				if (Weapon&& Weapon->GetWorld())
 				{
 					//result.ImpactPoint;
 					//DrawDebugSphere(GetWorld(), result.ImpactPoint, 12, 16, FColor::Red, false, 10);
 					DrawDebugSphere(GetWorld(), result.GetActor()->GetActorLocation(), 200, 16, FColor::Red, false, 10);
 					//UE_LOG(LogTemp, Warning, TEXT("%f"),result.ImpactPoint.X);
 					UE_LOG(LogTemp, Warning, TEXT("Position: X: %.2f, Y: %.2f, Z: %.2f"), result.ImpactPoint.X, result.ImpactPoint.Y, result.ImpactPoint.Z);
-					UParticleSystemComponent*temp =UGameplayStatics::SpawnEmitterAtLocation(weapon->GetWorld(), weapon->GetHitParticle(),FTransform(FRotator(0,0,0), result.ImpactPoint, FVector(1, 1, 1)));
-					if (nullptr == weapon->GetHitParticle())
+					UParticleSystemComponent*temp =UGameplayStatics::SpawnEmitterAtLocation(Weapon->GetWorld(), Weapon->GetHitParticle(),FTransform(FRotator(0,0,0), result.ImpactPoint, FVector(1, 1, 1)));
+					if (nullptr == Weapon->GetHitParticle())
 					{
 						UE_LOG(LogTemp, Warning, TEXT("Particle No"));
 					}
@@ -103,7 +114,7 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		//tempa = WeaponMesh->GetOwner();
 		////result.GetActor();
 		
-		ACMyWeapon* temp= Cast<ACMyWeapon>(WeaponMesh->GetOwner());
+		//ACMyWeapon* temp= Cast<ACMyWeapon>(WeaponMesh->GetOwner());
 		IHitInterface* monster= Cast<IHitInterface>(result.GetActor());
 		/*if (!IsValid(monster) || temp->getDamage() == 0)
 			return;
@@ -114,7 +125,7 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 		if (attackObj.Contains<AActor*>(result.GetActor()))
 			return;
 		attackObj.Add(result.GetActor());
-		UGameplayStatics::ApplyPointDamage(result.GetActor(), temp->getPower(), result.ImpactNormal, result, GetWorld()->GetFirstPlayerController(), GetOwner(), nullptr);
+		UGameplayStatics::ApplyPointDamage(result.GetActor(), Attributes->GetPower(), result.ImpactNormal, result, GetWorld()->GetFirstPlayerController(), GetOwner(), nullptr);
 		IHitInterface* Hit=Cast<IHitInterface>(result.GetActor());
 		//UGameplayStatics::SpawnEmitterAtLocation(GetWorld(),player)
 		if (Hit)
@@ -122,7 +133,7 @@ void UCTraceComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 			Hit->Execute_GetHit(result.GetActor(), result.ImpactPoint, GetOwner());
 		}
 	}
-	//
+	
 
 }
 

@@ -94,7 +94,6 @@ void ACCharacterPlayer::BeginPlay()
 	{
 		Subsystem->AddMappingContext(PlayerContext, 0);
 	}
-	Restart->AddToViewport();
 	check(EnhancedInputComponent != nullptr&&"you don't allow EnhancedInputComponent");
 	//check(bWasInitialized && "Did you forget to call Init()?");
 	//LateBeginPlay();
