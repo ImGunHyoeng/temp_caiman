@@ -37,6 +37,7 @@ class ACMyWeapon;
 class UAttributeComponent;
 class UHealthBarComponent;
 class UPlayerOverlay;
+class UMenuWidget;
 class UInventoryComponent;
 UCLASS()
 class CAIMAN_API ACCharacterPlayer : public ACCharacterBase,public IHitInterface
@@ -106,6 +107,7 @@ public:
 
 	//particle set
 	UParticleSystem* GetHittedParticle() { return HittedParticle; }
+	//UParticleSystem* GetParringParticle() { return ParringParticle; }
 	//UParticleSystem* GetJumpAttackParticle() { return JumpAttackParticle; }
 	//UParticleSystem* GetAttackParticle() { return AttackParticle; }
 	//UParticleSystem* GetNormalAttackParticle() { return NormalAttackParticle; }
@@ -275,8 +277,11 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
+	/*UPROPERTY(EditAnywhere, Category = VisualEffect)
+	UParticleSystem* ParringParticle;*/
 	UPROPERTY(EditAnywhere, Category = HittedSound)
 	class USoundBase* HittedSound;
+
 	//UPROPERTY(EditAnywhere, Category = VisualEffect)
 	//UParticleSystem* JumpAttackParticle;
 	//UPROPERTY(EditAnywhere, Category = VisualEffect)
@@ -286,6 +291,19 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = Weapon)
 	TSubclassOf<ACMyWeapon> MyWeapon;
+
+	
+	//UPROPERTY() //The class (could also be done in a local function for a one-time go)
+	//	TSubclassOf<UUserWidget> Restart;
+
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<UUserWidget> RestartClass;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+	UMenuWidget* Restart;
+	
+	//UFUNCTION(BlueprintImplementableEvent)
+	//void Restart();
 	UPlayerStateFactory* stateFactory;
 
 

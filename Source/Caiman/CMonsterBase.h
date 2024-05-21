@@ -9,6 +9,7 @@
 
 class UAttributeComponent;
 class UHealthBarComponent;
+class UMenuWidget;
 UCLASS()
 class CAIMAN_API ACMonsterBase : public ACharacter,public IHitInterface
 {
@@ -48,6 +49,10 @@ public:
 	UParticleSystem* GetParticle() { return HittedParticle; }
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
+	UPROPERTY(EditAnywhere, Category = VisualEffect)
+	UParticleSystem* ParringParticle;
+	UPROPERTY(EditAnywhere, Category = HittedSound)
+	class USoundBase* ThunderSound;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Position)
 	FVector RunDirection;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Position)
@@ -85,6 +90,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int attackType;
 
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<UUserWidget> ClearClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+	UMenuWidget* Clear;
+	////UPROPERTY() //The class (could also be done in a local function for a one-time go)
+	////	TSubclassOf<UUserWidget> Clear;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+	//	UMenuWidget* Clear;
+	//UFUNCTION(BlueprintImplementableEvent)
+	//void Clear();
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_Hited;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)

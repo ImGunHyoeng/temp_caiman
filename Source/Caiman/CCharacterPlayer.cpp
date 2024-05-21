@@ -26,7 +26,7 @@
 #include "HUD/PlayerHUD.h"
 #include "HUD/PlayerOverlay.h"
 #include "Components/InventoryComponent.h"
-
+#include "HUD/MenuWidget.h"
 
 
 
@@ -58,6 +58,7 @@ ACCharacterPlayer::ACCharacterPlayer()
 	PrimaryActorTick.bCanEverTick = true;
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attribute"));
 	InventoryWidget = CreateDefaultSubobject<UInventoryComponent>(TEXT("Inventory"));
+
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
 	HealthBarWidget->SetupAttachment(RootComponent);
 
@@ -72,7 +73,9 @@ void ACCharacterPlayer::BeginPlay()
 	Super::BeginPlay();
 	//player키 입력
 	InitializePlayerOverlay();
-	
+	Restart= CreateWidget<UMenuWidget>(GetWorld(), RestartClass);
+	//InteractionWidget = CreateWidget<UItemWidget>(GetWorld(), InteractionClass);
+	//Restart = CreateDefaultSubobject<UMenuWidget>(TEXT("Restart"));
 	//KeyMappingArray = PlayerContext->GetMappings();
 	FName WeaponSocket(TEXT("S_Sheath"));
 	if (MyWeapon)
@@ -91,7 +94,7 @@ void ACCharacterPlayer::BeginPlay()
 	{
 		Subsystem->AddMappingContext(PlayerContext, 0);
 	}
-	
+	Restart->AddToViewport();
 	check(EnhancedInputComponent != nullptr&&"you don't allow EnhancedInputComponent");
 	//check(bWasInitialized && "Did you forget to call Init()?");
 	//LateBeginPlay();
@@ -397,6 +400,8 @@ float ACCharacterPlayer::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 		else
 		{
 			PlayerOverlay->SetHealthBarPercent(0);
+			//Restart->SetVisibility(ESlateVisibility::Visible);
+			Restart->AddToViewport();
 			SetRagdollPhysics();
 		}
 	}

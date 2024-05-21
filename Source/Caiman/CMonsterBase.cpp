@@ -10,8 +10,12 @@
 #include "Components/AttributeComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Components/HealthBarComponent.h"
+#include "CCharacterPlayer.h"
+#include "FSM/OBJECT_STATE/OFSMCollection.h"
+#include "HUD/MenuWidget.h"
 
 // Sets default values
+
 ACMonsterBase::ACMonsterBase()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -43,6 +47,7 @@ ACMonsterBase::ACMonsterBase()
 	GetCharacterMovement()->BrakingDecelerationWalking = 2000.0f;//걷기 완화 속도
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attribute"));
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("HealthBar"));
+
 	HealthBarWidget->SetupAttachment(RootComponent);
 
 }
@@ -52,6 +57,8 @@ void ACMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	hp = 100;
+	Clear= CreateWidget<UMenuWidget>(GetWorld(), ClearClass);
+	Clear->AddToViewport();
 	bIsLive = true;
 	bIsAlredyDie = false;
 	bIsAttacking = false;
@@ -68,6 +75,7 @@ void ACMonsterBase::BeginPlay()
 	healcount = 0;
 	HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
 	HealthBarWidget->SetVisibility(false);
+	//Clear = CreateDefaultSubobject<UMenuWidget>(TEXT("Clear"));
 }
 
 void ACMonsterBase::setHp(float _hp)
@@ -114,7 +122,17 @@ void ACMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 void ACMonsterBase::GetHit_Implementation(const FVector& ImpactPoint, AActor* Offense)
 {
 	DrawDebugSphere(GetWorld(), ImpactPoint, 20, 32, FColor::Red, true);
-	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
+	ACCharacterPlayer *Player=Cast<ACCharacterPlayer>(Offense->GetOwner());
+	if (Player)
+	{
+		if (Cast<UINVINCIBILITY_O>(Player->GetCurPlayerState()))
+		{
+			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParringParticle, ImpactPoint);
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ThunderSound, ImpactPoint);
+			return;
+		}
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HittedParticle, ImpactPoint);
+	}
 }
 
 
@@ -147,6 +165,8 @@ float ACMonsterBase::InternalTakePointDamage(float Damage, FPointDamageEvent con
 		if (!bIsAlredyDie)
 		{
 			HealthBarWidget->SetVisibility(false);
+			//Clear->SetVisibility(ESlateVisibility::Visible);
+			Clear->AddToViewport();
 			bIsAlredyDie = true;
 		}
 	}
