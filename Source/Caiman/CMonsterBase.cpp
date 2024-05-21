@@ -70,6 +70,16 @@ void ACMonsterBase::BeginPlay()
 	HealthBarWidget->SetVisibility(false);
 }
 
+void ACMonsterBase::setHp(float _hp)
+{
+	if (Attributes)
+	{
+		Attributes->ReceiveDamage(_hp*-1);
+		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+	}
+	
+}
+
 void ACMonsterBase::SetWidgetVisible(bool input)
 {
 	if (HealthBarWidget)
@@ -120,11 +130,23 @@ float ACMonsterBase::InternalTakePointDamage(float Damage, FPointDamageEvent con
 	HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
 	animSelction = bIsLive ? AM_Hited : AM_Dead;
 	PlayAnimMontage(animSelction);
+	
+	if (bIsHeal)
+	{
+		if (bIsRunAwayDone)
+		{
+			bIsHeal = false;
+			healcount++;
+			StopAnimMontage();
+			PlayAnimMontage(AM_Angry);
+		}
+	}
 
 	if (!bIsLive)
 	{
 		if (!bIsAlredyDie)
 		{
+			HealthBarWidget->SetVisibility(false);
 			bIsAlredyDie = true;
 		}
 	}

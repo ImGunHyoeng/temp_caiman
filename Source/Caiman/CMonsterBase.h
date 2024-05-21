@@ -28,7 +28,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
-	void setHp(float _hp) { hp = _hp; }
+	void setHp(float _hp);
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetVisible(bool input);
 public:	
@@ -48,6 +48,10 @@ public:
 	UParticleSystem* GetParticle() { return HittedParticle; }
 	UPROPERTY(EditAnywhere, Category = VisualEffect)
 	UParticleSystem* HittedParticle;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Position)
+	FVector RunDirection;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Position)
+	FVector StartPoint;
 	//void ReceivePointDamage(float Damage,
 	//	const class UDamageType* DamageType,
 	//	FVector HitLocation,
@@ -85,6 +89,8 @@ public:
 		UAnimMontage* AM_Hited;
 	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
 		UAnimMontage* AM_Dead;
+	UPROPERTY(EditAnywhere, BluePrintReadOnly, Category = Montage)
+		UAnimMontage* AM_Angry;
 
 	virtual float InternalTakePointDamage(float Damage, struct FPointDamageEvent const& PointDamageEvent, class AController* EventInstigator, AActor* DamageCauser)override;
 

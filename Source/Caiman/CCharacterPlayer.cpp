@@ -438,11 +438,11 @@ void ACCharacterPlayer::SetRagdollPhysics()
 		// Immediately hide the pawn
 		TurnOff();
 		SetActorHiddenInGame(true);
-		SetLifeSpan(1.0f);
+		//SetLifeSpan(1.0f);
 	}
 	else
 	{
-		SetLifeSpan(10.0f);
+		//SetLifeSpan(10.0f);
 	}
 }
 
