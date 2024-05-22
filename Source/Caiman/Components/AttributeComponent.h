@@ -38,6 +38,7 @@ public:
 	FORCEINLINE float GetRollCost()const { return RollCost; }
 	FORCEINLINE float GetRunCost()const { return RunCost; }
 	FORCEINLINE float GetAttackCost()const { return AttackCost; }
+	FORCEINLINE float GetChargeCost()const { return ChargeCost; }
 	FORCEINLINE float GetMaxStamina()const { return MaxStamina; }
 	
 	FORCEINLINE float GetPower()const { return Power; }
@@ -63,6 +64,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 	float RunCost = 5;
+
+	UPROPERTY(EditAnywhere, Category = "Attributes")
+	float ChargeCost = 0.2f;
 
 	UPROPERTY(EditAnywhere, Category = "Attributes")
 	float StaminaRegenRate = 6;

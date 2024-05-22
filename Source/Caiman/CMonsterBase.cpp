@@ -57,7 +57,7 @@ void ACMonsterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	hp = 100;
-	Clear= CreateWidget<UMenuWidget>(GetWorld(), ClearClass);
+	//Clear= CreateWidget<UMenuWidget>(GetWorld(), ClearClass);
 	bIsLive = true;
 	bIsAlredyDie = false;
 	bIsAttacking = false;
@@ -165,7 +165,8 @@ float ACMonsterBase::InternalTakePointDamage(float Damage, FPointDamageEvent con
 		{
 			HealthBarWidget->SetVisibility(false);
 			//Clear->SetVisibility(ESlateVisibility::Visible);
-			Clear->AddToViewport();
+			Cast<ACCharacterPlayer>(DamageCauser->GetOwner())->EnemyDie();
+			//Clear->AddToViewport();
 			bIsAlredyDie = true;
 			SetLifeSpan(5.0f);
 		}

@@ -90,11 +90,11 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int attackType;
 
-	UPROPERTY(EditAnywhere, Category = "Widget")
-	TSubclassOf<UUserWidget> ClearClass;
+	//UPROPERTY(EditAnywhere, Category = "Widget")
+	//TSubclassOf<UUserWidget> ClearClass;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
-	UMenuWidget* Clear;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+	//UMenuWidget* Clear;
 	////UPROPERTY() //The class (could also be done in a local function for a one-time go)
 	////	TSubclassOf<UUserWidget> Clear;
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)

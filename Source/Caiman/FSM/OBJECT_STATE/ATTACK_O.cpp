@@ -57,6 +57,13 @@ void UATTACK_O::update()
 				//ctx->SetWaitFrame(60);
 				ctx->PlayAnimMontage(ctx->GetAttackMontage(), 1.0f, "Attack_2_2");
 			}
+			else
+			{
+				ctx->StopMove();
+				ctx->StopAnimMontage();
+				SwitchState(factory->CreateDEFENSELESS());
+				return;
+			}
 		}
 	}
 	updateInput();

@@ -149,6 +149,10 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void DeActiveNaiagra();
 
+	UFUNCTION()
+	void EnemyDie();
+	UPROPERTY(BlueprintReadOnly)
+	uint32 bIsDie : 1;
 
 protected:
 
@@ -302,9 +306,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
 	UMenuWidget* Restart;
 	
+	UPROPERTY(EditAnywhere, Category = "Widget")
+	TSubclassOf<UUserWidget> ClearClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Widget)
+	UMenuWidget* Clear;
+
 	//UFUNCTION(BlueprintImplementableEvent)
 	//void Restart();
 	UPlayerStateFactory* stateFactory;
+
+	
 
 
 private:

@@ -18,6 +18,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetHealthBarPercent(float Percent);
 	void SetStaminaBarPercent(float Percent);
+	UFUNCTION(BlueprintImplementableEvent)
+	void CheckClearCondition();
 private:
 	UPROPERTY(BlueprintReadOnly,meta=(BindWidget, AllowPrivateAccess = true))
 	UProgressBar* HealthBar;

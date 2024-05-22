@@ -5,8 +5,17 @@
 #include "FSM/PlayerStateFactory.h"
 #include "CCharacterPlayer.h"
 #include "Components/AttributeComponent.h"
+#include "HUD/PlayerHUD.h"
+#include "HUD/PlayerOverlay.h"
 void UCHARGINGATTACK_O::updateInput()
 {
+	if (!ctx->HasEnoughStamina(ctx->GetAttribute()->GetChargeCost()))
+	{
+		ctx->StopMove();
+		ctx->StopAnimMontage();
+		SwitchState(factory->CreateDEFENSELESS());
+		return;
+	}
 	switch (curstate)
 	{
 	case EChargeAttackState::STAY:
@@ -55,7 +64,8 @@ void UCHARGINGATTACK_O::update()
 	{
 	case EChargeAttackState::STAY:
 	{
-
+		ctx->GetAttribute()->UseStamina(ctx->GetAttribute()->GetChargeCost());
+		ctx->GetHUD()->SetStaminaBarPercent(ctx->GetAttribute()->GetStaminaPercent());
 		DoingTime += FApp::GetDeltaTime() * 2;
 		DoingTime = FMath::Clamp(DoingTime, 0, ExtraTimeLimit);
 
@@ -88,6 +98,8 @@ void UCHARGINGATTACK_O::enter()
 	//player.SetNaiagra();
 	ctx->GetAttribute()->SetPower(6);
 	instance = ctx->GetMesh()->GetAnimInstance();
+	
+	ctx->SetUsingStamina(true);
 	curstate = EChargeAttackState::STAY;
 	ctx->PlayAnimMontage(ctx->GetChargeAttackMontage(), 1.0f, "ChargingStay");
 	DoingTime = 0;
@@ -101,6 +113,7 @@ void UCHARGINGATTACK_O::exit()
 	curstate = EChargeAttackState::STAY;
 	DoingTime = 0;
 	WaitTime = 0;
+	ctx->SetUsingStamina(false);
 	//player.DeActiveNaiagra();
 }
 

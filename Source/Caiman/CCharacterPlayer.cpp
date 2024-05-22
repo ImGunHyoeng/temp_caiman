@@ -71,9 +71,13 @@ ACCharacterPlayer::~ACCharacterPlayer()
 void ACCharacterPlayer::BeginPlay()
 {
 	Super::BeginPlay();
+	bIsDie = false;
 	//player키 입력
 	InitializePlayerOverlay();
 	Restart= CreateWidget<UMenuWidget>(GetWorld(), RestartClass);
+	Clear= CreateWidget<UMenuWidget>(GetWorld(), ClearClass);
+	//Clear->AddToViewport();
+	//Restart->AddToViewport();
 	//InteractionWidget = CreateWidget<UItemWidget>(GetWorld(), InteractionClass);
 	//Restart = CreateDefaultSubobject<UMenuWidget>(TEXT("Restart"));
 	//KeyMappingArray = PlayerContext->GetMappings();
@@ -399,8 +403,13 @@ float ACCharacterPlayer::TakeDamage(float DamageAmount, FDamageEvent const& Dama
 		else
 		{
 			PlayerOverlay->SetHealthBarPercent(0);
+			bIsDie = true;
 			//Restart->SetVisibility(ESlateVisibility::Visible);
 			Restart->AddToViewport();
+			FInputModeGameAndUI InputMode;
+			InputMode.SetWidgetToFocus(Restart->GetCachedWidget());
+			getPlayerController()->SetInputMode(InputMode);
+			getPlayerController()->SetShowMouseCursor(true);
 			SetRagdollPhysics();
 		}
 	}
@@ -442,11 +451,11 @@ void ACCharacterPlayer::SetRagdollPhysics()
 		// Immediately hide the pawn
 		TurnOff();
 		SetActorHiddenInGame(true);
-		//SetLifeSpan(1.0f);
+		SetLifeSpan(5.f);
 	}
 	else
 	{
-		//SetLifeSpan(10.0f);
+		SetLifeSpan(5.f);
 	}
 }
 
@@ -454,6 +463,11 @@ void ACCharacterPlayer::SetRagdollPhysics()
 bool ACCharacterPlayer::HasEnoughStamina(float Cost)
 {
 	return Attributes->GetStaminaPercent() > (Cost/Attributes->GetMaxStamina());
+}
+
+void ACCharacterPlayer::EnemyDie()
+{
+	PlayerOverlay->CheckClearCondition();
 }
 
 
