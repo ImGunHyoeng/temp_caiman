@@ -366,7 +366,7 @@ void AAnimalBase::Update()
 				}
 			}
 		}
-		GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("FLee"));
+		//GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("FLee"));
 		return;
 	}
 
@@ -437,7 +437,7 @@ void AAnimalBase::Update()
 
 
 
-		GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("Stroll"));
+		//GEngine->AddOnScreenDebugMessage(1, 2.f, FColor::Red, FString("Stroll"));
 		return;
 	}
 

@@ -120,7 +120,7 @@ void ACMonsterBase::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void ACMonsterBase::GetHit_Implementation(const FVector& ImpactPoint, AActor* Offense)
 {
-	DrawDebugSphere(GetWorld(), ImpactPoint, 20, 32, FColor::Red, true);
+	//DrawDebugSphere(GetWorld(), ImpactPoint, 20, 32, FColor::Red, true);
 	ACCharacterPlayer *Player=Cast<ACCharacterPlayer>(Offense->GetOwner());
 	if (Player)
 	{
