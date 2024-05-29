@@ -1,20 +1,45 @@
 ### Caiman
 ---
 언리얼을 이용한 액션 RPG입니다.
-
+<center>![Splash](https://github.com/ImGunHyoeng/temp_caiman/assets/102517991/9ffa218b-43da-461b-8193-88eb298c9e2d)</center> 
+<center>[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fgjbae1212%2Fhit-counter)](https://hits.seeyoufarm.com)</center> 
 
 ### 개발기간
 ---
 * 23.09 -24.05
 
 ### 멤버구성
+---
 1인 개발입니다. (contribution이 두명인 이유는 이전에 맵 테스트하던 파일을 가지고 와서 사용했기 때문입니다.)
 
-### 개발환경
-* C++
-* Unreal5
-* VisualStudio
+
+### Stacks
+---
+SDK
+<img src="https://img.shields.io/badge/unreal-0E1128?style=for-the-badge&logo=unreal%2B%2B&logoColor=white">
+<img src="https://img.shields.io/badge/visual studio-5C2D91?style=for-the-badge&logo=visual studio%2B%2B&logoColor=white">
 
 
-###주요기능
+Language
+<img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white">
+
+
+Version Control
+<img src="https://img.shields.io/badge/it-F05032?style=for-the-badge&logo=git%2B%2B&logoColor=white">
+<img src="https://img.shields.io/badge/git lfs-F64935?style=for-the-badge&logo=git lfs%2B%2B&logoColor=white">
+
+
+Development Log
+<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion%2B%2B&logoColor=white">
+
+### 주요기능
+---
 원래는 적의 패턴을 좀 더 다양하게 하는 방식으로 진행하려고 했으나 그렇게 까지는 구성하지 못했습니다.
+
+### 주요기능
+---
+
+
+### 빌드 파일
+---
+https://drive.google.com/file/d/1-F9IsyQBefgB67ZfxXJkdxqRd_IWR9b8/view?usp=drive_link\
