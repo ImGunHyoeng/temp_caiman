@@ -15,22 +15,26 @@
 
 ### Stacks
 ---
-SDK
-<img src="https://img.shields.io/badge/unreal-0E1128?style=for-the-badge&logo=unreal%2B%2B&logoColor=white">
-<img src="https://img.shields.io/badge/visual studio-5C2D91?style=for-the-badge&logo=visual studio%2B%2B&logoColor=white">
+# SDK
+
+<img src="https://img.shields.io/badge/unreal-0E1128?style=for-the-badge&logo=unreal&logoColor=white">
+<img src="https://img.shields.io/badge/visual studio-5C2D91?style=for-the-badge&logo=visual studio&logoColor=white">
 
 
-Language
+# Language
+
 <img src="https://img.shields.io/badge/c++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white">
 
 
-Version Control
-<img src="https://img.shields.io/badge/it-F05032?style=for-the-badge&logo=git%2B%2B&logoColor=white">
-<img src="https://img.shields.io/badge/git lfs-F64935?style=for-the-badge&logo=git lfs%2B%2B&logoColor=white">
+# Version Control
+
+<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/git lfs-F64935?style=for-the-badge&logo=git lfs&logoColor=white">
 
 
-Development Log
-<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion%2B%2B&logoColor=white">
+# Development Log
+
+<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 
 ### 주요기능
 ---
