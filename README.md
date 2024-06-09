@@ -3,7 +3,7 @@
 언리얼을 이용한 액션 RPG입니다.
 <center>![Splash](https://github.com/ImGunHyoeng/temp_caiman/assets/102517991/9ffa218b-43da-461b-8193-88eb298c9e2d)</center> 
 
-<center>[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fgjbae1212%2Fhit-counter)](https://hits.seeyoufarm.com)</center> 
+<center>[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FImGunHyoeng%2Ftemp_caiman&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)</center> 
 
 ### 개발기간
 ---
@@ -11,7 +11,7 @@
 
 ### 멤버구성
 ---
-1인 개발입니다. (contribution이 두명인 이유는 이전에 맵 테스트하던 파일을 가지고 와서 사용했기 때문입니다.)
+1인 개발입니다.
 
 
 ### Stacks
