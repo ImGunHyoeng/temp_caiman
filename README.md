@@ -3,8 +3,7 @@
 언리얼을 이용한 액션 RPG입니다.
 <center>![Splash](https://github.com/ImGunHyoeng/temp_caiman/assets/102517991/9ffa218b-43da-461b-8193-88eb298c9e2d)</center> 
 
-<center>[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FImGunHyoeng%2Ftemp_caiman&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)</center> 
-
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FImGunHyoeng%2Ftemp_caiman&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 ### 개발기간
 ---
 * 23.09 -24.05
