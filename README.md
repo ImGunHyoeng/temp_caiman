@@ -8,20 +8,20 @@
 
 ## :paperclip: 목차
 * [개요](#개요)
-* [ 게임 설명](#게임설명)
-* [빌드 파일 & 영상링크](#빌드-파일&영상링크)
-* [Stacks](#Stacks)
+* [ 게임 설명](#게임-설명)
+* [빌드파일&영상링크](#빌드파일영상링크)
+* [스택](#스택)
 * [게임플레이 방식](#게임플레이-방식)
 * [핵심기술](#핵심기술)
 * [후기](#후기)
 
-## :pencil2: 개요
+## 개요
 ---
 * 개발 기간: 23.09 -24.05
 * 멤버구성 : 임건형
 * 언리얼을 이용한 액션 RPG입니다.
 
-## :speech_balloon: 게임 설명
+## 게임 설명
 ---
 
 
@@ -37,7 +37,8 @@
 
 <img width="428" alt="image" src="https://github.com/ImGunHyoeng/temp_caiman/assets/102517991/e15533c9-abc4-42c7-b88b-3a0fb9eec615">
 
-## :triangular_flag_on_post: 빌드 파일&영상링크
+
+## 빌드파일&영상링크
 ---
 * 💾  https://drive.google.com/file/d/1-F9IsyQBefgB67ZfxXJkdxqRd_IWR9b8/view?usp=drive_link\
 
@@ -45,7 +46,7 @@
 
 
 
-## :books: Stacks
+##  스택
 ---
 ### SDK
 
@@ -72,7 +73,7 @@
 * 📄 24.3 ~ 24.5  : https://www.notion.so/4-1-21bc4eda36ba458cb499190891d6abba?pvs=4
 
 
-## :round_pushpin: 게임플레이 방식
+##  게임플레이 방식
 ---
 ![-Clipchamp17-ezgif com-optimize](https://github.com/ImGunHyoeng/temp_caiman/assets/102517991/b8137cc6-78bd-4c65-8383-ac77d1d08ac6)
 ![-Clipchamp17-ezgif com-optimize (1)](https://github.com/ImGunHyoeng/temp_caiman/assets/102517991/7423f48d-1a84-403b-9d7a-b5f7afedd971)
@@ -91,20 +92,18 @@
 
 
 
-## :star: 핵심기술
+##  핵심기술
 ---
 
 자연스러운 플레이어 움직임: HFSM (Hierarchical Finite State Machine) 기술을 사용하여 상황에 따라서 플레이어의 피격판정이 다르게 하였습니다.
-
 <img src="https://github.com/ImGunHyoeng/temp_caiman/assets/102517991/3e2904fc-dbcc-4a55-b1d5-1c4ce3483bde" width="200" height="200">
 
 [HFSM](https://flash-reaper-e22.notion.site/8-HFSM-b1e636689e0b4b62bd53d471bab65715?pvs=4)
 
 똑똑한 적 AI: BT (Behavior Tree) 을 통해 적 캐릭터의 행동을 상황에 맞게 행동하도록 구성하였습니다.
-
 <img src="https://github.com/ImGunHyoeng/temp_caiman/assets/102517991/c10ee2a7-a8be-4b15-9a9d-7a4ac5837788" width="200" height="200">
 
-[BT](https://github.com/user-attachments/files/15785071/C177043_IGH_AI_Report.pdf)
+[BT](https://flash-reaper-e22.notion.site/8-HFSM-b1e636689e0b4b62bd53d471bab65715?pvs=4)
 
 아이템과 인벤토리: DataTable을 활용하여 아이템과 인벤토리 시스템을 구축했습니다.
 
@@ -114,16 +113,13 @@
 
 
 다양한 애니메이션: Animation Retargeting 기술을 사용하여 캐릭터에 다양한 애니메이션이 적용되도록 하였습니다.
-
 <img src="https://github.com/ImGunHyoeng/temp_caiman/assets/102517991/e3acb981-92c1-4f24-827a-86fe10306171" width="200" height="200">
-
 [리타겟팅 ](https://flash-reaper-e22.notion.site/0e85429872964a4b85e4e1c6e780ba8f?pvs=4)
 
-## :v: 후기
+## 후기
 ---
 
 리팩토링: HFSM으로 가기전에 FSM을 좀 더 발전된 상태패턴으로 변화시킬 때 테스트코드를 작성해서 리펙토링해보았고, 이를 통해서 테스트코드의 중요성과 리펙토링을 안전하게 진행하는 법을 알게 되어서 좋았고,
-
 <img src="https://github.com/ImGunHyoeng/temp_caiman/assets/102517991/ee315cd1-c388-4102-871a-865216c2b1de" width="200" height="200">
 
 HFSM을 구현할 당시에 상태의 뎅글링 포인터 이슈가 일어났는데 이를 해결하기위해서 GC에 대한 자세한 작동방법을 알게 되어서 좋았습니다.
