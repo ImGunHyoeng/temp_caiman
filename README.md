@@ -40,8 +40,8 @@
 
 ## 빌드파일&영상링크
 ---
-* 💾  https://drive.google.com/file/d/1-F9IsyQBefgB67ZfxXJkdxqRd_IWR9b8/view?usp=drive_link\
-
+* 💾  [https://drive.google.com/file/d/1-F9IsyQBefgB67ZfxXJkdxqRd_IWR9b8/view?usp=drive_link\
+](https://drive.google.com/file/d/1SDrkrEKj90oxz0xevmTuqKLJ2c7UW6yy/view?usp=sharing)
 * 🎞  https://youtu.be/HpAkOuOOECc?si=Qpxj_9eoz50Jh-GN
 
 
